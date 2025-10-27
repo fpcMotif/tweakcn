@@ -1,6 +1,12 @@
 "use client";
 
-import React, { forwardRef, useEffect, useImperativeHandle, useState, useRef } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { cn } from "@/lib/utils";
 
 // Define the structure of the theme item object
@@ -20,112 +26,116 @@ export interface MentionListRef {
   onKeyDown: (props: { event: KeyboardEvent }) => boolean;
 }
 
-export const MentionList = forwardRef<MentionListRef, MentionListProps>((props, ref) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const selectedItemRef = useRef<HTMLButtonElement>(null);
+export const MentionList = forwardRef<MentionListRef, MentionListProps>(
+  (props, ref) => {
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const selectedItemRef = useRef<HTMLButtonElement>(null);
 
-  // Function to select item (adapted from reference)
-  const selectItem = (index: number) => {
-    const item = props.items[index];
-    if (item) {
-      // Pass the whole item object to the command function
-      props.command(item);
-    }
-  };
-
-  // Arrow key handlers using modulo (adapted from reference)
-  const upHandler = () => {
-    setSelectedIndex((prevIndex) => (prevIndex + props.items.length - 1) % props.items.length);
-  };
-
-  const downHandler = () => {
-    setSelectedIndex((prevIndex) => (prevIndex + 1) % props.items.length);
-  };
-
-  const enterHandler = () => {
-    selectItem(selectedIndex);
-  };
-
-  useEffect(() => setSelectedIndex(0), [props.items]);
-
-  // Auto-scroll effect when selectedIndex changes
-  useEffect(() => {
-    if (selectedItemRef.current && containerRef.current) {
-      selectedItemRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }
-  }, [selectedIndex]);
-
-  useImperativeHandle(ref, () => ({
-    onKeyDown: ({ event }) => {
-      if (event.key === "ArrowUp") {
-        // Use modulo handlers
-        upHandler();
-        return true;
+    // Function to select item (adapted from reference)
+    const selectItem = (index: number) => {
+      const item = props.items[index];
+      if (item) {
+        // Pass the whole item object to the command function
+        props.command(item);
       }
+    };
 
-      if (event.key === "ArrowDown") {
-        // Use modulo handlers
-        downHandler();
-        return true;
+    // Arrow key handlers using modulo (adapted from reference)
+    const upHandler = () => {
+      setSelectedIndex(
+        (prevIndex) => (prevIndex + props.items.length - 1) % props.items.length
+      );
+    };
+
+    const downHandler = () => {
+      setSelectedIndex((prevIndex) => (prevIndex + 1) % props.items.length);
+    };
+
+    const enterHandler = () => {
+      selectItem(selectedIndex);
+    };
+
+    useEffect(() => setSelectedIndex(0), [props.items]);
+
+    // Auto-scroll effect when selectedIndex changes
+    useEffect(() => {
+      if (selectedItemRef.current && containerRef.current) {
+        selectedItemRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
       }
+    }, [selectedIndex]);
 
-      if (event.key === "Enter") {
-        // Use enter handler
-        enterHandler();
-        return true;
-      }
+    useImperativeHandle(ref, () => ({
+      onKeyDown: ({ event }) => {
+        if (event.key === "ArrowUp") {
+          // Use modulo handlers
+          upHandler();
+          return true;
+        }
 
-      if (event.key === "Tab") {
-        // Use tab handler
-        enterHandler();
-        return true;
-      }
+        if (event.key === "ArrowDown") {
+          // Use modulo handlers
+          downHandler();
+          return true;
+        }
 
-      return false;
-    },
-  }));
+        if (event.key === "Enter") {
+          // Use enter handler
+          enterHandler();
+          return true;
+        }
 
-  return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "bg-popover text-popover-foreground animate-in fade-in-0 zoom-in-95 z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md",
-        "scrollbar-thin max-h-[180px] overflow-y-auto"
-      )}
-    >
-      {props.items.length ? (
-        props.items.map((item, index) => (
-          <button
-            ref={index === selectedIndex ? selectedItemRef : null}
-            // Use Tailwind classes mimicking shadcn/ui DropdownMenuItem with cn utility
+        if (event.key === "Tab") {
+          // Use tab handler
+          enterHandler();
+          return true;
+        }
+
+        return false;
+      },
+    }));
+
+    return (
+      <div
+        className={cn(
+          "bg-popover text-popover-foreground animate-in fade-in-0 zoom-in-95 z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md",
+          "scrollbar-thin max-h-[180px] overflow-y-auto"
+        )}
+        ref={containerRef}
+      >
+        {props.items.length ? (
+          props.items.map((item, index) => (
+            <button
+              className={cn(
+                "focus:bg-accent focus:text-accent-foreground hover:bg-accent hover:text-accent-foreground relative flex w-full items-center rounded-sm p-1.5 text-xs transition-colors outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                index === selectedIndex && "bg-accent text-accent-foreground"
+              )}
+              // Use Tailwind classes mimicking shadcn/ui DropdownMenuItem with cn utility
+              key={item.id}
+              onClick={(e) => {
+                e.stopPropagation();
+                selectItem(index);
+              }} // Use item.id as the key
+              ref={index === selectedIndex ? selectedItemRef : null}
+            >
+              {item.label}
+            </button>
+          ))
+        ) : (
+          <div
             className={cn(
-              "focus:bg-accent focus:text-accent-foreground hover:bg-accent hover:text-accent-foreground relative flex w-full items-center rounded-sm p-1.5 text-xs transition-colors outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-              index === selectedIndex && "bg-accent text-accent-foreground"
+              "text-muted-foreground relative flex cursor-default items-center rounded-sm p-1.5 text-xs select-none"
             )}
-            key={item.id} // Use item.id as the key
-            onClick={(e) => {
-              e.stopPropagation();
-              selectItem(index);
-            }}
           >
-            {item.label}
-          </button>
-        ))
-      ) : (
-        <div
-          className={cn(
-            "text-muted-foreground relative flex cursor-default items-center rounded-sm p-1.5 text-xs select-none"
-          )}
-        >
-          No result
-        </div>
-      )}
-    </div>
-  );
-});
+            No result
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 MentionList.displayName = "MentionList";

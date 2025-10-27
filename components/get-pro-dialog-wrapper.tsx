@@ -1,11 +1,11 @@
 "use client";
 
+import { Calendar, Check } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGetProDialogStore } from "@/store/get-pro-dialog-store";
 import { PRO_SUB_FEATURES } from "@/utils/subscription";
-import { Calendar, Check } from "lucide-react";
-import Link from "next/link";
 import { NoiseEffect } from "./effects/noise-effect";
 import { AIChatDemo } from "./examples/ai-chat-demo";
 import {
@@ -30,10 +30,10 @@ interface GetProDialogProps {
 
 export function GetProDialog({ isOpen, onClose }: GetProDialogProps) {
   return (
-    <ResponsiveDialog open={isOpen} onOpenChange={onClose}>
+    <ResponsiveDialog onOpenChange={onClose} open={isOpen}>
       <ResponsiveDialogContent
-        closeButtonClassName="backdrop-blur-md bg-muted/15"
         className="gap-0 overflow-hidden sm:max-w-lg md:w-[calc(100vw-2rem)] md:max-w-4xl"
+        closeButtonClassName="backdrop-blur-md bg-muted/15"
       >
         <div className="flex flex-col md:flex-row">
           {/* Left section: content */}
@@ -46,7 +46,7 @@ export function GetProDialog({ isOpen, onClose }: GetProDialogProps) {
             <div className="space-y-6 px-6">
               <ul className="space-y-3">
                 {PRO_SUB_FEATURES.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3">
+                  <li className="flex items-start gap-3" key={index}>
                     <div
                       className={cn(
                         "flex items-center justify-center rounded-full p-1",
@@ -59,7 +59,12 @@ export function GetProDialog({ isOpen, onClose }: GetProDialogProps) {
                         <Calendar className="text-muted-foreground size-3 stroke-2" />
                       )}
                     </div>
-                    <span className={cn("text-sm", feature.status === "done" ? "" : "opacity-60")}>
+                    <span
+                      className={cn(
+                        "text-sm",
+                        feature.status === "done" ? "" : "opacity-60"
+                      )}
+                    >
                       {feature.description}
                     </span>
                   </li>
@@ -76,7 +81,7 @@ export function GetProDialog({ isOpen, onClose }: GetProDialogProps) {
                   Upgrade to Pro
                 </Link>
               </Button>
-              <Button variant="ghost" onClick={onClose}>
+              <Button onClick={onClose} variant="ghost">
                 Maybe Later
               </Button>
             </ResponsiveDialogFooter>

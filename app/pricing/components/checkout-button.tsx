@@ -1,21 +1,28 @@
 "use client";
 
-import { createCheckout } from "@/actions/checkout";
-import { Button } from "@/components/ui/button";
-import { usePostLoginAction } from "@/hooks/use-post-login-action";
-import { SUBSCRIPTION_STATUS_QUERY_KEY, useSubscription } from "@/hooks/use-subscription";
-import { toast } from "@/hooks/use-toast";
-import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/store/auth-store";
 import { useQueryClient } from "@tanstack/react-query";
 import { Gem, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useTransition } from "react";
+import { createCheckout } from "@/actions/checkout";
+import { Button } from "@/components/ui/button";
+import { usePostLoginAction } from "@/hooks/use-post-login-action";
+import {
+  SUBSCRIPTION_STATUS_QUERY_KEY,
+  useSubscription,
+} from "@/hooks/use-subscription";
+import { toast } from "@/hooks/use-toast";
+import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/auth-store";
 
 interface CheckoutButtonProps extends ComponentProps<typeof Button> {}
 
-export function CheckoutButton({ disabled, className, ...props }: CheckoutButtonProps) {
+export function CheckoutButton({
+  disabled,
+  className,
+  ...props
+}: CheckoutButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { data: session } = authClient.useSession();
@@ -52,16 +59,18 @@ export function CheckoutButton({ disabled, className, ...props }: CheckoutButton
         return;
       }
 
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_STATUS_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [SUBSCRIPTION_STATUS_QUERY_KEY],
+      });
       router.push(res.url);
     });
   };
 
   return (
     <Button
-      variant={isPro ? "ghost" : "default"}
-      disabled={isPending || disabled}
       className={cn(isPro ? "border" : "", className)}
+      disabled={isPending || disabled}
+      variant={isPro ? "ghost" : "default"}
       {...props}
       onClick={handleOpenCheckout}
     >

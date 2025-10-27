@@ -1,7 +1,11 @@
-import { useEditorStore } from "@/store/editor-store";
-import { EmbedMessage, IframeStatus, MESSAGE } from "@/types/live-preview-embed";
-import { applyThemeToElement } from "@/utils/apply-theme";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useEditorStore } from "@/store/editor-store";
+import {
+  EmbedMessage,
+  IframeStatus,
+  MESSAGE,
+} from "@/types/live-preview-embed";
+import { applyThemeToElement } from "@/utils/apply-theme";
 
 const THEME_UPDATE_DEBOUNCE_MS = 50;
 
@@ -24,9 +28,15 @@ export const useIframeThemeInjector = ({
 
   const { themeState } = useEditorStore();
   const [status, setStatus] = useState<IframeStatus>("unknown");
-  const [themeInjectionError, setThemeInjectionError] = useState<string | null>(null);
-  const validationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const themeUpdateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [themeInjectionError, setThemeInjectionError] = useState<string | null>(
+    null
+  );
+  const validationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const themeUpdateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   const applySameOriginTheme = useCallback(() => {
     if (allowCrossOrigin) return; // Only for same-origin mode
@@ -169,7 +179,9 @@ export const useIframeThemeInjector = ({
   return {
     ref,
     status: allowCrossOrigin ? status : "supported", // Same-origin is always "supported"
-    retryValidation: allowCrossOrigin ? startCrossOriginValidation : applySameOriginTheme,
+    retryValidation: allowCrossOrigin
+      ? startCrossOriginValidation
+      : applySameOriginTheme,
     themeInjectionError,
   };
 };

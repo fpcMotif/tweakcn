@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { ThemeEditorState } from "@/types/editor";
 import { defaultThemeState } from "@/config/theme";
-import { getPresetThemeStyles } from "@/utils/theme-preset-helper";
 import { isDeepEqual } from "@/lib/utils";
+import { ThemeEditorState } from "@/types/editor";
+import { getPresetThemeStyles } from "@/utils/theme-preset-helper";
 
 const MAX_HISTORY_COUNT = 30;
 const HISTORY_OVERRIDE_THRESHOLD_MS = 500; // 0.5 seconds
@@ -44,7 +44,10 @@ export const useEditorStore = create<EditorStore>()(
         let currentFuture = get().future;
 
         // Check if only currentMode changed
-        const oldStateWithoutMode = { ...oldThemeState, currentMode: undefined };
+        const oldStateWithoutMode = {
+          ...oldThemeState,
+          currentMode: undefined,
+        };
         const newStateWithoutMode = { ...newState, currentMode: undefined };
 
         if (
@@ -62,14 +65,20 @@ export const useEditorStore = create<EditorStore>()(
         // If other things changed, or if it's an actual identical state set (though less likely here)
         // Proceed with history logic
         const lastHistoryEntry =
-          currentHistory.length > 0 ? currentHistory[currentHistory.length - 1] : null;
+          currentHistory.length > 0
+            ? currentHistory[currentHistory.length - 1]
+            : null;
 
         if (
           !lastHistoryEntry ||
-          currentTime - lastHistoryEntry.timestamp >= HISTORY_OVERRIDE_THRESHOLD_MS
+          currentTime - lastHistoryEntry.timestamp >=
+            HISTORY_OVERRIDE_THRESHOLD_MS
         ) {
           // Add a new history entry
-          currentHistory = [...currentHistory, { state: oldThemeState, timestamp: currentTime }];
+          currentHistory = [
+            ...currentHistory,
+            { state: oldThemeState, timestamp: currentTime },
+          ];
           currentFuture = [];
         }
 
@@ -96,7 +105,10 @@ export const useEditorStore = create<EditorStore>()(
           hslAdjustments: defaultThemeState.hslAdjustments,
         };
 
-        const newHistoryEntry = { state: currentThemeState, timestamp: currentTime };
+        const newHistoryEntry = {
+          state: currentThemeState,
+          timestamp: currentTime,
+        };
         let updatedHistory = [...oldHistory, newHistoryEntry];
         if (updatedHistory.length > MAX_HISTORY_COUNT) {
           updatedHistory.shift();
@@ -119,7 +131,10 @@ export const useEditorStore = create<EditorStore>()(
           const oldHistory = get().history;
           const currentTime = Date.now();
 
-          const newHistoryEntry = { state: oldThemeState, timestamp: currentTime };
+          const newHistoryEntry = {
+            state: oldThemeState,
+            timestamp: currentTime,
+          };
           let updatedHistory = [...oldHistory, newHistoryEntry];
           if (updatedHistory.length > MAX_HISTORY_COUNT) {
             updatedHistory.shift();
@@ -143,8 +158,13 @@ export const useEditorStore = create<EditorStore>()(
       },
       hasUnsavedChanges: () => {
         const themeState = get().themeState;
-        const presetThemeStyles = getPresetThemeStyles(themeState.preset ?? "default");
-        const stylesChanged = !isDeepEqual(themeState.styles, presetThemeStyles);
+        const presetThemeStyles = getPresetThemeStyles(
+          themeState.preset ?? "default"
+        );
+        const stylesChanged = !isDeepEqual(
+          themeState.styles,
+          presetThemeStyles
+        );
         const hslChanged = !isDeepEqual(
           themeState.hslAdjustments,
           defaultThemeState.hslAdjustments
@@ -154,7 +174,9 @@ export const useEditorStore = create<EditorStore>()(
       resetToCurrentPreset: () => {
         const currentThemeState = get().themeState;
 
-        const presetThemeStyles = getPresetThemeStyles(currentThemeState.preset ?? "default");
+        const presetThemeStyles = getPresetThemeStyles(
+          currentThemeState.preset ?? "default"
+        );
         const newThemeState: ThemeEditorState = {
           ...currentThemeState,
           styles: presetThemeStyles,
@@ -180,7 +202,10 @@ export const useEditorStore = create<EditorStore>()(
         const lastHistoryEntry = history[history.length - 1];
         const newHistory = history.slice(0, -1);
 
-        const newFutureEntry = { state: currentThemeState, timestamp: Date.now() };
+        const newFutureEntry = {
+          state: currentThemeState,
+          timestamp: Date.now(),
+        };
         const newFuture = [newFutureEntry, ...future];
 
         set({
@@ -205,7 +230,10 @@ export const useEditorStore = create<EditorStore>()(
 
         const currentThemeState = get().themeState;
 
-        const newHistoryEntry = { state: currentThemeState, timestamp: Date.now() };
+        const newHistoryEntry = {
+          state: currentThemeState,
+          timestamp: Date.now(),
+        };
         let updatedHistory = [...history, newHistoryEntry];
         if (updatedHistory.length > MAX_HISTORY_COUNT) {
           updatedHistory.shift();

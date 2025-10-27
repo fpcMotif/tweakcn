@@ -1,6 +1,6 @@
 import * as culori from "culori";
-import { ColorFormat } from "../types";
 import { Hsl } from "culori";
+import { ColorFormat } from "../types";
 
 export const formatNumber = (num?: number) => {
   if (!num) return "0";
@@ -45,4 +45,5 @@ export const colorFormatter = (
   }
 };
 
-export const convertToHSL = (colorValue: string): string => colorFormatter(colorValue, "hsl");
+export const convertToHSL = (colorValue: string): string =>
+  colorFormatter(colorValue, "hsl");

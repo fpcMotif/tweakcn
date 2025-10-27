@@ -1,14 +1,14 @@
 "use client";
 
+import { Menu, X } from "lucide-react";
+import { motion } from "motion/react";
+import Link from "next/link";
 import GitHubIcon from "@/assets/github.svg";
 import Logo from "@/assets/logo.svg";
 import { Button } from "@/components/ui/button";
 import { useGithubStars } from "@/hooks/use-github-stars";
 import { cn } from "@/lib/utils";
 import { formatCompactNumber } from "@/utils/format";
-import { Menu, X } from "lucide-react";
-import { motion } from "motion/react";
-import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
 interface FigmaHeaderProps {
@@ -17,14 +17,20 @@ interface FigmaHeaderProps {
   setMobileMenuOpen: (open: boolean) => void;
 }
 
-export function FigmaHeader({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: FigmaHeaderProps) {
+export function FigmaHeader({
+  isScrolled,
+  mobileMenuOpen,
+  setMobileMenuOpen,
+}: FigmaHeaderProps) {
   const { stargazersCount } = useGithubStars("jnsahaj", "tweakcn");
 
   return (
     <header
       className={cn(
         "sticky top-0 z-50 w-full backdrop-blur-lg",
-        isScrolled ? "bg-background/90 border-border/20 border-b shadow-xs" : "bg-transparent"
+        isScrolled
+          ? "bg-background/90 border-border/20 border-b shadow-xs"
+          : "bg-transparent"
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
@@ -37,16 +43,16 @@ export function FigmaHeader({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: F
 
         <div className="hidden cursor-pointer items-center gap-4 md:flex">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            <Button variant="ghost" asChild>
+            <Button asChild variant="ghost">
               <a
-                href="https://github.com/jnsahaj/tweakcn"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="font-semibold"
+                href="https://github.com/jnsahaj/tweakcn"
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 <GitHubIcon className="size-5" />
                 {stargazersCount > 0 && formatCompactNumber(stargazersCount)}
@@ -55,22 +61,30 @@ export function FigmaHeader({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: F
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           >
             <ThemeToggle
-              variant="secondary"
-              size="icon"
               className="rounded-full transition-transform hover:scale-105"
+              size="icon"
+              variant="secondary"
             />
           </motion.div>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle variant="ghost" size="icon" />
-          <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          <ThemeToggle size="icon" variant="ghost" />
+          <Button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            size="icon"
+            variant="ghost"
+          >
+            {mobileMenuOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
             <span className="sr-only">Toggle menu</span>
           </Button>
         </div>
@@ -79,27 +93,29 @@ export function FigmaHeader({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: F
       {/* Mobile menu - simplified */}
       {mobileMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
           className="bg-background/95 absolute inset-x-0 top-16 border-b backdrop-blur-lg md:hidden"
+          exit={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -20 }}
         >
           <div className="container mx-auto flex flex-col gap-4 px-4 py-4">
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
               className="border-border/30 border-t pt-2"
+              initial={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <Button variant="ghost" asChild className="w-full justify-start">
+              <Button asChild className="w-full justify-start" variant="ghost">
                 <a
                   href="https://github.com/jnsahaj/tweakcn"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <GitHubIcon className="mr-2 size-5" />
-                  GitHub {stargazersCount > 0 && `(${formatCompactNumber(stargazersCount)})`}
+                  GitHub{" "}
+                  {stargazersCount > 0 &&
+                    `(${formatCompactNumber(stargazersCount)})`}
                 </a>
               </Button>
             </motion.div>

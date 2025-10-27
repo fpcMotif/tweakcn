@@ -28,109 +28,107 @@ export default async function Image({
   const themeName = theme?.name || "Theme";
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        background: backgroundColor,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        color: foregroundColor,
+      }}
+    >
+      {/* Top section for theme name */}
       <div
         style={{
-          background: backgroundColor,
-          width: "100%",
-          height: "100%",
+          height: "40%",
           display: "flex",
           flexDirection: "column",
-          color: foregroundColor,
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
         }}
       >
-        {/* Top section for theme name */}
         <div
           style={{
-            height: "40%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "20px",
+            fontSize: 32,
+            opacity: 0.8,
+            marginBottom: "10px",
           }}
         >
-          <div
-            style={{
-              fontSize: 32,
-              opacity: 0.8,
-              marginBottom: "10px",
-            }}
-          >
-            tweakcn.com
-          </div>
-          <div
-            style={{
-              fontSize: 80,
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            {themeName}
-          </div>
+          tweakcn.com
         </div>
-
-        {/* Bottom section with horizontal color swatches */}
         <div
           style={{
-            height: "60%",
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
+            fontSize: 80,
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         >
-          {/* Primary */}
-          <div
-            style={{
-              flex: 1,
-              background: primaryColor,
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-            }}
-          />
-
-          {/* Secondary */}
-          <div
-            style={{
-              flex: 1,
-              background: secondaryColor,
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-            }}
-          />
-
-          {/* Accent */}
-          <div
-            style={{
-              flex: 1,
-              background: accentColor,
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-            }}
-          />
-
-          {/* Muted */}
-          <div
-            style={{
-              flex: 1,
-              background: mutedColor,
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-            }}
-          />
-
-          {/* Border */}
-          <div
-            style={{
-              flex: 1,
-              background: borderColor,
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-            }}
-          />
+          {themeName}
         </div>
       </div>
-    ),
+
+      {/* Bottom section with horizontal color swatches */}
+      <div
+        style={{
+          height: "60%",
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+        }}
+      >
+        {/* Primary */}
+        <div
+          style={{
+            flex: 1,
+            background: primaryColor,
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+          }}
+        />
+
+        {/* Secondary */}
+        <div
+          style={{
+            flex: 1,
+            background: secondaryColor,
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+          }}
+        />
+
+        {/* Accent */}
+        <div
+          style={{
+            flex: 1,
+            background: accentColor,
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+          }}
+        />
+
+        {/* Muted */}
+        <div
+          style={{
+            flex: 1,
+            background: mutedColor,
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+          }}
+        />
+
+        {/* Border */}
+        <div
+          style={{
+            flex: 1,
+            background: borderColor,
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+          }}
+        />
+      </div>
+    </div>,
     {
       ...size,
     }

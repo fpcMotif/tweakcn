@@ -12,9 +12,9 @@ export function CardsCalendar() {
     <Card className="hidden p-0 @2xl:flex">
       <CardContent className="p-0">
         <Calendar
-          numberOfMonths={1}
-          mode="range"
           defaultMonth={start}
+          mode="range"
+          numberOfMonths={1}
           selected={{
             from: start,
             to: addDays(start, 8),

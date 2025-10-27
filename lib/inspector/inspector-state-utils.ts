@@ -3,7 +3,10 @@ export interface InspectorState {
   className: string;
 }
 
-export const areRectsEqual = (rect1: DOMRect | null, rect2: DOMRect | null): boolean => {
+export const areRectsEqual = (
+  rect1: DOMRect | null,
+  rect2: DOMRect | null
+): boolean => {
   if (!rect1 || !rect2) return rect1 === rect2;
 
   return (
@@ -18,10 +21,16 @@ export const areInspectorStatesEqual = (
   state1: InspectorState,
   state2: InspectorState
 ): boolean => {
-  return areRectsEqual(state1.rect, state2.rect) && state1.className === state2.className;
+  return (
+    areRectsEqual(state1.rect, state2.rect) &&
+    state1.className === state2.className
+  );
 };
 
-export const createInspectorState = (rect: DOMRect, matches: string[]): InspectorState => ({
+export const createInspectorState = (
+  rect: DOMRect,
+  matches: string[]
+): InspectorState => ({
   rect,
   className: matches.join(" "),
 });

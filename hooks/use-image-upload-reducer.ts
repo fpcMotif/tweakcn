@@ -1,10 +1,13 @@
-import { ImageUploadAction, PromptImageWithLoading } from "@/hooks/use-image-upload";
 import { Reducer } from "react";
+import {
+  ImageUploadAction,
+  PromptImageWithLoading,
+} from "@/hooks/use-image-upload";
 
-export const imageUploadReducer: Reducer<PromptImageWithLoading[], ImageUploadAction> = (
-  state,
-  action
-) => {
+export const imageUploadReducer: Reducer<
+  PromptImageWithLoading[],
+  ImageUploadAction
+> = (state, action) => {
   switch (action.type) {
     case "ADD": {
       const newImages = action.payload.map(({ url }) => ({
@@ -49,7 +52,9 @@ export const createSyncedImageUploadReducer = (
       action.type === "REMOVE_BY_URL" ||
       action.type === "CLEAR"
     ) {
-      setImagesDraft(newState.filter((img) => !img.loading).map(({ url }) => ({ url })));
+      setImagesDraft(
+        newState.filter((img) => !img.loading).map(({ url }) => ({ url }))
+      );
     }
     // Note: INITIALIZE intentionally doesn't sync back to avoid circular updates
     return newState;

@@ -1,3 +1,5 @@
+import { ArrowRight, CheckCircle } from "lucide-react";
+import Link from "next/link";
 import { NoiseEffect } from "@/components/effects/noise-effect";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,8 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowRight, CheckCircle } from "lucide-react";
-import Link from "next/link";
 
 export default function SuccessPage() {
   return (
@@ -31,21 +31,26 @@ export default function SuccessPage() {
           </CardTitle>
           <CardDescription>
             <p className="text-muted-foreground text-center text-base text-pretty md:text-lg">
-              Welcome to <span className="text-foreground font-semibold">tweakcn Pro</span>! Your
-              subscription is now active and you have access to all premium features.
+              Welcome to{" "}
+              <span className="text-foreground font-semibold">tweakcn Pro</span>
+              ! Your subscription is now active and you have access to all
+              premium features.
             </p>
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-4 text-center">
-          <Button asChild size="lg" className="group w-full">
-            <Link href="/editor/theme" className="flex items-center justify-center gap-2">
+          <Button asChild className="group w-full" size="lg">
+            <Link
+              className="flex items-center justify-center gap-2"
+              href="/editor/theme"
+            >
               Continue Editing
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
 
-          <Button asChild size="lg" variant="outline" className="group w-full">
+          <Button asChild className="group w-full" size="lg" variant="outline">
             <Link href="/settings">
               Go to Settings
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -57,7 +62,10 @@ export default function SuccessPage() {
           <NoiseEffect />
           <p className="text-muted-foreground w-full text-center text-sm">
             Need help?{" "}
-            <Link href="mailto:sahaj@tweakcn.com" className="text-primary hover:underline">
+            <Link
+              className="text-primary hover:underline"
+              href="mailto:sahaj@tweakcn.com"
+            >
               Contact us
             </Link>
           </p>

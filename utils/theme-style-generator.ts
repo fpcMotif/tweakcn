@@ -1,9 +1,9 @@
-import { ThemeEditorState } from "@/types/editor";
-import { colorFormatter } from "./color-converter";
-import { ColorFormat } from "../types";
-import { getShadowMap } from "./shadows";
 import { defaultLightThemeStyles } from "@/config/theme";
+import { ThemeEditorState } from "@/types/editor";
 import { ThemeStyles } from "@/types/theme";
+import { ColorFormat } from "../types";
+import { colorFormatter } from "./color-converter";
+import { getShadowMap } from "./shadows";
 
 type ThemeMode = "light" | "dark";
 
@@ -48,7 +48,10 @@ const generateColorVariables = (
   --sidebar-ring: ${formatColor(styles["sidebar-ring"])};`;
 };
 
-const generateFontVariables = (themeStyles: ThemeStyles, mode: ThemeMode): string => {
+const generateFontVariables = (
+  themeStyles: ThemeStyles,
+  mode: ThemeMode
+): string => {
   const styles = themeStyles[mode];
   return `
   --font-sans: ${styles["font-sans"]};
@@ -68,7 +71,10 @@ const generateShadowVariables = (shadowMap: Record<string, string>): string => {
   --shadow-2xl: ${shadowMap["shadow-2xl"]};`;
 };
 
-const generateRawShadowVariables = (themeStyles: ThemeStyles, mode: ThemeMode): string => {
+const generateRawShadowVariables = (
+  themeStyles: ThemeStyles,
+  mode: ThemeMode
+): string => {
   const styles = themeStyles[mode];
   return `
   --shadow-x: ${styles["shadow-offset-x"]};
@@ -281,12 +287,15 @@ export const generateThemeCode = (
   }
 
   const themeStyles = themeEditorState.styles as ThemeStyles;
-  const formatColor = (color: string) => colorFormatter(color, colorFormat, tailwindVersion);
+  const formatColor = (color: string) =>
+    colorFormatter(color, colorFormat, tailwindVersion);
 
   const lightTheme = generateThemeVariables(themeStyles, "light", formatColor);
   const darkTheme = generateThemeVariables(themeStyles, "dark", formatColor);
   const tailwindV4Theme =
-    tailwindVersion === "4" ? `\n\n${generateTailwindV4ThemeInline(themeStyles)}` : "";
+    tailwindVersion === "4"
+      ? `\n\n${generateTailwindV4ThemeInline(themeStyles)}`
+      : "";
 
   const bodyLetterSpacing =
     themeStyles["light"]["letter-spacing"] !== "0em"

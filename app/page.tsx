@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useEffectEvent, useState } from "react";
 import { Footer } from "@/components/footer";
 import { AIGenerationCTA } from "@/components/home/ai-generation-cta";
 import { CTA } from "@/components/home/cta";
@@ -11,27 +12,27 @@ import { HowItWorks } from "@/components/home/how-it-works";
 import { Roadmap } from "@/components/home/roadmap";
 import { Testimonials } from "@/components/home/testimonials";
 import { ThemePresetSelector } from "@/components/home/theme-preset-selector";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+  // useEffectEvent ensures the callback always accesses the latest state without causing effect re-runs
+  const handleScroll = useEffectEvent(() => {
+    if (window.scrollY > 10) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  });
 
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div className="bg-background text-foreground flex min-h-[100dvh] flex-col items-center justify-items-center">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-items-center bg-background text-foreground">
       <Header
         isScrolled={isScrolled}
         mobileMenuOpen={mobileMenuOpen}

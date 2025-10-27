@@ -1,3 +1,5 @@
+import { Blend, PaintRoller, WandSparkles } from "lucide-react";
+import { ComponentProps, Fragment } from "react";
 import { HorizontalScrollArea } from "@/components/horizontal-scroll-area";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -5,10 +7,15 @@ import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { AIPromptData } from "@/types/ai";
-import { createCurrentThemePrompt, createPromptDataFromPreset } from "@/utils/ai/ai-prompt";
-import { CREATE_PROMPTS, REMIX_PROMPTS, VARIANT_PROMPTS } from "@/utils/ai/prompts";
-import { Blend, PaintRoller, WandSparkles } from "lucide-react";
-import { ComponentProps, Fragment } from "react";
+import {
+  createCurrentThemePrompt,
+  createPromptDataFromPreset,
+} from "@/utils/ai/ai-prompt";
+import {
+  CREATE_PROMPTS,
+  REMIX_PROMPTS,
+  VARIANT_PROMPTS,
+} from "@/utils/ai/prompts";
 import TabsTriggerPill from "../theme-preview/tabs-trigger-pill";
 
 export function NoMessagesPlaceholder({
@@ -31,16 +38,25 @@ export function NoMessagesPlaceholder({
       <Tabs defaultValue="create-prompts">
         <HorizontalScrollArea className="mb-1">
           <TabsList className="m-0 bg-transparent p-0">
-            <TabsTriggerPill value="create-prompts" className="flex items-center gap-1">
-              <PaintRoller className="size-3.5" aria-hidden="true" />
+            <TabsTriggerPill
+              className="flex items-center gap-1"
+              value="create-prompts"
+            >
+              <PaintRoller aria-hidden="true" className="size-3.5" />
               Create
             </TabsTriggerPill>
-            <TabsTriggerPill value="variant-prompts" className="flex items-center gap-1">
-              <Blend className="size-3.5" aria-hidden="true" />
+            <TabsTriggerPill
+              className="flex items-center gap-1"
+              value="variant-prompts"
+            >
+              <Blend aria-hidden="true" className="size-3.5" />
               Remix
             </TabsTriggerPill>
-            <TabsTriggerPill value="tweak-prompts" className="flex items-center gap-1">
-              <WandSparkles className="size-3.5" aria-hidden="true" />
+            <TabsTriggerPill
+              className="flex items-center gap-1"
+              value="tweak-prompts"
+            >
+              <WandSparkles aria-hidden="true" className="size-3.5" />
               Tweak
             </TabsTriggerPill>
           </TabsList>
@@ -60,7 +76,9 @@ export function NoMessagesPlaceholder({
               >
                 {prompt.displayContent}
               </PromptButton>
-              {index < CREATE_PROMPTS.length - 1 && <Separator className="bg-border/50" />}
+              {index < CREATE_PROMPTS.length - 1 && (
+                <Separator className="bg-border/50" />
+              )}
             </Fragment>
           ))}
         </TabsContent>
@@ -71,12 +89,16 @@ export function NoMessagesPlaceholder({
               <PromptButton
                 disabled={isGeneratingTheme}
                 onClick={() =>
-                  onGenerateTheme(createPromptDataFromPreset(prompt.prompt, prompt.basePreset))
+                  onGenerateTheme(
+                    createPromptDataFromPreset(prompt.prompt, prompt.basePreset)
+                  )
                 }
               >
                 {prompt.displayContent}
               </PromptButton>
-              {index < REMIX_PROMPTS.length - 1 && <Separator className="bg-border/50" />}
+              {index < REMIX_PROMPTS.length - 1 && (
+                <Separator className="bg-border/50" />
+              )}
             </Fragment>
           ))}
         </TabsContent>
@@ -86,11 +108,17 @@ export function NoMessagesPlaceholder({
             <Fragment key={`variant-${index}`}>
               <PromptButton
                 disabled={isGeneratingTheme}
-                onClick={() => onGenerateTheme(createCurrentThemePrompt({ prompt: prompt.prompt }))}
+                onClick={() =>
+                  onGenerateTheme(
+                    createCurrentThemePrompt({ prompt: prompt.prompt })
+                  )
+                }
               >
                 {prompt.displayContent}
               </PromptButton>
-              {index < VARIANT_PROMPTS.length - 1 && <Separator className="bg-border/50" />}
+              {index < VARIANT_PROMPTS.length - 1 && (
+                <Separator className="bg-border/50" />
+              )}
             </Fragment>
           ))}
         </TabsContent>
@@ -104,8 +132,11 @@ interface PromptButtonProps extends ComponentProps<typeof Button> {}
 function PromptButton({ className, children, ...props }: PromptButtonProps) {
   return (
     <Button
+      className={cn(
+        "text-muted-foreground w-full justify-start font-normal",
+        className
+      )}
       variant="ghost"
-      className={cn("text-muted-foreground w-full justify-start font-normal", className)}
       {...props}
     >
       <span className="truncate">{children}</span>

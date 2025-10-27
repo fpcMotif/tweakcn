@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Message from "@/components/editor/ai/message";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types/ai";
 import { ThemeStyles } from "@/types/theme";
 import { defaultPresets } from "@/utils/theme-presets";
-import { useEffect, useRef } from "react";
 
 export function AIChatDemo({
   disabled = true,
@@ -27,43 +27,45 @@ export function AIChatDemo({
     focusables.forEach((el) => {
       (el as HTMLElement).setAttribute("tabindex", "-1");
       // Only set disabled if supported and disabled is true
-      if (disabled && "disabled" in el) (el as HTMLButtonElement).disabled = true;
-      if (!disabled && "disabled" in el) (el as HTMLButtonElement).disabled = false;
+      if (disabled && "disabled" in el)
+        (el as HTMLButtonElement).disabled = true;
+      if (!disabled && "disabled" in el)
+        (el as HTMLButtonElement).disabled = false;
     });
   }, [disabled]);
 
   return (
     <div
+      aria-hidden="true"
       className={cn(
         "bg-background/50 flex h-full w-full min-w-[350px] origin-top-left flex-col overflow-hidden backdrop-blur-lg"
       )}
-      aria-hidden="true"
       tabIndex={-1}
     >
       {/* Scrollable parent */}
       <ScrollArea className="flex-1">
         {/* Non-interactive chat content */}
         <div
-          ref={ref}
+          aria-hidden="true"
           className={cn(
             "flex flex-col gap-4 p-4 select-none",
             disabled ? "pointer-events-none" : "",
             className
           )}
-          aria-hidden="true"
+          ref={ref}
           tabIndex={-1}
         >
           {CHAT_PLACEHOLDER_MESSAGES.map((msg) => (
             <Message
-              key={msg.id}
+              isEditing={false}
               isGeneratingTheme={false}
               isLastMessageStreaming={false}
+              key={msg.id}
               message={msg}
-              onRetry={() => {}}
-              isEditing={false}
               onEdit={() => {}}
-              onEditSubmit={() => {}}
               onEditCancel={() => {}}
+              onEditSubmit={() => {}}
+              onRetry={() => {}}
             />
           ))}
         </div>

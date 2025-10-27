@@ -2,8 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useState, ReactNode } from "react";
 import posthog from "posthog-js";
+import { ReactNode, useState } from "react";
 
 function logClientError(error: Error, context: Record<string, unknown>) {
   console.error("Query error:", error, context);
@@ -30,7 +30,10 @@ function createQueryClient() {
         gcTime: 1000 * 60 * 10, // 10 minutes (formerly cacheTime)
         retry: (failureCount, error: Error) => {
           // Don't retry on authentication or validation errors
-          if (error?.name === "UnauthorizedError" || error?.name === "ValidationError") {
+          if (
+            error?.name === "UnauthorizedError" ||
+            error?.name === "ValidationError"
+          ) {
             return false;
           }
           // Retry up to 3 times for other errors
@@ -41,7 +44,10 @@ function createQueryClient() {
       mutations: {
         retry: (failureCount, error: Error) => {
           // Don't retry mutations on client errors (4xx)
-          if (error?.name === "UnauthorizedError" || error?.name === "ValidationError") {
+          if (
+            error?.name === "UnauthorizedError" ||
+            error?.name === "ValidationError"
+          ) {
             return false;
           }
           // Only retry once for server errors (5xx)
@@ -69,7 +75,9 @@ export function QueryProvider({ children }: QueryProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      {process.env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
+      {process.env.NODE_ENV === "development" && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
     </QueryClientProvider>
   );
 }

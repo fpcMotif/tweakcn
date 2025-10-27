@@ -1,6 +1,6 @@
+import { CustomerPortal } from "@polar-sh/nextjs";
 import { polar } from "@/lib/polar";
 import { getCurrentUserId } from "@/lib/shared";
-import { CustomerPortal } from "@polar-sh/nextjs";
 
 export const GET = CustomerPortal({
   accessToken: process.env.POLAR_ACCESS_TOKEN!,

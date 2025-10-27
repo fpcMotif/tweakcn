@@ -19,9 +19,17 @@ function jsonError(
   });
 }
 
-export function handleError(error: unknown, context: Record<string, unknown> = {}): Response {
+export function handleError(
+  error: unknown,
+  context: Record<string, unknown> = {}
+): Response {
   if (error instanceof ValidationError) {
-    return jsonError("VALIDATION_ERROR", error.message, { details: error.details }, 400);
+    return jsonError(
+      "VALIDATION_ERROR",
+      error.message,
+      { details: error.details },
+      400
+    );
   }
 
   if (error instanceof SubscriptionRequiredError) {

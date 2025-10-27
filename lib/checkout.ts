@@ -1,5 +1,5 @@
-import { useEditorStore } from "@/store/editor-store";
 import { PolarEmbedCheckout } from "@polar-sh/checkout/embed";
+import { useEditorStore } from "@/store/editor-store";
 
 export const openCheckout = async (link: string) => {
   const mode = useEditorStore.getState().themeState.currentMode;

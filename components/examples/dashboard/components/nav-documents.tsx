@@ -1,8 +1,8 @@
 import {
   FolderIcon,
+  type LucideIcon,
   MoreHorizontalIcon,
   ShareIcon,
-  type LucideIcon,
 } from "lucide-react";
 
 import {
@@ -47,17 +47,17 @@ export function NavDocuments({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction
-                  showOnHover
                   className="rounded-sm data-[state=open]:bg-accent"
+                  showOnHover
                 >
                   <MoreHorizontalIcon />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
+                align={isMobile ? "end" : "start"}
                 className="w-24 rounded-lg"
                 side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
                   <FolderIcon />

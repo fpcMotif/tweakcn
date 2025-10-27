@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowUpRight, Cable, Check, Figma, Paintbrush, X } from "lucide-react";
+import Link from "next/link";
 import FigmaIcon from "@/assets/figma.svg";
 import Logo from "@/assets/logo.svg";
 import Shadcraft from "@/assets/shadcraft.svg";
@@ -15,14 +17,16 @@ import {
 } from "@/components/ui/revola";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FIGMA_CONSTANTS, redirectToShadcraft } from "@/lib/figma-constants";
-import { ArrowUpRight, Cable, Check, Figma, Paintbrush, X } from "lucide-react";
-import Link from "next/link";
+
 interface FigmaExportDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps) {
+export function FigmaExportDialog({
+  open,
+  onOpenChange,
+}: FigmaExportDialogProps) {
   const steps = FIGMA_CONSTANTS.steps.map((step, index) => ({
     ...step,
     icon:
@@ -40,7 +44,7 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
   };
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+    <ResponsiveDialog onOpenChange={onOpenChange} open={open}>
       <ResponsiveDialogContent className="flex max-h-[90%] flex-col overflow-hidden sm:max-h-[min(700px,90dvh)] sm:max-w-150">
         {/* Header */}
         <ScrollArea className="flex h-full flex-col gap-4 overflow-hidden">
@@ -74,23 +78,38 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
                 Apply your theme to the ultimate Figma UI kit
               </h1>
               <div className="flex justify-center gap-3.5">
-                <Button size="lg" className="h-10 px-8" onClick={handleGetStarted}>
+                <Button
+                  className="h-10 px-8"
+                  onClick={handleGetStarted}
+                  size="lg"
+                >
                   Get started
                 </Button>
                 <Link href={FIGMA_CONSTANTS.previewUrl} target="_blank">
-                  <Button variant="outline" size="lg" className="h-10 gap-2 px-8">
+                  <Button
+                    className="h-10 gap-2 px-8"
+                    size="lg"
+                    variant="outline"
+                  >
                     <FigmaIcon className="h-4 w-4" />
                     Preview
                   </Button>
                 </Link>
               </div>
               <div className="space-y-1.5 pt-1">
-                <p className="text-muted-foreground text-sm">Trusted by top designers</p>
+                <p className="text-muted-foreground text-sm">
+                  Trusted by top designers
+                </p>
                 <div className="flex justify-center -space-x-3">
                   {FIGMA_CONSTANTS.designers.map((designer, index) => (
-                    <Avatar key={index} className="border-background h-8 w-8 border-2">
-                      <AvatarImage src={designer.avatar} alt={designer.name} />
-                      <AvatarFallback className="text-xs">{designer.fallback}</AvatarFallback>
+                    <Avatar
+                      className="border-background h-8 w-8 border-2"
+                      key={index}
+                    >
+                      <AvatarImage alt={designer.name} src={designer.avatar} />
+                      <AvatarFallback className="text-xs">
+                        {designer.fallback}
+                      </AvatarFallback>
                     </Avatar>
                   ))}
                 </div>
@@ -98,16 +117,22 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
             </div>
             {/* How it works */}
             <div className="space-y-4">
-              <h2 className="text-center text-2xl font-semibold">How it works</h2>
+              <h2 className="text-center text-2xl font-semibold">
+                How it works
+              </h2>
               <div className="border-border rounded-2xl border px-6">
                 <div className="divide-border grid grid-cols-3 divide-x">
                   {steps.map((step, index) => (
                     <div
-                      key={index}
                       className="space-y-2 px-6 py-6 text-center first:pl-0 last:pr-0"
+                      key={index}
                     >
-                      <div className="text-foreground mb-2 flex justify-center">{step.icon}</div>
-                      <p className="text-muted-foreground text-sm">{step.step}</p>
+                      <div className="text-foreground mb-2 flex justify-center">
+                        {step.icon}
+                      </div>
+                      <p className="text-muted-foreground text-sm">
+                        {step.step}
+                      </p>
                       <h3 className="font-semibold">{step.title}</h3>
                     </div>
                   ))}
@@ -121,19 +146,20 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
                   Top quality Figma UI kit for professionals
                 </h2>
                 <p className="text-muted-foreground">
-                  Shadcraft is packed with top quality components, true to the shadcn/ui ethos.
+                  Shadcraft is packed with top quality components, true to the
+                  shadcn/ui ethos.
                 </p>
               </div>
               {/* Demo UI Preview */}
               <div className="border-border relative overflow-hidden rounded-2xl border">
                 <img
-                  src="/figma-onboarding/shadcraft-preview.jpg"
                   alt="Shadcraft Figma UI Kit Preview"
                   className="h-auto w-full"
+                  src="/figma-onboarding/shadcraft-preview.jpg"
                 />
               </div>
               <Link href={FIGMA_CONSTANTS.shadcraftUrl} target="_blank">
-                <Button variant="link" className="gap-1 text-sm">
+                <Button className="gap-1 text-sm" variant="link">
                   More on Shadcraft
                   <ArrowUpRight className="h-3 w-3" />
                 </Button>
@@ -145,10 +171,12 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
               <Card className="p-6">
                 <div className="grid gap-7 md:grid-cols-2">
                   <div className="space-y-4">
-                    <h3 className="font-semibold">What you get with Shadcraft</h3>
+                    <h3 className="font-semibold">
+                      What you get with Shadcraft
+                    </h3>
                     <div className="space-y-2">
                       {FIGMA_CONSTANTS.features.map((feature, index) => (
-                        <div key={index} className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5" key={index}>
                           <Check className="h-4 w-4 text-green-600" />
                           <span className="text-sm">{feature}</span>
                         </div>
@@ -166,7 +194,7 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
                         Get started
                       </Button>
                       <Link href={FIGMA_CONSTANTS.previewUrl} target="_blank">
-                        <Button variant="outline" className="gap-2">
+                        <Button className="gap-2" variant="outline">
                           <FigmaIcon className="h-4 w-4" />
                           Preview
                         </Button>
@@ -175,7 +203,9 @@ export function FigmaExportDialog({ open, onOpenChange }: FigmaExportDialogProps
                   </div>
                 </div>
               </Card>
-              <p className="text-muted-foreground text-center text-xs">Prices in USD</p>
+              <p className="text-muted-foreground text-center text-xs">
+                Prices in USD
+              </p>
             </div>
           </div>
         </ScrollArea>

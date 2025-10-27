@@ -1,20 +1,20 @@
+import { ArrowRight, Check, Circle, Copy, Eye, Palette } from "lucide-react";
+import { motion } from "motion/react";
+import Link from "next/link";
 import ShadcnLogo from "@/assets/shadcn.svg";
 import { Spotlight } from "@/components/effects/spotlight";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Check, Circle, Copy, Eye, Palette } from "lucide-react";
-import { motion } from "motion/react";
-import Link from "next/link";
 
 export function Hero() {
   return (
     <section className="relative isolate container mx-auto w-full py-20 md:py-32 lg:py-40">
       <motion.div
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.3 }}
+        viewport={{ once: true }}
+        whileInView={{ opacity: 1 }}
       >
         <Spotlight
           className="top-0 left-0 -translate-x-1/3 -translate-y-1/3 opacity-50"
@@ -35,7 +35,8 @@ export function Hero() {
               </Badge>
             </div>
             <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
-              Design Your <span className="font-serif font-light italic">Perfect</span>{" "}
+              Design Your{" "}
+              <span className="font-serif font-light italic">Perfect</span>{" "}
               <span className="text-primary inline-flex items-baseline gap-1">
                 <div className="bg-primary/10 flex items-center justify-center rounded-full p-1 md:p-2">
                   <ShadcnLogo className="size-6 md:size-8" />
@@ -45,14 +46,14 @@ export function Hero() {
               Theme
             </h1>
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
-              Customize colors, typography, and layouts with a real-time preview. No signup
-              required.
+              Customize colors, typography, and layouts with a real-time
+              preview. No signup required.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link href="/editor/theme">
                 <Button
-                  size="lg"
                   className="h-12 cursor-pointer rounded-full px-8 text-base shadow-md transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg"
+                  size="lg"
                 >
                   Start Customizing
                   <ArrowRight className="ml-2 size-4" />
@@ -60,9 +61,9 @@ export function Hero() {
               </Link>
               <a href="#examples">
                 <Button
+                  className="border-primary/20 hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-300 hover:translate-y-[-2px]"
                   size="lg"
                   variant="outline"
-                  className="border-primary/20 hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-300 hover:translate-y-[-2px]"
                 >
                   View Examples
                 </Button>
@@ -127,11 +128,17 @@ export function Hero() {
                     </div>
                     <div className="space-y-3">
                       <div className="flex gap-2">
-                        <Button className="w-full shadow-sm transition-none" variant="secondary">
+                        <Button
+                          className="w-full shadow-sm transition-none"
+                          variant="secondary"
+                        >
                           <Copy className="mr-2 size-4" />
                           Copy Code
                         </Button>
-                        <Button className="w-full shadow-sm transition-none" variant="outline">
+                        <Button
+                          className="w-full shadow-sm transition-none"
+                          variant="outline"
+                        >
                           <Circle className="mr-2 size-4" />
                           oklch, hsl, rgb, hex
                         </Button>

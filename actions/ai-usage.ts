@@ -1,12 +1,12 @@
 "use server";
 
+import cuid from "cuid";
+import { and, count, eq, gte } from "drizzle-orm";
+import { z } from "zod";
 import { db } from "@/db";
 import { aiUsage } from "@/db/schema";
 import { getCurrentUserId } from "@/lib/shared";
 import { ValidationError } from "@/types/errors";
-import cuid from "cuid";
-import { and, count, eq, gte } from "drizzle-orm";
-import { z } from "zod";
 
 const getDaysSinceEpoch = (daysAgo: number = 0) =>
   Math.floor(Date.now() / (24 * 60 * 60 * 1000)) - daysAgo;
@@ -19,7 +19,11 @@ const recordUsageSchema = z.object({
 });
 
 // Schema for timeframe validation
-const timeframeSchema = z.union([z.literal("1d"), z.literal("7d"), z.literal("30d")]);
+const timeframeSchema = z.union([
+  z.literal("1d"),
+  z.literal("7d"),
+  z.literal("30d"),
+]);
 
 // Types
 type Timeframe = z.infer<typeof timeframeSchema>;
@@ -47,7 +51,10 @@ export async function recordAIUsage(input: {
 
     const validation = recordUsageSchema.safeParse(input);
     if (!validation.success) {
-      throw new ValidationError("Invalid usage data", validation.error.format());
+      throw new ValidationError(
+        "Invalid usage data",
+        validation.error.format()
+      );
     }
 
     const { promptTokens, completionTokens, modelId } = validation.data;
@@ -73,7 +80,9 @@ export async function recordAIUsage(input: {
   }
 }
 
-export async function getMyUsageStats(timeframe: Timeframe): Promise<UsageStats> {
+export async function getMyUsageStats(
+  timeframe: Timeframe
+): Promise<UsageStats> {
   try {
     const userId = await getCurrentUserId();
 
@@ -89,7 +98,12 @@ export async function getMyUsageStats(timeframe: Timeframe): Promise<UsageStats>
     const events = await db
       .select()
       .from(aiUsage)
-      .where(and(eq(aiUsage.userId, userId), gte(aiUsage.daysSinceEpoch, startDay.toString())));
+      .where(
+        and(
+          eq(aiUsage.userId, userId),
+          gte(aiUsage.daysSinceEpoch, startDay.toString())
+        )
+      );
 
     return {
       requests: events.length,
@@ -101,7 +115,9 @@ export async function getMyUsageStats(timeframe: Timeframe): Promise<UsageStats>
   }
 }
 
-export async function getMyAllTimeRequestCount(userId: string): Promise<number> {
+export async function getMyAllTimeRequestCount(
+  userId: string
+): Promise<number> {
   try {
     const result = await db
       .select({ count: count() })
@@ -115,7 +131,9 @@ export async function getMyAllTimeRequestCount(userId: string): Promise<number> 
   }
 }
 
-export async function getMyUsageChartData(timeframe: Timeframe): Promise<ChartDataPoint[]> {
+export async function getMyUsageChartData(
+  timeframe: Timeframe
+): Promise<ChartDataPoint[]> {
   try {
     const userId = await getCurrentUserId();
 
@@ -133,7 +151,12 @@ export async function getMyUsageChartData(timeframe: Timeframe): Promise<ChartDa
       const events = await db
         .select()
         .from(aiUsage)
-        .where(and(eq(aiUsage.userId, userId), gte(aiUsage.createdAt, new Date(startTime))));
+        .where(
+          and(
+            eq(aiUsage.userId, userId),
+            gte(aiUsage.createdAt, new Date(startTime))
+          )
+        );
 
       // Group by hour
       const chartData: ChartDataPoint[] = [];
@@ -141,7 +164,9 @@ export async function getMyUsageChartData(timeframe: Timeframe): Promise<ChartDa
         const hourStart = Date.now() - i * 60 * 60 * 1000;
         const hourEnd = Date.now() - (i - 1) * 60 * 60 * 1000;
         const hourEvents = events.filter(
-          (e) => e.createdAt.getTime() >= hourStart && e.createdAt.getTime() < hourEnd
+          (e) =>
+            e.createdAt.getTime() >= hourStart &&
+            e.createdAt.getTime() < hourEnd
         );
 
         const totalRequests = hourEvents.length;
@@ -164,19 +189,28 @@ export async function getMyUsageChartData(timeframe: Timeframe): Promise<ChartDa
     const events = await db
       .select()
       .from(aiUsage)
-      .where(and(eq(aiUsage.userId, userId), gte(aiUsage.daysSinceEpoch, startDay.toString())));
+      .where(
+        and(
+          eq(aiUsage.userId, userId),
+          gte(aiUsage.daysSinceEpoch, startDay.toString())
+        )
+      );
 
     // Group by day
     const chartData: ChartDataPoint[] = [];
     for (let i = days - 1; i >= 0; i--) {
       const daysSince = getDaysSinceEpoch(i);
-      const dayEvents = events.filter((e) => parseInt(e.daysSinceEpoch) === daysSince);
+      const dayEvents = events.filter(
+        (e) => parseInt(e.daysSinceEpoch) === daysSince
+      );
 
       const totalRequests = dayEvents.length;
 
       chartData.push({
         daysSinceEpoch: daysSince,
-        date: new Date(daysSince * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+        date: new Date(daysSince * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split("T")[0],
         totalRequests,
       });
     }
@@ -223,8 +257,14 @@ export async function getDetailedUsageStats(
       );
 
     const requests = events.length;
-    const promptTokens = events.reduce((sum, e) => sum + parseInt(e.promptTokens), 0);
-    const completionTokens = events.reduce((sum, e) => sum + parseInt(e.completionTokens), 0);
+    const promptTokens = events.reduce(
+      (sum, e) => sum + parseInt(e.promptTokens),
+      0
+    );
+    const completionTokens = events.reduce(
+      (sum, e) => sum + parseInt(e.completionTokens),
+      0
+    );
     const totalTokens = promptTokens + completionTokens;
 
     return {

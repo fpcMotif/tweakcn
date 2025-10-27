@@ -1,5 +1,10 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,11 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -71,16 +71,18 @@ export function ThemeSaveDialog({
   };
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={handleOpenChange}>
+    <ResponsiveDialog onOpenChange={handleOpenChange} open={open}>
       <ResponsiveDialogContent className="overflow-hidden shadow-lg sm:max-w-100">
         <div className="space-y-6 p-6 pt-0 sm:pt-6 sm:pb-2">
           <ResponsiveDialogHeader>
             <ResponsiveDialogTitle>{title}</ResponsiveDialogTitle>
-            <ResponsiveDialogDescription>{description}</ResponsiveDialogDescription>
+            <ResponsiveDialogDescription>
+              {description}
+            </ResponsiveDialogDescription>
           </ResponsiveDialogHeader>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="themeName"
@@ -98,14 +100,21 @@ export function ThemeSaveDialog({
           </Form>
         </div>
         <ResponsiveDialogFooter className="bg-muted/30 border-t px-6 py-4">
-          <Button size="sm" disabled={isSaving} variant="ghost" onClick={() => onOpenChange(false)}>
+          <Button
+            disabled={isSaving}
+            onClick={() => onOpenChange(false)}
+            size="sm"
+            variant="ghost"
+          >
             Cancel
           </Button>
           <Button
+            disabled={
+              isSaving || !form.formState.isValid || form.formState.isSubmitting
+            }
+            onClick={form.handleSubmit(onSubmit)}
             size="sm"
             type="submit"
-            disabled={isSaving || !form.formState.isValid || form.formState.isSubmitting}
-            onClick={form.handleSubmit(onSubmit)}
           >
             {isSaving || form.formState.isSubmitting ? (
               <>

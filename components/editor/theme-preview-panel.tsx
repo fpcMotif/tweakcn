@@ -1,5 +1,9 @@
 "use client";
 
+import { Inspect, Maximize, Minimize, MoreVertical } from "lucide-react";
+import Link from "next/link";
+import { useQueryState } from "nuqs";
+import { lazy } from "react";
 import ShadcnBlocksLogo from "@/assets/shadcnblocks.svg";
 import { HorizontalScrollArea } from "@/components/horizontal-scroll-area";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -17,23 +21,24 @@ import { useFullscreen } from "@/hooks/use-fullscreen";
 import { useThemeInspector } from "@/hooks/use-theme-inspector";
 import { cn } from "@/lib/utils";
 import { ThemeEditorPreviewProps } from "@/types/theme";
-import { Inspect, Maximize, Minimize, MoreVertical } from "lucide-react";
-import Link from "next/link";
-import { lazy } from "react";
 import InspectorOverlay from "./inspector-overlay";
 import ColorPreview from "./theme-preview/color-preview";
 import ExamplesPreviewContainer from "./theme-preview/examples-preview-container";
 import TabsTriggerPill from "./theme-preview/tabs-trigger-pill";
-import { useQueryState } from "nuqs";
 
 const DemoCards = lazy(() => import("@/components/examples/cards"));
 const DemoMail = lazy(() => import("@/components/examples/mail"));
 const DemoDashboard = lazy(() => import("@/components/examples/dashboard"));
 const DemoPricing = lazy(() => import("@/components/examples/pricing/pricing"));
-const TypographyDemo = lazy(() => import("@/components/examples/typography/typography-demo"));
+const TypographyDemo = lazy(
+  () => import("@/components/examples/typography/typography-demo")
+);
 const CustomDemo = lazy(() => import("@/components/examples/custom"));
 
-const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => {
+const ThemePreviewPanel = ({
+  styles,
+  currentMode,
+}: ThemeEditorPreviewProps) => {
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const [activeTab, setActiveTab] = useQueryState("p", {
     defaultValue: "cards",
@@ -65,9 +70,9 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
         )}
       >
         <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
           className="flex flex-1 flex-col overflow-hidden"
+          onValueChange={setActiveTab}
+          value={activeTab}
         >
           <HorizontalScrollArea className="mt-2 mb-1 flex w-full items-center justify-between px-4">
             <TabsList className="bg-background text-muted-foreground inline-flex w-fit items-center justify-center rounded-full px-0">
@@ -83,14 +88,16 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <TooltipWrapper label="More previews" asChild>
-                    <Button variant="ghost" size="icon">
+                  <TooltipWrapper asChild label="More previews">
+                    <Button size="icon" variant="ghost">
                       <MoreVertical />
                     </Button>
                   </TooltipWrapper>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleTabChange("typography")}>
+                  <DropdownMenuItem
+                    onClick={() => handleTabChange("typography")}
+                  >
                     Typography
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -100,36 +107,39 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
             <div className="flex items-center gap-0.5">
               {isFullscreen && (
                 <ThemeToggle
-                  variant="ghost"
-                  size="icon"
                   className="group size-8 hover:[&>svg]:scale-120 hover:[&>svg]:transition-all"
+                  size="icon"
+                  variant="ghost"
                 />
               )}
               {/* Inspector toggle button */}
-              <TooltipWrapper label="Toggle Inspector" asChild>
+              <TooltipWrapper asChild label="Toggle Inspector">
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={toggleInspector}
                   className={cn(
                     "group size-8",
-                    inspectorEnabled && "bg-accent text-accent-foreground w-auto"
+                    inspectorEnabled &&
+                      "bg-accent text-accent-foreground w-auto"
                   )}
+                  onClick={toggleInspector}
+                  size="sm"
+                  variant="ghost"
                 >
                   <Inspect className="transition-all group-hover:scale-120" />
-                  {inspectorEnabled && <span className="text-xs tracking-wide uppercase">on</span>}
+                  {inspectorEnabled && (
+                    <span className="text-xs tracking-wide uppercase">on</span>
+                  )}
                 </Button>
               </TooltipWrapper>
               <TooltipWrapper
-                label={isFullscreen ? "Exit full screen" : "Full screen"}
-                className="hidden md:inline-flex"
                 asChild
+                className="hidden md:inline-flex"
+                label={isFullscreen ? "Exit full screen" : "Full screen"}
               >
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleFullscreen}
                   className="group size-8"
+                  onClick={toggleFullscreen}
+                  size="icon"
+                  variant="ghost"
                 >
                   {isFullscreen ? (
                     <Minimize className="transition-all group-hover:scale-120" />
@@ -144,11 +154,11 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
           <section className="relative size-full overflow-hidden p-4 pt-1">
             <div
               className="relative isolate size-full overflow-hidden rounded-lg border"
-              ref={rootRef}
-              onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              ref={rootRef}
             >
-              <TabsContent value="cards" className="m-0 size-full">
+              <TabsContent className="m-0 size-full" value="cards">
                 <ExamplesPreviewContainer className="size-full">
                   <ScrollArea className="size-full">
                     <DemoCards />
@@ -156,13 +166,16 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
                 </ExamplesPreviewContainer>
               </TabsContent>
 
-              <TabsContent value="custom" className="@container m-0 size-full">
+              <TabsContent className="@container m-0 size-full" value="custom">
                 <ExamplesPreviewContainer className="size-full">
                   <CustomDemo />
                 </ExamplesPreviewContainer>
               </TabsContent>
 
-              <TabsContent value="dashboard" className="@container m-0 size-full">
+              <TabsContent
+                className="@container m-0 size-full"
+                value="dashboard"
+              >
                 <ExamplesPreviewContainer className="size-full">
                   <ScrollArea className="size-full">
                     <div className="size-full min-w-[1400px]">
@@ -173,14 +186,20 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
                 </ExamplesPreviewContainer>
               </TabsContent>
 
-              <TabsContent value="pricing" className="@container mt-0 h-full space-y-6">
+              <TabsContent
+                className="@container mt-0 h-full space-y-6"
+                value="pricing"
+              >
                 <ExamplesPreviewContainer className="size-full">
                   <div className="absolute top-4 right-4 z-10">
                     <Link
                       href="https://shadcnblocks.com?utm_source=tweakcn&utm_medium=theme-editor-preview"
                       target="_blank"
                     >
-                      <Button variant="outline" className="group h-12 shadow-sm">
+                      <Button
+                        className="group h-12 shadow-sm"
+                        variant="outline"
+                      >
                         <div className="flex items-center gap-2">
                           <ShadcnBlocksLogo
                             className="shrink-0"
@@ -202,7 +221,7 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
                 </ExamplesPreviewContainer>
               </TabsContent>
 
-              <TabsContent value="mail" className="@container m-0 size-full">
+              <TabsContent className="@container m-0 size-full" value="mail">
                 <ExamplesPreviewContainer className="size-full">
                   <ScrollArea className="size-full">
                     <div className="size-full min-w-[1300px]">
@@ -213,7 +232,7 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
                 </ExamplesPreviewContainer>
               </TabsContent>
 
-              <TabsContent value="typography" className="m-0 size-full">
+              <TabsContent className="m-0 size-full" value="typography">
                 <ExamplesPreviewContainer className="size-full">
                   <ScrollArea className="size-full">
                     <TypographyDemo />
@@ -221,10 +240,10 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
                 </ExamplesPreviewContainer>
               </TabsContent>
 
-              <TabsContent value="colors" className="m-0 size-full">
+              <TabsContent className="m-0 size-full" value="colors">
                 <ScrollArea className="size-full">
                   <div className="p-4">
-                    <ColorPreview styles={styles} currentMode={currentMode} />
+                    <ColorPreview currentMode={currentMode} styles={styles} />
                   </div>
                 </ScrollArea>
               </TabsContent>
@@ -233,7 +252,11 @@ const ThemePreviewPanel = ({ styles, currentMode }: ThemeEditorPreviewProps) => 
         </Tabs>
       </div>
 
-      <InspectorOverlay inspector={inspector} enabled={inspectorEnabled} rootRef={rootRef} />
+      <InspectorOverlay
+        enabled={inspectorEnabled}
+        inspector={inspector}
+        rootRef={rootRef}
+      />
     </>
   );
 };

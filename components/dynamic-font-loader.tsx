@@ -1,10 +1,10 @@
 "use client";
 
+import { useEffect, useMemo } from "react";
 import { useMounted } from "@/hooks/use-mounted";
 import { useEditorStore } from "@/store/editor-store";
 import { extractFontFamily, getDefaultWeights } from "@/utils/fonts";
 import { loadGoogleFont } from "@/utils/fonts/google-fonts";
-import { useEffect, useMemo } from "react";
 
 export function DynamicFontLoader() {
   const { themeState } = useEditorStore();

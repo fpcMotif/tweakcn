@@ -1,6 +1,9 @@
 import "server-only";
 
-import { createGoogleGenerativeAI, GoogleGenerativeAIProviderOptions } from "@ai-sdk/google";
+import {
+  createGoogleGenerativeAI,
+  GoogleGenerativeAIProviderOptions,
+} from "@ai-sdk/google";
 import { customProvider } from "ai";
 
 const google = createGoogleGenerativeAI({

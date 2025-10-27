@@ -27,10 +27,13 @@ export function ActionBarButtons({
   onShareClick,
   isSaving,
 }: ActionBarButtonsProps) {
-  const { themeState, resetToCurrentPreset, hasUnsavedChanges } = useEditorStore();
+  const { themeState, resetToCurrentPreset, hasUnsavedChanges } =
+    useEditorStore();
   const { isGeneratingTheme } = useAIThemeGenerationCore();
   const { getPreset } = useThemePresetStore();
-  const currentPreset = themeState?.preset ? getPreset(themeState?.preset) : undefined;
+  const currentPreset = themeState?.preset
+    ? getPreset(themeState?.preset)
+    : undefined;
   const isSavedPreset = !!currentPreset && currentPreset.source === "SAVED";
 
   const handleReset = () => {
@@ -40,22 +43,35 @@ export function ActionBarButtons({
   return (
     <div className="flex items-center gap-1">
       <MoreOptions disabled={isGeneratingTheme} />
-      <Separator orientation="vertical" className="mx-1 h-8" />
+      <Separator className="mx-1 h-8" orientation="vertical" />
       <ThemeToggle />
-      <Separator orientation="vertical" className="mx-1 h-8" />
+      <Separator className="mx-1 h-8" orientation="vertical" />
       <UndoRedoButtons disabled={isGeneratingTheme} />
-      <Separator orientation="vertical" className="mx-1 h-8" />
-      <ResetButton onClick={handleReset} disabled={!hasUnsavedChanges() || isGeneratingTheme} />
+      <Separator className="mx-1 h-8" orientation="vertical" />
+      <ResetButton
+        disabled={!hasUnsavedChanges() || isGeneratingTheme}
+        onClick={handleReset}
+      />
       <div className="hidden items-center gap-1 md:flex">
-        <ImportButton onClick={onImportClick} disabled={isGeneratingTheme} />
+        <ImportButton disabled={isGeneratingTheme} onClick={onImportClick} />
       </div>
-      <Separator orientation="vertical" className="mx-1 h-8" />
+      <Separator className="mx-1 h-8" orientation="vertical" />
       {isSavedPreset && (
-        <EditButton themeId={themeState.preset as string} disabled={isGeneratingTheme} />
+        <EditButton
+          disabled={isGeneratingTheme}
+          themeId={themeState.preset as string}
+        />
       )}
-      <ShareButton onClick={() => onShareClick(themeState.preset)} disabled={isGeneratingTheme} />
-      <SaveButton onClick={onSaveClick} isSaving={isSaving} disabled={isGeneratingTheme} />
-      <CodeButton onClick={onCodeClick} disabled={isGeneratingTheme} />
+      <ShareButton
+        disabled={isGeneratingTheme}
+        onClick={() => onShareClick(themeState.preset)}
+      />
+      <SaveButton
+        disabled={isGeneratingTheme}
+        isSaving={isSaving}
+        onClick={onSaveClick}
+      />
+      <CodeButton disabled={isGeneratingTheme} onClick={onCodeClick} />
     </div>
   );
 }

@@ -1,10 +1,10 @@
+import { ImagePlus } from "lucide-react";
+import { ComponentProps } from "react";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { MAX_IMAGE_FILE_SIZE, MAX_IMAGE_FILES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ALLOWED_IMAGE_TYPES } from "@/utils/ai/image-upload";
-import { ImagePlus } from "lucide-react";
-import { ComponentProps } from "react";
 
 interface ImageUploaderProps extends ComponentProps<typeof Button> {
   fileInputRef: React.RefObject<HTMLInputElement | null>;
@@ -29,30 +29,31 @@ export function ImageUploader({
   return (
     <>
       <input
-        type="file"
-        multiple
-        max={MAX_IMAGE_FILES}
-        size={MAX_IMAGE_FILE_SIZE}
         accept={ALLOWED_IMAGE_TYPES.join(",")}
-        className="hidden"
         aria-label="Upload image for theme generation"
-        ref={fileInputRef}
-        onChange={handleImagesUpload}
+        className="hidden"
         disabled={disabled}
+        max={MAX_IMAGE_FILES}
+        multiple
+        onChange={handleImagesUpload}
+        ref={fileInputRef}
+        size={MAX_IMAGE_FILE_SIZE}
+        type="file"
       />
-      <TooltipWrapper label="Attach image" asChild>
+      <TooltipWrapper asChild label="Attach image">
         <Button
-          variant="outline"
-          size="sm"
           className={cn(
             "flex items-center gap-1.5 shadow-none",
             "@max-[350px]/form:w-8",
             className
           )}
           disabled={disabled}
+          size="sm"
+          variant="outline"
           {...props}
         >
-          <ImagePlus /> <span className="hidden @[350px]/form:inline-flex">Image</span>
+          <ImagePlus />{" "}
+          <span className="hidden @[350px]/form:inline-flex">Image</span>
         </Button>
       </TooltipWrapper>
     </>

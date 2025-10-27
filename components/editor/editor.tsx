@@ -1,15 +1,19 @@
 "use client";
 
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEditorStore } from "@/store/editor-store";
-import { Theme, ThemeStyles } from "@/types/theme";
 import { Sliders } from "lucide-react";
 import React, { use, useEffect } from "react";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useEditorStore } from "@/store/editor-store";
+import { Theme, ThemeStyles } from "@/types/theme";
 import { ActionBar } from "./action-bar/action-bar";
 import ThemeControlPanel from "./theme-control-panel";
 import ThemePreviewPanel from "./theme-preview-panel";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EditorProps {
   themePromise: Promise<Theme | null>;
@@ -66,30 +70,36 @@ const Editor: React.FC<EditorProps> = ({ themePromise }) => {
     return (
       <div className="relative isolate flex flex-1 overflow-hidden">
         <div className="size-full flex-1 overflow-hidden">
-          <Tabs defaultValue="controls" className="h-full">
+          <Tabs className="h-full" defaultValue="controls">
             <TabsList className="w-full rounded-none">
-              <TabsTrigger value="controls" className="flex-1">
+              <TabsTrigger className="flex-1" value="controls">
                 <Sliders className="mr-2 h-4 w-4" />
                 Controls
               </TabsTrigger>
-              <TabsTrigger value="preview" className="flex-1">
+              <TabsTrigger className="flex-1" value="preview">
                 Preview
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="controls" className="mt-0 h-[calc(100%-2.5rem)]">
+            <TabsContent
+              className="mt-0 h-[calc(100%-2.5rem)]"
+              value="controls"
+            >
               <div className="flex h-full flex-col">
                 <ThemeControlPanel
-                  styles={styles}
-                  onChange={handleStyleChange}
                   currentMode={themeState.currentMode}
+                  onChange={handleStyleChange}
+                  styles={styles}
                   themePromise={themePromise}
                 />
               </div>
             </TabsContent>
-            <TabsContent value="preview" className="mt-0 h-[calc(100%-2.5rem)]">
+            <TabsContent className="mt-0 h-[calc(100%-2.5rem)]" value="preview">
               <div className="flex h-full flex-col">
                 <ActionBar />
-                <ThemePreviewPanel styles={styles} currentMode={themeState.currentMode} />
+                <ThemePreviewPanel
+                  currentMode={themeState.currentMode}
+                  styles={styles}
+                />
               </div>
             </TabsContent>
           </Tabs>
@@ -102,18 +112,18 @@ const Editor: React.FC<EditorProps> = ({ themePromise }) => {
   return (
     <div className="relative isolate flex flex-1 overflow-hidden">
       <div className="size-full">
-        <ResizablePanelGroup direction="horizontal" className="isolate">
+        <ResizablePanelGroup className="isolate" direction="horizontal">
           <ResizablePanel
-            defaultSize={30}
-            minSize={20}
-            maxSize={40}
             className="z-1 min-w-[max(20%,22rem)]"
+            defaultSize={30}
+            maxSize={40}
+            minSize={20}
           >
             <div className="relative isolate flex h-full flex-1 flex-col">
               <ThemeControlPanel
-                styles={styles}
-                onChange={handleStyleChange}
                 currentMode={themeState.currentMode}
+                onChange={handleStyleChange}
+                styles={styles}
                 themePromise={themePromise}
               />
             </div>
@@ -123,7 +133,10 @@ const Editor: React.FC<EditorProps> = ({ themePromise }) => {
             <div className="flex h-full flex-col">
               <div className="flex min-h-0 flex-1 flex-col">
                 <ActionBar />
-                <ThemePreviewPanel styles={styles} currentMode={themeState.currentMode} />
+                <ThemePreviewPanel
+                  currentMode={themeState.currentMode}
+                  styles={styles}
+                />
               </div>
             </div>
           </ResizablePanel>

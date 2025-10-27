@@ -1,7 +1,7 @@
+import { Loader2, Share2 } from "lucide-react";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Loader2, Share2 } from "lucide-react";
 
 interface ShareButtonProps extends React.ComponentProps<typeof Button> {
   isSharing?: boolean;
@@ -15,13 +15,13 @@ export function ShareButton({
   ...props
 }: ShareButtonProps) {
   return (
-    <TooltipWrapper label="Share theme" asChild>
+    <TooltipWrapper asChild label="Share theme">
       <Button
-        variant="ghost"
-        size="sm"
         className={cn(className)}
-        onClick={onClick}
         disabled={isSharing || disabled}
+        onClick={onClick}
+        size="sm"
+        variant="ghost"
         {...props}
       >
         {isSharing ? (

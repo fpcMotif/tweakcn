@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Apply Your tweakcn Theme to Shadcraft Figma UI Kit | Professional Design System",
+  title:
+    "Apply Your tweakcn Theme to Shadcraft Figma UI Kit | Professional Design System",
   description:
     "Transform your tweakcn themes into stunning Figma designs with Shadcraft's premium UI kit. 51 components, 44 blocks, dark mode support, and 1500+ icons. Professional Figma design system for shadcn/ui themes.",
   keywords:
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function FigmaLayout({ children }: { children: React.ReactNode }) {
+export default function FigmaLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

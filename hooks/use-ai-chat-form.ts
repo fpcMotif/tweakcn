@@ -1,13 +1,13 @@
 "use client";
 
-import { useAILocalDraftStore } from "@/store/ai-local-draft-store";
+import { JSONContent } from "@tiptap/react";
+import { useEffect, useReducer, useRef, useTransition } from "react";
+import { useDocumentDragAndDropIntent } from "@/hooks/use-document-drag-and-drop-intent";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { createSyncedImageUploadReducer } from "@/hooks/use-image-upload-reducer";
-import { MAX_IMAGE_FILES, MAX_IMAGE_FILE_SIZE } from "@/lib/constants";
-import { useDocumentDragAndDropIntent } from "@/hooks/use-document-drag-and-drop-intent";
+import { MAX_IMAGE_FILE_SIZE, MAX_IMAGE_FILES } from "@/lib/constants";
+import { useAILocalDraftStore } from "@/store/ai-local-draft-store";
 import { convertJSONContentToPromptData } from "@/utils/ai/ai-prompt";
-import { JSONContent } from "@tiptap/react";
-import { useReducer, useEffect, useRef, useTransition } from "react";
 
 export function useAIChatForm() {
   const {

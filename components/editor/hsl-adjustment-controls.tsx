@@ -1,17 +1,22 @@
 "use client";
 
-import React, { useCallback, useMemo, useRef, useEffect, useState } from "react";
-import { SliderWithInput } from "./slider-with-input";
-import { useEditorStore } from "../../store/editor-store";
-import { COMMON_STYLES, defaultThemeState } from "../../config/theme";
-import { ThemeEditorState } from "@/types/editor";
 import { converter, formatHex, Hsl } from "culori";
-import { debounce } from "@/utils/debounce";
-import { isDeepEqual } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { HslPresetButton } from "./hsl-preset-button";
 import { ChevronDown } from "lucide-react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Button } from "@/components/ui/button";
+import { cn, isDeepEqual } from "@/lib/utils";
+import { ThemeEditorState } from "@/types/editor";
+import { debounce } from "@/utils/debounce";
+import { COMMON_STYLES, defaultThemeState } from "../../config/theme";
+import { useEditorStore } from "../../store/editor-store";
+import { HslPresetButton } from "./hsl-preset-button";
+import { SliderWithInput } from "./slider-with-input";
 
 // Adjusts a color by modifying HSL values
 function adjustColorByHsl(
@@ -42,10 +47,20 @@ function adjustColorByHsl(
 // Preset HSL adjustment values
 const HSL_PRESETS = [
   // Hue Adjustments
-  { label: "Hue (-120°)", hueShift: -120, saturationScale: 1, lightnessScale: 1 },
+  {
+    label: "Hue (-120°)",
+    hueShift: -120,
+    saturationScale: 1,
+    lightnessScale: 1,
+  },
   { label: "Hue (-60°)", hueShift: -60, saturationScale: 1, lightnessScale: 1 },
   { label: "Hue (+60°)", hueShift: 60, saturationScale: 1, lightnessScale: 1 },
-  { label: "Hue (+120°)", hueShift: 120, saturationScale: 1, lightnessScale: 1 },
+  {
+    label: "Hue (+120°)",
+    hueShift: 120,
+    saturationScale: 1,
+    lightnessScale: 1,
+  },
   { label: "Hue Invert", hueShift: 180, saturationScale: 1, lightnessScale: 1 },
 
   // Saturation Adjustments
@@ -58,15 +73,41 @@ const HSL_PRESETS = [
   { label: "Brighter", hueShift: 0, saturationScale: 1, lightnessScale: 1.2 },
 
   // Combined Adjustments
-  { label: "H(+30) S(-50) L(-5%)", hueShift: 30, saturationScale: 0.5, lightnessScale: 0.95 },
-  { label: "H(-20) S(+20) L(+5%)", hueShift: -20, saturationScale: 1.2, lightnessScale: 1.05 },
-  { label: "H(+20) S(-30) L(-5%)", hueShift: 20, saturationScale: 0.7, lightnessScale: 0.95 },
-  { label: "H(-10) S(-25) L(+10%)", hueShift: -10, saturationScale: 0.75, lightnessScale: 1.1 },
-  { label: "H(+60) S(+50) L(+10%)", hueShift: 60, saturationScale: 1.5, lightnessScale: 1.1 },
+  {
+    label: "H(+30) S(-50) L(-5%)",
+    hueShift: 30,
+    saturationScale: 0.5,
+    lightnessScale: 0.95,
+  },
+  {
+    label: "H(-20) S(+20) L(+5%)",
+    hueShift: -20,
+    saturationScale: 1.2,
+    lightnessScale: 1.05,
+  },
+  {
+    label: "H(+20) S(-30) L(-5%)",
+    hueShift: 20,
+    saturationScale: 0.7,
+    lightnessScale: 0.95,
+  },
+  {
+    label: "H(-10) S(-25) L(+10%)",
+    hueShift: -10,
+    saturationScale: 0.75,
+    lightnessScale: 1.1,
+  },
+  {
+    label: "H(+60) S(+50) L(+10%)",
+    hueShift: 60,
+    saturationScale: 1.5,
+    lightnessScale: 1.1,
+  },
 ];
 
 const HslAdjustmentControls = () => {
-  const { themeState, setThemeState, saveThemeCheckpoint, themeCheckpoint } = useEditorStore();
+  const { themeState, setThemeState, saveThemeCheckpoint, themeCheckpoint } =
+    useEditorStore();
   const debouncedUpdateRef = useRef<ReturnType<typeof debounce> | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -78,64 +119,69 @@ const HslAdjustmentControls = () => {
 
   // Save checkpoint if HSL adjustments are at default values
   useEffect(() => {
-    if (isDeepEqual(themeState.hslAdjustments, defaultThemeState.hslAdjustments)) {
+    if (
+      isDeepEqual(themeState.hslAdjustments, defaultThemeState.hslAdjustments)
+    ) {
       saveThemeCheckpoint();
     }
   }, [themeState.hslAdjustments, saveThemeCheckpoint]);
 
   // Setup debounced update function
   useEffect(() => {
-    debouncedUpdateRef.current = debounce((hslAdjustments: ThemeEditorState["hslAdjustments"]) => {
-      const {
-        hueShift = defaultThemeState.hslAdjustments!.hueShift,
-        saturationScale = defaultThemeState.hslAdjustments!.saturationScale,
-        lightnessScale = defaultThemeState.hslAdjustments!.lightnessScale,
-      } = hslAdjustments ?? {};
+    debouncedUpdateRef.current = debounce(
+      (hslAdjustments: ThemeEditorState["hslAdjustments"]) => {
+        const {
+          hueShift = defaultThemeState.hslAdjustments!.hueShift,
+          saturationScale = defaultThemeState.hslAdjustments!.saturationScale,
+          lightnessScale = defaultThemeState.hslAdjustments!.lightnessScale,
+        } = hslAdjustments ?? {};
 
-      const adjustments = { hueShift, saturationScale, lightnessScale };
-      const state = themeCheckpoint ?? themeState;
-      const { light: lightStyles, dark: darkStyles } = state.styles;
+        const adjustments = { hueShift, saturationScale, lightnessScale };
+        const state = themeCheckpoint ?? themeState;
+        const { light: lightStyles, dark: darkStyles } = state.styles;
 
-      const updatedLightStyles = Object.keys(lightStyles)
-        .filter((key) => !COMMON_STYLES.includes(key))
-        .reduce<Record<string, string>>((acc, key) => {
-          const colorKey = key as keyof typeof lightStyles;
-          return {
-            ...acc,
-            [key]: adjustColorByHsl(
-              lightStyles[colorKey] || "",
-              adjustments.hueShift,
-              adjustments.saturationScale,
-              adjustments.lightnessScale
-            ),
-          };
-        }, {});
+        const updatedLightStyles = Object.keys(lightStyles)
+          .filter((key) => !COMMON_STYLES.includes(key))
+          .reduce<Record<string, string>>((acc, key) => {
+            const colorKey = key as keyof typeof lightStyles;
+            return {
+              ...acc,
+              [key]: adjustColorByHsl(
+                lightStyles[colorKey] || "",
+                adjustments.hueShift,
+                adjustments.saturationScale,
+                adjustments.lightnessScale
+              ),
+            };
+          }, {});
 
-      const updatedDarkStyles = Object.keys(darkStyles)
-        .filter((key) => !COMMON_STYLES.includes(key))
-        .reduce<Record<string, string>>((acc, key) => {
-          const colorKey = key as keyof typeof darkStyles;
-          return {
-            ...acc,
-            [key]: adjustColorByHsl(
-              darkStyles[colorKey] || "",
-              adjustments.hueShift,
-              adjustments.saturationScale,
-              adjustments.lightnessScale
-            ),
-          };
-        }, {});
+        const updatedDarkStyles = Object.keys(darkStyles)
+          .filter((key) => !COMMON_STYLES.includes(key))
+          .reduce<Record<string, string>>((acc, key) => {
+            const colorKey = key as keyof typeof darkStyles;
+            return {
+              ...acc,
+              [key]: adjustColorByHsl(
+                darkStyles[colorKey] || "",
+                adjustments.hueShift,
+                adjustments.saturationScale,
+                adjustments.lightnessScale
+              ),
+            };
+          }, {});
 
-      // Update theme state with all changes
-      setThemeState({
-        ...themeState,
-        hslAdjustments,
-        styles: {
-          light: { ...lightStyles, ...updatedLightStyles },
-          dark: { ...darkStyles, ...updatedDarkStyles },
-        },
-      });
-    }, 10);
+        // Update theme state with all changes
+        setThemeState({
+          ...themeState,
+          hslAdjustments,
+          styles: {
+            light: { ...lightStyles, ...updatedLightStyles },
+            dark: { ...darkStyles, ...updatedDarkStyles },
+          },
+        });
+      },
+      10
+    );
 
     return () => debouncedUpdateRef.current?.cancel();
   }, [themeState, setThemeState, themeCheckpoint]);
@@ -153,13 +199,18 @@ const HslAdjustmentControls = () => {
     [currentHslAdjustments]
   );
 
-  const handleBatchHslChange = useCallback((value: typeof currentHslAdjustments) => {
-    if (debouncedUpdateRef.current) {
-      debouncedUpdateRef.current(value);
-    }
-  }, []);
+  const handleBatchHslChange = useCallback(
+    (value: typeof currentHslAdjustments) => {
+      if (debouncedUpdateRef.current) {
+        debouncedUpdateRef.current(value);
+      }
+    },
+    []
+  );
 
-  const currentStyles = (themeCheckpoint ?? themeState).styles[themeState.currentMode];
+  const currentStyles = (themeCheckpoint ?? themeState).styles[
+    themeState.currentMode
+  ];
 
   return (
     <div className="@container">
@@ -172,23 +223,24 @@ const HslAdjustmentControls = () => {
       >
         {HSL_PRESETS.map((preset) => (
           <HslPresetButton
-            key={preset.label}
-            label={preset.label}
-            hueShift={preset.hueShift}
-            saturationScale={preset.saturationScale}
-            lightnessScale={preset.lightnessScale}
+            adjustColorByHsl={adjustColorByHsl}
             baseBg={currentStyles.background}
             basePrimary={currentStyles.primary}
             baseSecondary={currentStyles.secondary}
-            selected={
-              currentHslAdjustments.hueShift === preset.hueShift &&
-              currentHslAdjustments.saturationScale === preset.saturationScale &&
-              currentHslAdjustments.lightnessScale === preset.lightnessScale
-            }
-            adjustColorByHsl={adjustColorByHsl}
+            hueShift={preset.hueShift}
+            key={preset.label}
+            label={preset.label}
+            lightnessScale={preset.lightnessScale}
             onClick={() => {
               handleBatchHslChange(preset);
             }}
+            saturationScale={preset.saturationScale}
+            selected={
+              currentHslAdjustments.hueShift === preset.hueShift &&
+              currentHslAdjustments.saturationScale ===
+                preset.saturationScale &&
+              currentHslAdjustments.lightnessScale === preset.lightnessScale
+            }
           />
         ))}
       </div>
@@ -196,10 +248,10 @@ const HslAdjustmentControls = () => {
       {/* Show/Hide more button - shows if total presets exceed the smallest breakpoint's column count */}
       {HSL_PRESETS.length > 5 && (
         <Button
-          variant="ghost"
-          size="sm"
           className="text-muted-foreground mb-4 flex w-full items-center justify-center text-xs"
           onClick={() => setIsExpanded(!isExpanded)}
+          size="sm"
+          variant="ghost"
         >
           {isExpanded ? "Hide" : "Show more"} presets
           <ChevronDown
@@ -212,31 +264,31 @@ const HslAdjustmentControls = () => {
       )}
 
       <SliderWithInput
-        value={currentHslAdjustments.hueShift}
-        onChange={(value) => handleHslChange("hueShift", value)}
-        unit="deg"
-        min={-180}
-        max={180}
-        step={1}
         label="Hue Shift"
+        max={180}
+        min={-180}
+        onChange={(value) => handleHslChange("hueShift", value)}
+        step={1}
+        unit="deg"
+        value={currentHslAdjustments.hueShift}
       />
       <SliderWithInput
-        value={currentHslAdjustments.saturationScale}
-        onChange={(value) => handleHslChange("saturationScale", value)}
-        unit="x"
-        min={0}
-        max={2}
-        step={0.01}
         label="Saturation Multiplier"
+        max={2}
+        min={0}
+        onChange={(value) => handleHslChange("saturationScale", value)}
+        step={0.01}
+        unit="x"
+        value={currentHslAdjustments.saturationScale}
       />
       <SliderWithInput
-        value={currentHslAdjustments.lightnessScale}
-        onChange={(value) => handleHslChange("lightnessScale", value)}
-        unit="x"
-        min={0.2}
-        max={2}
-        step={0.01}
         label="Lightness Multiplier"
+        max={2}
+        min={0.2}
+        onChange={(value) => handleHslChange("lightnessScale", value)}
+        step={0.01}
+        unit="x"
+        value={currentHslAdjustments.lightnessScale}
       />
     </div>
   );

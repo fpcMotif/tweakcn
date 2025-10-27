@@ -7,11 +7,23 @@ import { DateRange } from "react-day-picker";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivElement>) {
+export function DatePickerWithRange({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(2022, 0, 20),
     to: addDays(new Date(2022, 0, 20), 20),
@@ -28,18 +40,19 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              id="date"
-              variant={"outline"}
               className={cn(
                 "w-full max-w-[300px] justify-start text-left font-normal",
                 !date && "text-muted-foreground"
               )}
+              id="date"
+              variant={"outline"}
             >
               <CalendarIcon />
               {date?.from ? (
                 date.to ? (
                   <>
-                    {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                    {format(date.from, "LLL dd, y")} -{" "}
+                    {format(date.to, "LLL dd, y")}
                   </>
                 ) : (
                   format(date.from, "LLL dd, y")
@@ -49,13 +62,13 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent align="start" className="w-auto p-0">
             <Calendar
-              mode="range"
               defaultMonth={date?.from}
-              selected={date}
-              onSelect={setDate}
+              mode="range"
               numberOfMonths={2}
+              onSelect={setDate}
+              selected={date}
             />
           </PopoverContent>
         </Popover>

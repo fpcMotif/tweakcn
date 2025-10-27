@@ -1,9 +1,9 @@
+import { COMMON_STYLES } from "@/config/theme";
 import { ThemeEditorState } from "@/types/editor";
 import { ThemeStyleProps, ThemeStyles } from "@/types/theme";
+import { applyStyleToElement } from "./apply-style-to-element";
 import { colorFormatter } from "./color-converter";
 import { setShadowVariables } from "./shadows";
-import { applyStyleToElement } from "./apply-style-to-element";
-import { COMMON_STYLES } from "@/config/theme";
 
 type Theme = "dark" | "light";
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import screenfull from "screenfull";
 
 export const useFullscreen = () => {

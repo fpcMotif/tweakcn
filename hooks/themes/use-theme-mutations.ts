@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTheme, updateTheme, deleteTheme } from "@/actions/themes";
-import { themeKeys } from "./use-themes-data";
-import { ThemeStyles, Theme } from "@/types/theme";
-import { toast } from "@/components/ui/use-toast";
-import { useThemePresetStore } from "@/store/theme-preset-store";
-import posthog from "posthog-js";
 import { useRouter } from "next/navigation";
-import { useGetProDialogStore } from "@/store/get-pro-dialog-store";
+import posthog from "posthog-js";
+import { createTheme, deleteTheme, updateTheme } from "@/actions/themes";
+import { toast } from "@/components/ui/use-toast";
 import { MAX_FREE_THEMES } from "@/lib/constants";
+import { useGetProDialogStore } from "@/store/get-pro-dialog-store";
+import { useThemePresetStore } from "@/store/theme-preset-store";
+import { Theme, ThemeStyles } from "@/types/theme";
+import { themeKeys } from "./use-themes-data";
 
 function handleMutationError(error: Error, operation: string) {
   console.error(`Theme ${operation} error:`, error);
@@ -54,7 +54,8 @@ export function useCreateTheme() {
   const { openGetProDialog } = useGetProDialogStore();
 
   return useMutation({
-    mutationFn: (data: { name: string; styles: ThemeStyles }) => createTheme(data),
+    mutationFn: (data: { name: string; styles: ThemeStyles }) =>
+      createTheme(data),
     retry(failureCount, error) {
       if (error.name === "ThemeLimitError") {
         return false;
@@ -62,9 +63,12 @@ export function useCreateTheme() {
       return failureCount < 3;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(themeKeys.lists(), (old: Theme[] | undefined) => {
-        return old ? [...old, data] : [data];
-      });
+      queryClient.setQueryData(
+        themeKeys.lists(),
+        (old: Theme[] | undefined) => {
+          return old ? [...old, data] : [data];
+        }
+      );
 
       registerPreset(data.id, {
         label: data.name,
@@ -101,36 +105,47 @@ export function useUpdateTheme() {
   const { updatePreset } = useThemePresetStore();
 
   return useMutation({
-    mutationFn: (data: { id: string; name?: string; styles?: ThemeStyles }) => updateTheme(data),
+    mutationFn: (data: { id: string; name?: string; styles?: ThemeStyles }) =>
+      updateTheme(data),
     onMutate: async (updatedTheme) => {
       await queryClient.cancelQueries({ queryKey: themeKeys.lists() });
-      await queryClient.cancelQueries({ queryKey: themeKeys.detail(updatedTheme.id) });
+      await queryClient.cancelQueries({
+        queryKey: themeKeys.detail(updatedTheme.id),
+      });
 
       const previousThemes = queryClient.getQueryData(themeKeys.lists());
-      const previousTheme = queryClient.getQueryData(themeKeys.detail(updatedTheme.id));
+      const previousTheme = queryClient.getQueryData(
+        themeKeys.detail(updatedTheme.id)
+      );
 
-      queryClient.setQueryData(themeKeys.lists(), (old: Theme[] | undefined) => {
-        if (!old) return [];
-        return old.map((theme) =>
-          theme.id === updatedTheme.id
-            ? {
-                ...theme,
-                ...(updatedTheme.name && { name: updatedTheme.name }),
-                ...(updatedTheme.styles && { styles: updatedTheme.styles }),
-                updatedAt: new Date(),
-              }
-            : theme
-        );
-      });
+      queryClient.setQueryData(
+        themeKeys.lists(),
+        (old: Theme[] | undefined) => {
+          if (!old) return [];
+          return old.map((theme) =>
+            theme.id === updatedTheme.id
+              ? {
+                  ...theme,
+                  ...(updatedTheme.name && { name: updatedTheme.name }),
+                  ...(updatedTheme.styles && { styles: updatedTheme.styles }),
+                  updatedAt: new Date(),
+                }
+              : theme
+          );
+        }
+      );
 
       return { previousThemes, previousTheme };
     },
     onSuccess: (data) => {
       queryClient.setQueryData(themeKeys.detail(data.id), data);
-      queryClient.setQueryData(themeKeys.lists(), (old: Theme[] | undefined) => {
-        if (!old) return [data];
-        return old.map((theme) => (theme.id === data.id ? data : theme));
-      });
+      queryClient.setQueryData(
+        themeKeys.lists(),
+        (old: Theme[] | undefined) => {
+          if (!old) return [data];
+          return old.map((theme) => (theme.id === data.id ? data : theme));
+        }
+      );
 
       updatePreset(data.id, {
         label: data.name,
@@ -149,13 +164,18 @@ export function useUpdateTheme() {
         queryClient.setQueryData(themeKeys.lists(), context.previousThemes);
       }
       if (context?.previousTheme) {
-        queryClient.setQueryData(themeKeys.detail(variables.id), context.previousTheme);
+        queryClient.setQueryData(
+          themeKeys.detail(variables.id),
+          context.previousTheme
+        );
       }
       handleMutationError(error as Error, "update");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: themeKeys.detail(variables.id) });
+      queryClient.invalidateQueries({
+        queryKey: themeKeys.detail(variables.id),
+      });
     },
   });
 }
@@ -171,9 +191,12 @@ export function useDeleteTheme() {
       await queryClient.cancelQueries({ queryKey: themeKeys.lists() });
       const previousThemes = queryClient.getQueryData(themeKeys.lists());
 
-      queryClient.setQueryData(themeKeys.lists(), (old: Theme[] | undefined) => {
-        return old ? old.filter((theme) => theme.id !== themeId) : [];
-      });
+      queryClient.setQueryData(
+        themeKeys.lists(),
+        (old: Theme[] | undefined) => {
+          return old ? old.filter((theme) => theme.id !== themeId) : [];
+        }
+      );
 
       return { previousThemes, themeId };
     },

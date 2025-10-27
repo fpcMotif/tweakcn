@@ -1,23 +1,29 @@
 "use client";
 
-import { useChatContext } from "@/hooks/use-chat-context";
+import dynamic from "next/dynamic";
+import React from "react";
 import { useAIThemeGenerationCore } from "@/hooks/use-ai-theme-generation-core";
+import { useChatContext } from "@/hooks/use-chat-context";
 import { useGuards } from "@/hooks/use-guards";
 import { usePostLoginAction } from "@/hooks/use-post-login-action";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { AIPromptData } from "@/types/ai";
-import dynamic from "next/dynamic";
-import React from "react";
 import { ChatInput } from "./chat-input";
 import { ClosableSuggestedPillActions } from "./closeable-suggested-pill-actions";
 
-const Messages = dynamic(() => import("./messages").then((mod) => mod.Messages), {
-  ssr: false,
-});
+const Messages = dynamic(
+  () => import("./messages").then((mod) => mod.Messages),
+  {
+    ssr: false,
+  }
+);
 
 const NoMessagesPlaceholder = dynamic(
-  () => import("./no-messages-placeholder").then((mod) => mod.NoMessagesPlaceholder),
+  () =>
+    import("./no-messages-placeholder").then(
+      (mod) => mod.NoMessagesPlaceholder
+    ),
   {
     ssr: false,
   }
@@ -31,17 +37,27 @@ export function ChatInterface() {
   const { checkValidSession, checkValidSubscription } = useGuards();
 
   const hasMessages = messages.length > 0;
-  const [editingMessageIndex, setEditingMessageIndex] = React.useState<number | null>(null);
+  const [editingMessageIndex, setEditingMessageIndex] = React.useState<
+    number | null
+  >(null);
 
-  const handleGenerateFromSuggestion = (promptData: AIPromptData | undefined) => {
-    if (!checkValidSession("signup", "AI_GENERATE_FROM_CHAT_SUGGESTION", { promptData })) return;
+  const handleGenerateFromSuggestion = (
+    promptData: AIPromptData | undefined
+  ) => {
+    if (
+      !checkValidSession("signup", "AI_GENERATE_FROM_CHAT_SUGGESTION", {
+        promptData,
+      })
+    )
+      return;
     if (!checkValidSubscription()) return;
 
     generateThemeCore(promptData);
   };
 
   const handleRetry = (messageIndex: number) => {
-    if (!checkValidSession("signup", "AI_GENERATE_RETRY", { messageIndex })) return;
+    if (!checkValidSession("signup", "AI_GENERATE_RETRY", { messageIndex }))
+      return;
     if (!checkValidSubscription()) return;
 
     setEditingMessageIndex(null);
@@ -69,7 +85,12 @@ export function ChatInterface() {
   };
 
   const handleEditSubmit = (messageIndex: number, promptData: AIPromptData) => {
-    if (!checkValidSession("signup", "AI_GENERATE_EDIT", { messageIndex, promptData })) {
+    if (
+      !checkValidSession("signup", "AI_GENERATE_EDIT", {
+        messageIndex,
+        promptData,
+      })
+    ) {
       return;
     }
     if (!checkValidSubscription()) return;
@@ -101,19 +122,19 @@ export function ChatInterface() {
       >
         {hasMessages ? (
           <Messages
-            messages={messages}
-            onRetry={handleRetry}
-            onEdit={handleEdit}
-            onEditSubmit={handleEditSubmit}
-            onEditCancel={handleEditCancel}
             editingMessageIndex={editingMessageIndex}
             isGeneratingTheme={isGeneratingTheme}
+            messages={messages}
+            onEdit={handleEdit}
+            onEditCancel={handleEditCancel}
+            onEditSubmit={handleEditSubmit}
+            onRetry={handleRetry}
           />
         ) : (
           <div className="animate-in fade-in-50 zoom-in-95 relative isolate px-4 pt-8 duration-300 ease-out sm:pt-16 md:pt-24">
             <NoMessagesPlaceholder
-              onGenerateTheme={handleGenerateFromSuggestion}
               isGeneratingTheme={isGeneratingTheme}
+              onGenerateTheme={handleGenerateFromSuggestion}
             />
           </div>
         )}
@@ -128,15 +149,15 @@ export function ChatInterface() {
           )}
         >
           <ClosableSuggestedPillActions
-            onGenerateTheme={handleGenerateFromSuggestion}
             isGeneratingTheme={isGeneratingTheme}
+            onGenerateTheme={handleGenerateFromSuggestion}
           />
         </div>
 
         <ChatInput
-          onThemeGeneration={generateThemeCore}
           isGeneratingTheme={isGeneratingTheme}
           onCancelThemeGeneration={cancelThemeGeneration}
+          onThemeGeneration={generateThemeCore}
         />
       </div>
     </section>

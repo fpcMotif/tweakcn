@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "rules": {
+    "typescript": "warn",
+    "react": "warn",
+    "react-perf": "warn",
+    "jsx-a11y": "warn",
+    "nextjs": "warn",
+    "unicorn": "warn",
+    "import": "warn"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "coverage",
+    "*.min.js",
+    "public"
+  ]
+}

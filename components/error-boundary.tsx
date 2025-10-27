@@ -5,7 +5,11 @@ export class ComponentErrorBoundary extends React.Component<
   { children: React.ReactNode; name: string; fallback?: React.ReactNode },
   { hasError: boolean }
 > {
-  constructor(props: { children: React.ReactNode; name: string; fallback: React.ReactNode }) {
+  constructor(props: {
+    children: React.ReactNode;
+    name: string;
+    fallback: React.ReactNode;
+  }) {
     super(props);
     this.state = { hasError: false };
   }

@@ -1,23 +1,27 @@
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { Header } from "@/components/header";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { SettingsSidebar } from "./components/settings-sidebar";
 
-export default async function SettingsLayout({ children }: { children: React.ReactNode }) {
+export default async function SettingsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col">
       <Header />
 
       <div className="container mx-auto flex w-full max-w-7xl items-center justify-between gap-2 px-4 pt-8 pb-4 md:justify-start md:px-6">
-        <Button variant="ghost" asChild>
+        <Button asChild variant="ghost">
           <Link href="/editor/theme">
             <ArrowLeft /> Back to Editor
           </Link>
         </Button>
 
-        <ThemeToggle variant="ghost" size="icon" />
+        <ThemeToggle size="icon" variant="ghost" />
       </div>
 
       <main className="container mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 py-4 md:flex-row md:px-6 md:py-8">

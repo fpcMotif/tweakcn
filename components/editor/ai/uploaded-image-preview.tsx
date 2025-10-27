@@ -1,11 +1,15 @@
 "use client";
 
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { Button } from "@/components/ui/button";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { cn } from "@/lib/utils";
 import { Loader, X } from "lucide-react";
 import Image from "next/image";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Button } from "@/components/ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { cn } from "@/lib/utils";
 
 interface ImagePreviewProps {
   src: string;
@@ -29,7 +33,7 @@ export function UploadedImagePreview({
   }
 
   return (
-    <HoverCard openDelay={150} closeDelay={150}>
+    <HoverCard closeDelay={150} openDelay={150}>
       <HoverCardTrigger asChild>
         <div
           className={cn(
@@ -38,19 +42,21 @@ export function UploadedImagePreview({
           )}
         >
           <Image
-            width={40}
-            height={40}
-            src={src}
             alt="Image preview"
             className="size-full rounded-sm object-cover"
+            height={40}
+            src={src}
+            width={40}
           />
 
-          <TooltipWrapper label="Remove image" asChild>
+          <TooltipWrapper asChild label="Remove image">
             <Button
-              variant="destructive"
-              size="icon"
-              className={cn("absolute top-1 right-1 size-4 rounded-full transition-all")}
+              className={cn(
+                "absolute top-1 right-1 size-4 rounded-full transition-all"
+              )}
               onClick={handleImageRemove}
+              size="icon"
+              variant="destructive"
             >
               <X className="size-3!" />
             </Button>
@@ -59,14 +65,18 @@ export function UploadedImagePreview({
       </HoverCardTrigger>
 
       {showPreviewOnHover && (
-        <HoverCardContent className="size-fit overflow-hidden p-0" align="center" side="top">
+        <HoverCardContent
+          align="center"
+          className="size-fit overflow-hidden p-0"
+          side="top"
+        >
           <div className="size-full overflow-hidden">
             <Image
-              width={300}
-              height={300}
-              src={src}
               alt="Image preview"
               className="h-auto max-h-[300px] w-auto max-w-[300px] object-contain"
+              height={300}
+              src={src}
+              width={300}
             />
           </div>
         </HoverCardContent>

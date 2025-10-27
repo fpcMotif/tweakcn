@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { PostLoginActionType, StoredPostLoginAction } from "@/hooks/use-post-login-action";
+import {
+  PostLoginActionType,
+  StoredPostLoginAction,
+} from "@/hooks/use-post-login-action";
 
 interface AuthStore {
   isOpen: boolean;

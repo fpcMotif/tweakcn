@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useState } from "react";
 import DiscordIcon from "@/assets/discord.svg";
 import FigmaIcon from "@/assets/figma.svg";
 import GitHubIcon from "@/assets/github.svg";
@@ -12,8 +14,6 @@ import { Separator } from "@/components/ui/separator";
 import { UserProfileDropdown } from "@/components/user-profile-dropdown";
 import { useGithubStars } from "@/hooks/use-github-stars";
 import { formatCompactNumber } from "@/utils/format";
-import Link from "next/link";
-import { useState } from "react";
 import { GetProCTA } from "./get-pro-cta";
 
 export function Header() {
@@ -24,7 +24,7 @@ export function Header() {
     <header className="border-b">
       <div className="flex items-center justify-between gap-2 p-4">
         <div className="flex items-center gap-1">
-          <Link href="/" className="flex items-center gap-2">
+          <Link className="flex items-center gap-2" href="/">
             <Logo className="size-6" title="tweakcn" />
             <span className="hidden font-bold md:block">tweakcn</span>
           </Link>
@@ -33,13 +33,13 @@ export function Header() {
           <GetProCTA className="h-8" />
 
           <SocialLink
-            href="https://github.com/jnsahaj/tweakcn"
             className="flex items-center gap-2 text-sm font-bold"
+            href="https://github.com/jnsahaj/tweakcn"
           >
             <GitHubIcon className="size-4" />
             {stargazersCount > 0 && formatCompactNumber(stargazersCount)}
           </SocialLink>
-          <Separator orientation="vertical" className="h-8" />
+          <Separator className="h-8" orientation="vertical" />
           <div className="flex items-center gap-3.5">
             <div className="hidden items-center gap-3.5 md:flex">
               <SocialLink href="https://discord.gg/Phs4u2NM3n">
@@ -50,11 +50,11 @@ export function Header() {
               <TwitterIcon className="size-4" />
             </SocialLink>
           </div>
-          <Separator orientation="vertical" className="h-8" />
+          <Separator className="h-8" orientation="vertical" />
           <Button
+            className="flex h-8 items-center gap-2"
             onClick={() => setFigmaDialogOpen(true)}
             variant="outline"
-            className="flex h-8 items-center gap-2"
           >
             <FigmaIcon className="size-4" />
             Export to Figma
@@ -63,7 +63,10 @@ export function Header() {
         </div>
       </div>
 
-      <FigmaExportDialog open={figmaDialogOpen} onOpenChange={setFigmaDialogOpen} />
+      <FigmaExportDialog
+        onOpenChange={setFigmaDialogOpen}
+        open={figmaDialogOpen}
+      />
     </header>
   );
 }

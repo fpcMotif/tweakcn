@@ -1,6 +1,6 @@
-import { ChatMessage } from "@/types/ai";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { ChatMessage } from "@/types/ai";
 import { idbStorage } from "./idb-storage";
 
 interface AIChatStore {
@@ -36,7 +36,9 @@ export const useAIChatStore = create<AIChatStore>()(
 
         if (fromVersion === 2) {
           const current = persistedState as AIChatStore;
-          return { messages: Array.isArray(current.messages) ? current.messages : [] };
+          return {
+            messages: Array.isArray(current.messages) ? current.messages : [],
+          };
         }
       },
       onRehydrateStorage: () => (state) => {

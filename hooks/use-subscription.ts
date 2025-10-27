@@ -1,6 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { SubscriptionStatus } from "@/types/subscription";
-import { useQuery } from "@tanstack/react-query";
 
 async function fetchSubscriptionStatus(): Promise<SubscriptionStatus> {
   const res = await fetch("/api/subscription", { method: "GET" });

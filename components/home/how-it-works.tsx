@@ -1,11 +1,12 @@
-import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
+import { Badge } from "@/components/ui/badge";
 
 const steps = [
   {
     step: "01",
     title: "Select Theme Preset",
-    description: "Choose the theme you want to customize from our growing library.",
+    description:
+      "Choose the theme you want to customize from our growing library.",
   },
   {
     step: "02",
@@ -16,25 +17,26 @@ const steps = [
   {
     step: "03",
     title: "Copy Code",
-    description: "Copy the generated Tailwind CSS code directly into your project.",
+    description:
+      "Copy the generated Tailwind CSS code directly into your project.",
   },
 ];
 
 export function HowItWorks() {
   return (
     <section
-      id="how-it-works"
       className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden isolate"
+      id="how-it-works"
     >
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
 
       <div className="container mx-auto px-4 md:px-6 relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <Badge
             className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
@@ -53,12 +55,12 @@ export function HowItWorks() {
         <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
           {steps.map((step, i) => (
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.2 }}
               className="relative z-10 flex flex-col items-center text-center space-y-4"
+              initial={{ opacity: 0, y: 20 }}
+              key={i}
+              transition={{ duration: 0.5, delay: i * 0.2 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground text-xl font-bold shadow-lg relative">
                 {step.step}

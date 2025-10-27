@@ -1,3 +1,5 @@
+import { Check, Copy } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import {
   Tabs,
   TabsContent,
@@ -14,8 +16,6 @@ import {
   ResponsiveDialogTitle,
 } from "@/components/ui/revola";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Check, Copy } from "lucide-react";
-import { usePostHog } from "posthog-js/react";
 
 interface MCPDialogProps {
   open: boolean;
@@ -44,7 +44,7 @@ export function MCPDialog({ open, onOpenChange }: MCPDialogProps) {
   };
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+    <ResponsiveDialog onOpenChange={onOpenChange} open={open}>
       <ResponsiveDialogContent className="flex max-h-[90dvh] flex-col overflow-hidden shadow-lg sm:w-[calc(100%-2rem)] sm:max-w-2xl">
         <div className="space-y-6 p-6 pt-0 sm:p-6">
           <ResponsiveDialogHeader className="text-left">
@@ -73,7 +73,7 @@ export function MCPDialog({ open, onOpenChange }: MCPDialogProps) {
 
             <div className="rounded-lg border">
               <div className="bg-muted/50 flex items-center justify-between border-b px-4 py-2">
-                <TabsContent value="cursor" className="contents">
+                <TabsContent className="contents" value="cursor">
                   <p className="text-muted-foreground text-sm font-medium">
                     Copy and paste the code into{" "}
                     <span className="bg-muted text-foreground rounded-md px-1">
@@ -81,7 +81,7 @@ export function MCPDialog({ open, onOpenChange }: MCPDialogProps) {
                     </span>
                   </p>
                 </TabsContent>
-                <TabsContent value="windsurf" className="contents">
+                <TabsContent className="contents" value="windsurf">
                   <p className="text-muted-foreground text-sm font-medium">
                     Copy and paste the code into{" "}
                     <span className="bg-muted text-foreground rounded-md px-1">
@@ -90,11 +90,13 @@ export function MCPDialog({ open, onOpenChange }: MCPDialogProps) {
                   </p>
                 </TabsContent>
                 <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleCopy(mcpConfig)}
+                  aria-label={
+                    hasCopied ? "Copied to clipboard" : "Copy to clipboard"
+                  }
                   className="h-8"
-                  aria-label={hasCopied ? "Copied to clipboard" : "Copy to clipboard"}
+                  onClick={() => handleCopy(mcpConfig)}
+                  size="sm"
+                  variant="outline"
                 >
                   {hasCopied ? (
                     <>

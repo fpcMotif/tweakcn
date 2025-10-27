@@ -1,13 +1,13 @@
 "use client";
 
+import { X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSubscription } from "@/hooks/use-subscription";
 import { authClient } from "@/lib/auth-client";
 import { AI_REQUEST_FREE_TIER_LIMIT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export function AlertBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -51,8 +51,8 @@ export function AlertBanner() {
     if (isLoggedIn && !isPro && freeProMessagesLeft <= 0) {
       return (
         <span>
-          Upgrade to <span className="text-primary font-medium">Pro</span> to unlock unlimited
-          requests.
+          Upgrade to <span className="text-primary font-medium">Pro</span> to
+          unlock unlimited requests.
         </span>
       );
     }
@@ -68,16 +68,20 @@ export function AlertBanner() {
         </p>
         <div className="ml-auto flex items-center gap-1">
           <Link href="/pricing">
-            <Button variant="link" size="sm" className="h-fit @2xl/alert-banner:text-sm">
+            <Button
+              className="h-fit @2xl/alert-banner:text-sm"
+              size="sm"
+              variant="link"
+            >
               Upgrade
             </Button>
           </Link>
 
           <Button
-            variant="ghost"
-            size="icon"
             className="size-4 [&>svg]:size-3"
             onClick={() => setShowBanner(false)}
+            size="icon"
+            variant="ghost"
           >
             <X />
           </Button>
@@ -87,7 +91,13 @@ export function AlertBanner() {
   );
 }
 
-export function BannerWrapper({ children, show }: { children: React.ReactNode; show: boolean }) {
+export function BannerWrapper({
+  children,
+  show,
+}: {
+  children: React.ReactNode;
+  show: boolean;
+}) {
   return (
     <div className={cn("@container/alert-banner")}>
       <div

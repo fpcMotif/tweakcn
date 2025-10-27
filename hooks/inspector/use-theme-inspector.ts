@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useInspectorState } from "./use-inspector-state";
 import { useInspectorMouseEvents } from "./use-inspector-mouse-events";
 import { useInspectorScroll } from "./use-inspector-scroll";
+import { useInspectorState } from "./use-inspector-state";
 
 export const useThemeInspector = () => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -18,13 +18,14 @@ export const useThemeInspector = () => {
     toggleInspector: baseToggleInspector,
   } = useInspectorState();
 
-  const { debouncedInspectorUpdate, handleMouseMove, handleMouseLeave } = useInspectorMouseEvents({
-    inspectorEnabled,
-    rootRef,
-    lastElementRef,
-    updateInspectorState,
-    clearInspectorState,
-  });
+  const { debouncedInspectorUpdate, handleMouseMove, handleMouseLeave } =
+    useInspectorMouseEvents({
+      inspectorEnabled,
+      rootRef,
+      lastElementRef,
+      updateInspectorState,
+      clearInspectorState,
+    });
 
   useInspectorScroll({
     inspectorEnabled,

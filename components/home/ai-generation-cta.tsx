@@ -1,18 +1,18 @@
+import { ArrowRight, Check } from "lucide-react";
+import { motion } from "motion/react";
+import Link from "next/link";
 import { FrameHighlight } from "@/components/effects/frame-highlight";
 import { NoiseEffect } from "@/components/effects/noise-effect";
 import { AIChatDemo } from "@/components/examples/ai-chat-demo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Check } from "lucide-react";
-import { motion } from "motion/react";
-import Link from "next/link";
 
 export function AIGenerationCTA() {
   return (
     <section
-      id="ai-generation-cta"
       className="bg-muted/35 relative isolate w-full overflow-hidden py-20 md:py-32 lg:py-42"
+      id="ai-generation-cta"
     >
       <div className="relative isolate">
         <div className="relative z-10 container mx-auto w-full px-4 md:px-6">
@@ -20,11 +20,11 @@ export function AIGenerationCTA() {
             {/* Left Column - Text Content */}
             <div className="mx-auto max-w-2xl lg:mx-0">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
                 className="space-y-8"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
               >
                 <div className="justify-left relative flex flex-col items-start gap-4">
                   <Badge
@@ -39,16 +39,16 @@ export function AIGenerationCTA() {
                     in Seconds
                   </h2>
                   <p className="text-muted-foreground text-base leading-relaxed text-pretty md:text-lg">
-                    Create stunning ready-to-use themes. Just provide an image or text prompt, and
-                    our AI does the rest.
+                    Create stunning ready-to-use themes. Just provide an image
+                    or text prompt, and our AI does the rest.
                   </p>
                 </div>
 
                 <div className="flex w-fit flex-col gap-4 md:flex-row">
                   <Link href="/ai">
                     <Button
-                      size="lg"
                       className="border-primary/20 hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-250 hover:translate-y-[-2px]"
+                      size="lg"
                     >
                       Try it Free <ArrowRight className="ml-2" />
                     </Button>
@@ -56,9 +56,9 @@ export function AIGenerationCTA() {
 
                   <Link href="/pricing">
                     <Button
+                      className="border-primary/20 hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-300 hover:translate-y-[-2px]"
                       size="lg"
                       variant="outline"
-                      className="border-primary/20 hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-300 hover:translate-y-[-2px]"
                     >
                       Get Pro
                     </Button>
@@ -66,10 +66,14 @@ export function AIGenerationCTA() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-6">
-                  {["Theme Preview", "Checkpoint Restoration", "Image Uploads"].map((feature) => (
+                  {[
+                    "Theme Preview",
+                    "Checkpoint Restoration",
+                    "Image Uploads",
+                  ].map((feature) => (
                     <div
-                      key={feature}
                       className="text-muted-foreground flex items-center gap-2 text-sm"
+                      key={feature}
                     >
                       <Check className="text-primary size-5" />
                       <span>{feature}</span>
@@ -83,14 +87,14 @@ export function AIGenerationCTA() {
             <div className="relative hidden flex-col items-center justify-center space-y-4 lg:flex">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
               >
                 <div className="border-border/50! hover:border-border! relative h-[500px] overflow-hidden rounded-lg border-2 mask-b-from-85% backdrop-blur-xs transition-all delay-150 duration-300">
                   <NoiseEffect />
 
-                  <AIChatDemo disabled={false} className="pb-16" />
+                  <AIChatDemo className="pb-16" disabled={false} />
                 </div>
               </motion.div>
             </div>

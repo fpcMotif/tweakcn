@@ -1,19 +1,5 @@
 "use client";
 
-import Logo from "@/assets/logo.svg";
-import { CodeBlock, CodeBlockCopyButton } from "@/components/ai-elements/code-block";
-import { BlockViewer, BlockViewerDisplay, BlockViewerToolbar } from "@/components/block-viewer";
-import { LoadingLogo } from "@/components/editor/ai/loading-logo";
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useIframeThemeInjector } from "@/hooks/use-iframe-theme-injector";
-import { useWebsitePreview } from "@/hooks/use-website-preview";
-import { cn } from "@/lib/utils";
-import { IframeStatus } from "@/types/live-preview-embed";
 import {
   AlertCircle,
   CheckCircle,
@@ -28,6 +14,31 @@ import {
 } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
 import React, { useEffect, useRef } from "react";
+import Logo from "@/assets/logo.svg";
+import {
+  CodeBlock,
+  CodeBlockCopyButton,
+} from "@/components/ai-elements/code-block";
+import {
+  BlockViewer,
+  BlockViewerDisplay,
+  BlockViewerToolbar,
+} from "@/components/block-viewer";
+import { LoadingLogo } from "@/components/editor/ai/loading-logo";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIframeThemeInjector } from "@/hooks/use-iframe-theme-injector";
+import { useWebsitePreview } from "@/hooks/use-website-preview";
+import { cn } from "@/lib/utils";
+import { IframeStatus } from "@/types/live-preview-embed";
 
 /**
  * Dynamic Website Preview - Load and theme external websites
@@ -130,9 +141,8 @@ export default function App() {
 type DynamicWebsitePreviewContextType = ReturnType<typeof useWebsitePreview> &
   Omit<ReturnType<typeof useIframeThemeInjector>, "ref">;
 
-const DynamicWebsitePreviewContext = React.createContext<DynamicWebsitePreviewContextType | null>(
-  null
-);
+const DynamicWebsitePreviewContext =
+  React.createContext<DynamicWebsitePreviewContextType | null>(null);
 
 function useDynamicWebsitePreview() {
   const context = React.useContext(DynamicWebsitePreviewContext);
@@ -154,10 +164,11 @@ function DynamicWebsitePreviewProvider({
   const websitePreviewState = useWebsitePreview({ allowCrossOrigin });
   const posthog = usePostHog();
 
-  const { status, retryValidation, themeInjectionError } = useIframeThemeInjector({
-    allowCrossOrigin: allowCrossOrigin && !!websitePreviewState.currentUrl,
-    iframeRef: websitePreviewState.iframeRef,
-  });
+  const { status, retryValidation, themeInjectionError } =
+    useIframeThemeInjector({
+      allowCrossOrigin: allowCrossOrigin && !!websitePreviewState.currentUrl,
+      iframeRef: websitePreviewState.iframeRef,
+    });
 
   const statusRef = useRef<IframeStatus>(status);
   // eslint-disable-next-line
@@ -201,14 +212,18 @@ export function DynamicWebsitePreview({
   return (
     <DynamicWebsitePreviewProvider allowCrossOrigin={allowCrossOrigin}>
       <BlockViewer
-        name={name}
         className={cn(
           "group/block-view-wrapper bg-background @container isolate flex size-full min-w-0 flex-col overflow-clip",
           className
         )}
+        name={name}
         {...props}
       >
-        <BlockViewerToolbar name={name} toolbarControls={<Controls />} className="bg-muted h-fit" />
+        <BlockViewerToolbar
+          className="bg-muted h-fit"
+          name={name}
+          toolbarControls={<Controls />}
+        />
         <DynamicWebsitePreviewContent name={name} />
       </BlockViewer>
     </DynamicWebsitePreviewProvider>
@@ -255,13 +270,11 @@ function Controls() {
     <div className="flex size-full items-center gap-1.5">
       <div className="relative max-w-xl flex-1">
         <Input
-          type="url"
-          placeholder={
-            !allowCrossOrigin
-              ? "Enter same-origin URL for direct theme injection"
-              : "Enter website URL (e.g. http://localhost:3000/login)"
-          }
-          value={inputUrl}
+          className={cn(
+            "peer bg-background text-foreground h-8 pl-8 text-sm shadow-none transition-all duration-200",
+            "focus:bg-input/50 hover:bg-input/20",
+            currentUrl && "pr-8"
+          )}
           onChange={(e) => setInputUrl(e.target.value)}
           onKeyDown={(e) => {
             if (!inputUrl.trim()) return;
@@ -269,11 +282,13 @@ function Controls() {
               loadUrl();
             }
           }}
-          className={cn(
-            "peer bg-background text-foreground h-8 pl-8 text-sm shadow-none transition-all duration-200",
-            "focus:bg-input/50 hover:bg-input/20",
-            currentUrl && "pr-8"
-          )}
+          placeholder={
+            !allowCrossOrigin
+              ? "Enter same-origin URL for direct theme injection"
+              : "Enter website URL (e.g. http://localhost:3000/login)"
+          }
+          type="url"
+          value={inputUrl}
         />
 
         <Globe
@@ -286,10 +301,10 @@ function Controls() {
         {(currentUrl || inputUrl) && (
           <TooltipWrapper asChild label="Reset">
             <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleReset}
               className="absolute top-0 right-0 size-8 translate-y-0 hover:bg-transparent"
+              onClick={handleReset}
+              size="icon"
+              variant="ghost"
             >
               <X className="text-muted-foreground hover:text-foreground size-3.5 transition-colors" />
             </Button>
@@ -299,25 +314,28 @@ function Controls() {
 
       <TooltipWrapper asChild label="Refresh website">
         <Button
-          variant="outline"
-          size="icon"
-          onClick={refreshIframe}
-          disabled={previewIsLoading || !currentUrl}
           className="size-8 shadow-none transition-all hover:scale-105"
+          disabled={previewIsLoading || !currentUrl}
+          onClick={refreshIframe}
+          size="icon"
+          variant="outline"
         >
           <RefreshCw
-            className={cn("size-3.5 transition-transform", previewIsLoading && "animate-spin")}
+            className={cn(
+              "size-3.5 transition-transform",
+              previewIsLoading && "animate-spin"
+            )}
           />
         </Button>
       </TooltipWrapper>
 
       <TooltipWrapper asChild label="Open in new tab">
         <Button
-          variant="outline"
-          size="icon"
-          onClick={openInNewTab}
-          disabled={!currentUrl || previewIsLoading}
           className="size-8 px-2 shadow-none transition-all hover:scale-105"
+          disabled={!currentUrl || previewIsLoading}
+          onClick={openInNewTab}
+          size="icon"
+          variant="outline"
         >
           <ExternalLink className="size-3.5" />
         </Button>
@@ -347,89 +365,106 @@ function NoWebsitePreviewLoaded() {
         <div className="text-muted-foreground space-y-2 text-left text-sm">
           <div className="flex gap-2">
             <span className="text-foreground font-semibold">1.</span>
-            <span>Add the script below to your website based on your framework</span>
+            <span>
+              Add the script below to your website based on your framework
+            </span>
           </div>
           <div className="flex gap-2">
             <span className="text-foreground font-semibold">2.</span>
             <span>
               Paste your website&apos;s URL (e.g.,{" "}
-              <code className="code-inline">http://localhost:3000</code>) above to preview it with
-              the theme applied in real-time
+              <code className="code-inline">http://localhost:3000</code>) above
+              to preview it with the theme applied in real-time
             </span>
           </div>
         </div>
 
         <Card className="w-full p-2">
           <Tabs
-            defaultValue="script"
             className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden"
+            defaultValue="script"
           >
             <div className="scrollbar-thin flex items-center justify-between overflow-x-auto rounded-lg border p-1">
               <TabsList className="m-0 h-fit bg-transparent p-0">
-                <TabsTrigger value="script" className="h-7 px-3 text-xs font-medium">
+                <TabsTrigger
+                  className="h-7 px-3 text-xs font-medium"
+                  value="script"
+                >
                   Script Tag
                 </TabsTrigger>
-                <TabsTrigger value="next-app" className="h-7 px-3 text-xs font-medium">
+                <TabsTrigger
+                  className="h-7 px-3 text-xs font-medium"
+                  value="next-app"
+                >
                   Next.js (App)
                 </TabsTrigger>
-                <TabsTrigger value="next-pages" className="h-7 px-3 text-xs font-medium">
+                <TabsTrigger
+                  className="h-7 px-3 text-xs font-medium"
+                  value="next-pages"
+                >
                   Next.js (Pages)
                 </TabsTrigger>
-                <TabsTrigger value="vite" className="h-7 px-3 text-xs font-medium">
+                <TabsTrigger
+                  className="h-7 px-3 text-xs font-medium"
+                  value="vite"
+                >
                   Vite
                 </TabsTrigger>
-                <TabsTrigger value="remix" className="h-7 px-3 text-xs font-medium">
+                <TabsTrigger
+                  className="h-7 px-3 text-xs font-medium"
+                  value="remix"
+                >
                   Remix
                 </TabsTrigger>
               </TabsList>
             </div>
 
             <div className="bg-background scrollbar-thin max-h-76 overflow-y-auto rounded-lg border">
-              <TabsContent value="script" className="m-0">
+              <TabsContent className="m-0" value="script">
                 <CodeBlock
+                  className="rounded-none border-none bg-transparent"
                   code={HTML_SNIPPET}
                   language="html"
-                  className="rounded-none border-none bg-transparent"
                 >
                   <CodeBlockCopyButton aria-label="Copy HTML snippet" />
                 </CodeBlock>
               </TabsContent>
 
-              <TabsContent value="next-app" className="m-0">
+              <TabsContent className="m-0" value="next-app">
                 <CodeBlock
+                  className="rounded-none border-none bg-transparent"
                   code={NEXT_APP_SNIPPET}
                   language="tsx"
-                  className="rounded-none border-none bg-transparent"
                 >
                   <CodeBlockCopyButton aria-label="Copy Next.js App snippet" />
                 </CodeBlock>
               </TabsContent>
 
-              <TabsContent value="next-pages" className="m-0">
+              <TabsContent className="m-0" value="next-pages">
                 <CodeBlock
+                  className="rounded-none border-none bg-transparent"
                   code={NEXT_PAGES_SNIPPET}
                   language="tsx"
-                  className="rounded-none border-none bg-transparent"
                 >
                   <CodeBlockCopyButton aria-label="Copy Next.js Pages snippet" />
                 </CodeBlock>
               </TabsContent>
 
-              <TabsContent value="vite" className="m-0">
+              <TabsContent className="m-0" value="vite">
                 <CodeBlock
+                  className="rounded-none border-none bg-transparent"
                   code={VITE_SNIPPET}
                   language="html"
-                  className="rounded-none border-none bg-transparent"
                 >
                   <CodeBlockCopyButton aria-label="Copy Vite snippet" />
                 </CodeBlock>
               </TabsContent>
 
-              <TabsContent value="remix" className="m-0">
+              <TabsContent className="m-0" value="remix">
                 <CodeBlock
+                  className="rounded-none border-none bg-transparent"
                   code={REMIX_SNIPPET}
                   language="tsx"
-                  className="rounded-none border-none bg-transparent"
                 >
                   <CodeBlockCopyButton aria-label="Copy Remix snippet" />
                 </CodeBlock>
@@ -450,7 +485,9 @@ function WebsitePreviewLoading() {
           <LoadingLogo />
         </div>
 
-        <span className="text-muted-foreground animate-pulse text-sm">Loading website</span>
+        <span className="text-muted-foreground animate-pulse text-sm">
+          Loading website
+        </span>
       </div>
     </div>
   );
@@ -468,7 +505,9 @@ function WebsitePreviewError({ error }: { error: string }) {
           <h3 className="text-foreground text-center text-lg font-medium md:text-2xl">
             Error Loading Website Preview
           </h3>
-          <span className="text-muted-foreground max-w-md text-sm text-balance">{error}</span>
+          <span className="text-muted-foreground max-w-md text-sm text-balance">
+            {error}
+          </span>
         </div>
       </div>
     </div>
@@ -493,7 +532,7 @@ function WebsitePreview({ name }: { name: string }) {
   } = useDynamicWebsitePreview();
 
   return (
-    <BlockViewerDisplay name={name} className="relative">
+    <BlockViewerDisplay className="relative" name={name}>
       {previewIsLoading && (
         <div className="absolute inset-0">
           <WebsitePreviewLoading />
@@ -501,27 +540,27 @@ function WebsitePreview({ name }: { name: string }) {
       )}
 
       <iframe
-        ref={iframeRef}
-        src={currentUrl}
-        title="Dynamic Website Preview"
         className="size-full"
-        onLoad={handleIframeLoad}
+        loading="lazy"
         onError={handleIframeError}
+        onLoad={handleIframeLoad}
+        ref={iframeRef}
         sandbox={
           allowCrossOrigin
             ? "allow-scripts allow-same-origin allow-forms allow-popups"
             : "allow-scripts allow-same-origin"
         }
-        loading="lazy"
+        src={currentUrl}
+        title="Dynamic Website Preview"
       />
 
       {!previewIsLoading && !!status && allowCrossOrigin && (
         <div className="absolute bottom-2 left-2 z-10">
           <ConnectionStatus
-            status={status}
-            retryValidation={retryValidation}
-            isLoading={previewIsLoading}
             errorMsg={themeInjectionError}
+            isLoading={previewIsLoading}
+            retryValidation={retryValidation}
+            status={status}
           />
         </div>
       )}
@@ -542,7 +581,8 @@ const ConnectionStatus = React.memo(
     errorMsg?: string | null;
   }) => {
     const [isVisible, setIsVisible] = React.useState(false);
-    const [displayedStatus, setDisplayedStatus] = React.useState<IframeStatus>(status);
+    const [displayedStatus, setDisplayedStatus] =
+      React.useState<IframeStatus>(status);
     const showTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
     const hideTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
     const hasShownSupportedRef = React.useRef(false);
@@ -565,7 +605,11 @@ const ConnectionStatus = React.memo(
       }
 
       // Reset the flag if we hit an error state
-      if (status === "missing" || status === "unsupported" || status === "error") {
+      if (
+        status === "missing" ||
+        status === "unsupported" ||
+        status === "error"
+      ) {
         hasShownSupportedRef.current = false;
       }
 
@@ -604,8 +648,8 @@ const ConnectionStatus = React.memo(
                 <HoverCardTrigger>{ICONS[displayedStatus]}</HoverCardTrigger>
                 <HoverCardContent
                   align="start"
-                  side="top"
                   className="size-fit max-w-[280px] min-w-[140px] p-2"
+                  side="top"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-1">
@@ -613,7 +657,9 @@ const ConnectionStatus = React.memo(
                       <p className="text-xs font-medium">Error details:</p>
                     </div>
 
-                    <p className="text-muted-foreground text-xs text-pretty">{errorMsg}</p>
+                    <p className="text-muted-foreground text-xs text-pretty">
+                      {errorMsg}
+                    </p>
                   </div>
                 </HoverCardContent>
               </HoverCard>
@@ -631,10 +677,10 @@ const ConnectionStatus = React.memo(
           displayedStatus === "error") && (
           <div className="flex items-center gap-1">
             <Button
-              variant="outline"
-              size="sm"
               className="h-6 px-2 text-xs shadow-none"
               onClick={retryValidation}
+              size="sm"
+              variant="outline"
             >
               Retry
             </Button>

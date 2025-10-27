@@ -1,3 +1,11 @@
+import {
+  AlertCircle,
+  CheckCheck,
+  ChevronsUpDown,
+  Loader2,
+  Zap,
+} from "lucide-react";
+import { ComponentProps, useState } from "react";
 import { Loader } from "@/components/loader";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -6,8 +14,6 @@ import { useFeedbackText } from "@/hooks/use-feedback-text";
 import { cn } from "@/lib/utils";
 import { ThemeStyles } from "@/types/theme";
 import { applyGeneratedTheme } from "@/utils/ai/apply-theme";
-import { AlertCircle, CheckCheck, ChevronsUpDown, Loader2, Zap } from "lucide-react";
-import { ComponentProps, useState } from "react";
 
 type ChatThemePreviewProps = ComponentProps<"div"> & ChatThemePreviewPropsBase;
 
@@ -49,13 +55,17 @@ export function ChatThemePreview({
 
   if (loading) {
     return (
-      <Card className={cn("w-full max-w-[550px] overflow-hidden rounded-lg shadow-none")}>
+      <Card
+        className={cn(
+          "w-full max-w-[550px] overflow-hidden rounded-lg shadow-none"
+        )}
+      >
         <div className="flex size-full h-10 items-center gap-2 p-1.5">
           <div className="bg-muted flex size-7 items-center justify-center rounded-sm">
             <Loader2 className="text-muted-foreground size-4 animate-spin" />
           </div>
 
-          <Loader variant="text-shimmer" text={feedbackText} size="md" />
+          <Loader size="md" text={feedbackText} variant="text-shimmer" />
         </div>
       </Card>
     );
@@ -63,12 +73,16 @@ export function ChatThemePreview({
 
   if (status === "error")
     return (
-      <Card className={cn("max-w-[550px] overflow-hidden rounded-lg shadow-none")}>
+      <Card
+        className={cn("max-w-[550px] overflow-hidden rounded-lg shadow-none")}
+      >
         <div className="flex size-full h-10 items-center gap-2 p-1.5">
           <div className="bg-destructive flex size-7 items-center justify-center rounded-sm">
             <AlertCircle className="text-destructive-foreground size-4" />
           </div>
-          <span className="text-foreground/90 text-sm">Generation cancelled or failed.</span>
+          <span className="text-foreground/90 text-sm">
+            Generation cancelled or failed.
+          </span>
         </div>
       </Card>
     );
@@ -81,7 +95,9 @@ export function ChatThemePreview({
 
   if (status === "complete")
     return (
-      <Card className={cn("max-w-[550px] overflow-hidden rounded-lg shadow-none")}>
+      <Card
+        className={cn("max-w-[550px] overflow-hidden rounded-lg shadow-none")}
+      >
         <div
           className={cn(
             "group/control hover:bg-background/50 flex h-10 w-full shrink-0 cursor-pointer items-center gap-2 p-1.5 pr-2 transition-colors duration-300 ease-in-out",
@@ -122,18 +138,18 @@ export function ChatThemePreview({
 
           <div className="ml-auto flex items-center gap-1">
             <Button
-              variant="ghost"
               className="h-7 gap-1.5 px-2 shadow-none"
               onClick={handleApplyTheme}
+              variant="ghost"
             >
               <Zap className="size-3.5!" />
               Apply
             </Button>
 
             <button
-              type="button"
-              className="text-foreground/75 group-hover/control:text-foreground ml-auto transition-colors"
               aria-label={isExpanded ? "Collapse section" : "Expand section"}
+              className="text-foreground/75 group-hover/control:text-foreground ml-auto transition-colors"
+              type="button"
             >
               <ChevronsUpDown className="size-4" />
             </button>

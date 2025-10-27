@@ -1,5 +1,7 @@
 "use client";
 
+import { Check, ChevronDown, FunnelX, Loader2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -8,7 +10,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -23,8 +29,6 @@ import { cn } from "@/lib/utils";
 import { FontInfo } from "@/types/fonts";
 import { buildFontFamily, getDefaultWeights, waitForFont } from "@/utils/fonts";
 import { loadGoogleFont } from "@/utils/fonts/google-fonts";
-import { Check, ChevronDown, FunnelX, Loader2 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TooltipWrapper } from "../tooltip-wrapper";
 
 interface FontPickerProps {
@@ -45,7 +49,9 @@ export function FontPicker({
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<FilterFontCategory>(category || "all");
+  const [selectedCategory, setSelectedCategory] = useState<FilterFontCategory>(
+    category || "all"
+  );
   const [loadingFont, setLoadingFont] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -98,7 +104,11 @@ export function FontPicker({
       const observer = new IntersectionObserver(
         (entries) => {
           const entry = entries[0];
-          if (entry.isIntersecting && fontQuery.hasNextPage && !fontQuery.isFetchingNextPage) {
+          if (
+            entry.isIntersecting &&
+            fontQuery.hasNextPage &&
+            !fontQuery.isFetchingNextPage
+          ) {
             fontQuery.fetchNextPage();
           }
         },
@@ -112,7 +122,11 @@ export function FontPicker({
       observer.observe(node);
       return () => observer.unobserve(node);
     },
-    [fontQuery.hasNextPage, fontQuery.isFetchingNextPage, fontQuery.fetchNextPage]
+    [
+      fontQuery.hasNextPage,
+      fontQuery.isFetchingNextPage,
+      fontQuery.fetchNextPage,
+    ]
   );
 
   const handleFontSelect = useCallback(
@@ -154,19 +168,22 @@ export function FontPicker({
   }, [value, allFonts, category]);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           className={cn("bg-input/25 w-full justify-between", className)}
+          role="combobox"
+          variant="outline"
         >
           <div className="flex items-center gap-2">
             {currentFont ? (
               <span className="inline-flex items-center gap-2">
                 <span
                   style={{
-                    fontFamily: buildFontFamily(currentFont.family, currentFont.category),
+                    fontFamily: buildFontFamily(
+                      currentFont.family,
+                      currentFont.category
+                    ),
                   }}
                 >
                   {currentFont.family}
@@ -180,24 +197,24 @@ export function FontPicker({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[300px] p-0" align="start">
-        <Command shouldFilter={false} className="h-96 w-full overflow-hidden">
+      <PopoverContent align="start" className="w-[300px] p-0">
+        <Command className="h-96 w-full overflow-hidden" shouldFilter={false}>
           <div className="flex flex-col">
             <div className="relative">
               <CommandInput
                 className="h-10 w-full border-none p-0 pr-10"
+                onValueChange={setInputValue}
                 placeholder="Search Google fonts..."
                 value={inputValue}
-                onValueChange={setInputValue}
               />
 
               {inputValue && (
                 <TooltipWrapper asChild label="Clear search">
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setInputValue("")}
                     className="absolute top-2 right-2 size-6"
+                    onClick={() => setInputValue("")}
+                    size="sm"
+                    variant="ghost"
                   >
                     <FunnelX className="size-4" />
                   </Button>
@@ -207,8 +224,10 @@ export function FontPicker({
 
             <div className="px-2 py-1">
               <Select
+                onValueChange={(value) =>
+                  setSelectedCategory(value as FilterFontCategory)
+                }
                 value={selectedCategory}
-                onValueChange={(value) => setSelectedCategory(value as FilterFontCategory)}
               >
                 <SelectTrigger className="focus bg-input/25 h-8 px-2 text-xs outline-none">
                   <SelectValue />
@@ -231,16 +250,24 @@ export function FontPicker({
             {fontQuery.isLoading ? (
               <div className="absolute inset-0 flex size-full items-center justify-center gap-2 text-center">
                 <Loader2 className="size-4 animate-spin" />
-                <span className="text-muted-foreground text-sm">Loading fonts...</span>
+                <span className="text-muted-foreground text-sm">
+                  Loading fonts...
+                </span>
               </div>
             ) : allFonts.length === 0 ? (
               <CommandEmpty>No fonts found.</CommandEmpty>
             ) : (
-              <CommandList className="scrollbar-thin size-full p-1" ref={scrollRef}>
+              <CommandList
+                className="scrollbar-thin size-full p-1"
+                ref={scrollRef}
+              >
                 {allFonts.map((font: FontInfo) => {
                   const isSelected = font.family === value;
                   const isLoading = loadingFont === font.family;
-                  const fontFamily = buildFontFamily(font.family, font.category);
+                  const fontFamily = buildFontFamily(
+                    font.family,
+                    font.category
+                  );
 
                   const handlePreloadOnHover = () => {
                     loadGoogleFont(font.family, ["400"]);
@@ -248,11 +275,11 @@ export function FontPicker({
 
                   return (
                     <CommandItem
-                      key={font.family}
                       className="flex cursor-pointer items-center justify-between gap-2 p-2"
-                      onSelect={() => handleFontSelect(font)}
                       disabled={isLoading}
+                      key={font.family}
                       onMouseEnter={handlePreloadOnHover}
+                      onSelect={() => handleFontSelect(font)}
                       ref={isSelected ? selectedFontRef : null}
                     >
                       <div className="line-clamp-1 inline-flex w-full flex-1 flex-col justify-between">
@@ -261,7 +288,9 @@ export function FontPicker({
                           style={{ fontFamily }}
                         >
                           {font.family}
-                          {isLoading && <Loader2 className="size-3 animate-spin" />}
+                          {isLoading && (
+                            <Loader2 className="size-3 animate-spin" />
+                          )}
                         </span>
 
                         <div className="flex items-center gap-1 text-xs font-normal opacity-70">
@@ -275,19 +304,25 @@ export function FontPicker({
                           )}
                         </div>
                       </div>
-                      {isSelected && <Check className="size-4 shrink-0 opacity-70" />}
+                      {isSelected && (
+                        <Check className="size-4 shrink-0 opacity-70" />
+                      )}
                     </CommandItem>
                   );
                 })}
 
                 {/* Load more trigger element */}
-                {fontQuery.hasNextPage && <div ref={loadMoreRefCallback} className="h-2 w-full" />}
+                {fontQuery.hasNextPage && (
+                  <div className="h-2 w-full" ref={loadMoreRefCallback} />
+                )}
 
                 {/* Loading indicator for infinite scroll */}
                 {fontQuery.isFetchingNextPage && (
                   <div className="flex items-center justify-center gap-2 p-2">
                     <Loader2 className="size-4 animate-spin" />
-                    <span className="text-muted-foreground text-sm">Loading more fonts...</span>
+                    <span className="text-muted-foreground text-sm">
+                      Loading more fonts...
+                    </span>
                   </div>
                 )}
               </CommandList>

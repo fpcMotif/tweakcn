@@ -1,4 +1,5 @@
-import { FileCode, Palette, RefreshCw, LucideIcon, Undo2 } from "lucide-react";
+import { FileCode, LucideIcon, Palette, RefreshCw, Undo2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -6,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 
 interface MenuItemProps {
   icon: LucideIcon;
@@ -25,14 +25,14 @@ const MenuItem = ({
 }: MenuItemProps) => {
   return (
     <DropdownMenuItem
-      onClick={onClick}
-      disabled={disabled}
       className={cn(
         "flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
         disabled
           ? "opacity-50 cursor-not-allowed"
           : "hover:bg-accent/50 cursor-pointer"
       )}
+      disabled={disabled}
+      onClick={onClick}
       title={title}
     >
       <Icon className="h-4 w-4 text-muted-foreground" />
@@ -67,7 +67,9 @@ const ThemeControlActions = ({
       label: "Reset to Current Preset",
       onClick: onResetToPreset,
       disabled: !hasPresetChanges,
-      title: hasPresetChanges ? "Reset to current preset" : "No changes from preset",
+      title: hasPresetChanges
+        ? "Reset to current preset"
+        : "No changes from preset",
     },
     {
       icon: Undo2,
@@ -82,9 +84,9 @@ const ThemeControlActions = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
-          size="sm"
           className="h-8 px-2 gap-1.5 text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          size="sm"
+          variant="ghost"
         >
           <Palette className="size-3.5" />
           <span className="text-sm">Options</span>

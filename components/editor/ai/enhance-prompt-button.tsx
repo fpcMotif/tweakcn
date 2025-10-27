@@ -1,7 +1,7 @@
+import { CircleStop, WandSparkles } from "lucide-react";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CircleStop, WandSparkles } from "lucide-react";
 
 interface EnhancePromptButtonProps extends React.ComponentProps<typeof Button> {
   isEnhancing: boolean;
@@ -18,13 +18,13 @@ export function EnhancePromptButton({
   ...props
 }: EnhancePromptButtonProps) {
   return (
-    <TooltipWrapper label={isEnhancing ? "Stop" : "Enhance prompt"} asChild>
+    <TooltipWrapper asChild label={isEnhancing ? "Stop" : "Enhance prompt"}>
       <Button
+        className={cn("relative size-8 shadow-none", className)}
+        disabled={disabled}
+        onClick={isEnhancing ? onStop : onStart}
         size="icon"
         variant={isEnhancing ? "destructive" : "outline"}
-        className={cn("relative size-8 shadow-none", className)}
-        onClick={isEnhancing ? onStop : onStart}
-        disabled={disabled}
         {...props}
       >
         {isEnhancing ? <CircleStop /> : <WandSparkles />}

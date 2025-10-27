@@ -1,8 +1,13 @@
-import { AIPromptData, ChatMessage } from "@/types/ai";
-import { buildMentionStringForAPI, dedupeMentionReferences } from "@/utils/ai/ai-prompt";
 import { AssistantContent, ModelMessage, TextPart, UserContent } from "ai";
+import { AIPromptData, ChatMessage } from "@/types/ai";
+import {
+  buildMentionStringForAPI,
+  dedupeMentionReferences,
+} from "@/utils/ai/ai-prompt";
 
-export function buildUserContentPartsFromPromptData(promptData: AIPromptData): UserContent {
+export function buildUserContentPartsFromPromptData(
+  promptData: AIPromptData
+): UserContent {
   const userContentParts: UserContent = [];
 
   if (promptData.images && promptData.images.length > 0) {

@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface UseInspectorScrollProps {
   inspectorEnabled: boolean;
@@ -24,13 +24,20 @@ export const useInspectorScroll = ({
 
     clearInspectorState();
     debouncedInspectorUpdate.cancel();
-  }, [inspectorEnabled, clearInspectorState, debouncedInspectorUpdate, isOverlayHiddenRef]);
+  }, [
+    inspectorEnabled,
+    clearInspectorState,
+    debouncedInspectorUpdate,
+    isOverlayHiddenRef,
+  ]);
 
   useEffect(() => {
     const rootElement = rootRef.current;
     if (!rootElement) return;
 
-    const viewport = rootElement.querySelector("[data-radix-scroll-area-viewport]");
+    const viewport = rootElement.querySelector(
+      "[data-radix-scroll-area-viewport]"
+    );
     scrollableElementRef.current = viewport || rootElement;
   }, [rootRef]);
 
@@ -38,7 +45,9 @@ export const useInspectorScroll = ({
     const scrollableElement = scrollableElementRef.current;
     if (!scrollableElement || !inspectorEnabled) return;
 
-    scrollableElement.addEventListener("scroll", hideOverlayOnScroll, { passive: true });
+    scrollableElement.addEventListener("scroll", hideOverlayOnScroll, {
+      passive: true,
+    });
 
     return () => {
       scrollableElement.removeEventListener("scroll", hideOverlayOnScroll);

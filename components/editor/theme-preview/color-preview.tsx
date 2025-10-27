@@ -1,16 +1,27 @@
+import { SquarePen } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
-import { FocusColorId, useColorControlFocus } from "@/store/color-control-focus-store";
+import {
+  FocusColorId,
+  useColorControlFocus,
+} from "@/store/color-control-focus-store";
 import { ThemeEditorPreviewProps } from "@/types/theme";
-import { SquarePen } from "lucide-react";
 
 interface ColorPreviewProps {
   styles: ThemeEditorPreviewProps["styles"];
   currentMode: ThemeEditorPreviewProps["currentMode"];
 }
 
-function ColorPreviewItem({ label, color, name }: { label: string; color: string; name: string }) {
+function ColorPreviewItem({
+  label,
+  color,
+  name,
+}: {
+  label: string;
+  color: string;
+  name: string;
+}) {
   const { focusColor } = useColorControlFocus();
 
   return (
@@ -20,22 +31,26 @@ function ColorPreviewItem({ label, color, name }: { label: string; color: string
         style={{ backgroundColor: color }}
       />
       <div className="flex-1 space-y-1 overflow-hidden">
-        <p className="line-clamp-2 text-sm leading-tight font-medium @max-3xl:text-xs">{label}</p>
-        <p className="text-muted-foreground truncate font-mono text-xs">{color}</p>
+        <p className="line-clamp-2 text-sm leading-tight font-medium @max-3xl:text-xs">
+          {label}
+        </p>
+        <p className="text-muted-foreground truncate font-mono text-xs">
+          {color}
+        </p>
       </div>
 
       <div className="hidden flex-col opacity-0 transition-opacity group-hover/color-preview:opacity-100 md:flex">
-        <TooltipWrapper label="Edit color" asChild>
+        <TooltipWrapper asChild label="Edit color">
           <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => focusColor(name as FocusColorId)}
             className="size-7 @max-3xl:size-6 [&>svg]:size-3.5"
+            onClick={() => focusColor(name as FocusColorId)}
+            size="icon"
+            variant="ghost"
           >
             <SquarePen />
           </Button>
         </TooltipWrapper>
-        <CopyButton textToCopy={color} className="size-7 @max-3xl:size-6" />
+        <CopyButton className="size-7 @max-3xl:size-6" textToCopy={color} />
       </div>
     </div>
   );
@@ -50,22 +65,28 @@ const ColorPreview = ({ styles, currentMode }: ColorPreviewProps) => {
     <div className="@container grid grid-cols-1 gap-4 md:gap-8">
       {/* Primary Colors */}
       <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">Primary Theme Colors</h3>
+        <h3 className="text-muted-foreground text-sm font-semibold">
+          Primary Theme Colors
+        </h3>
         <div className="@6xl grid grid-cols-1 gap-2 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
           <ColorPreviewItem
-            label="Background"
             color={styles[currentMode].background}
+            label="Background"
             name="background"
           />
           <ColorPreviewItem
-            label="Foreground"
             color={styles[currentMode].foreground}
+            label="Foreground"
             name="foreground"
           />
-          <ColorPreviewItem label="Primary" color={styles[currentMode].primary} name="primary" />
           <ColorPreviewItem
-            label="Primary Foreground"
+            color={styles[currentMode].primary}
+            label="Primary"
+            name="primary"
+          />
+          <ColorPreviewItem
             color={styles[currentMode]["primary-foreground"]}
+            label="Primary Foreground"
             name="primary-foreground"
           />
         </div>
@@ -73,22 +94,28 @@ const ColorPreview = ({ styles, currentMode }: ColorPreviewProps) => {
 
       {/* Secondary & Accent Colors */}
       <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">Secondary & Accent Colors</h3>
+        <h3 className="text-muted-foreground text-sm font-semibold">
+          Secondary & Accent Colors
+        </h3>
         <div className="@6xl grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
           <ColorPreviewItem
-            label="Secondary"
             color={styles[currentMode].secondary}
+            label="Secondary"
             name="secondary"
           />
           <ColorPreviewItem
-            label="Secondary Foreground"
             color={styles[currentMode]["secondary-foreground"]}
+            label="Secondary Foreground"
             name="secondary-foreground"
           />
-          <ColorPreviewItem label="Accent" color={styles[currentMode].accent} name="accent" />
           <ColorPreviewItem
-            label="Accent Foreground"
+            color={styles[currentMode].accent}
+            label="Accent"
+            name="accent"
+          />
+          <ColorPreviewItem
             color={styles[currentMode]["accent-foreground"]}
+            label="Accent Foreground"
             name="accent-foreground"
           />
         </div>
@@ -96,24 +123,38 @@ const ColorPreview = ({ styles, currentMode }: ColorPreviewProps) => {
 
       {/* UI Component Colors */}
       <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">UI Component Colors</h3>
+        <h3 className="text-muted-foreground text-sm font-semibold">
+          UI Component Colors
+        </h3>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Card" color={styles[currentMode].card} name="card" />
           <ColorPreviewItem
-            label="Card Foreground"
+            color={styles[currentMode].card}
+            label="Card"
+            name="card"
+          />
+          <ColorPreviewItem
             color={styles[currentMode]["card-foreground"]}
+            label="Card Foreground"
             name="card-foreground"
           />
-          <ColorPreviewItem label="Popover" color={styles[currentMode].popover} name="popover" />
           <ColorPreviewItem
-            label="Popover Foreground"
+            color={styles[currentMode].popover}
+            label="Popover"
+            name="popover"
+          />
+          <ColorPreviewItem
             color={styles[currentMode]["popover-foreground"]}
+            label="Popover Foreground"
             name="popover-foreground"
           />
-          <ColorPreviewItem label="Muted" color={styles[currentMode].muted} name="muted" />
           <ColorPreviewItem
-            label="Muted Foreground"
+            color={styles[currentMode].muted}
+            label="Muted"
+            name="muted"
+          />
+          <ColorPreviewItem
             color={styles[currentMode]["muted-foreground"]}
+            label="Muted Foreground"
             name="muted-foreground"
           />
         </div>
@@ -121,26 +162,42 @@ const ColorPreview = ({ styles, currentMode }: ColorPreviewProps) => {
 
       {/* Utility & Form Colors */}
       <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">Utility & Form Colors</h3>
+        <h3 className="text-muted-foreground text-sm font-semibold">
+          Utility & Form Colors
+        </h3>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Border" color={styles[currentMode].border} name="border" />
-          <ColorPreviewItem label="Input" color={styles[currentMode].input} name="input" />
-          <ColorPreviewItem label="Ring" color={styles[currentMode].ring} name="ring" />
+          <ColorPreviewItem
+            color={styles[currentMode].border}
+            label="Border"
+            name="border"
+          />
+          <ColorPreviewItem
+            color={styles[currentMode].input}
+            label="Input"
+            name="input"
+          />
+          <ColorPreviewItem
+            color={styles[currentMode].ring}
+            label="Ring"
+            name="ring"
+          />
         </div>
       </div>
 
       {/* Status & Feedback Colors */}
       <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">Status & Feedback Colors</h3>
+        <h3 className="text-muted-foreground text-sm font-semibold">
+          Status & Feedback Colors
+        </h3>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
           <ColorPreviewItem
-            label="Destructive"
             color={styles[currentMode].destructive}
+            label="Destructive"
             name="destructive"
           />
           <ColorPreviewItem
-            label="Destructive Foreground"
             color={styles[currentMode]["destructive-foreground"]}
+            label="Destructive Foreground"
             name="destructive-foreground"
           />
         </div>
@@ -152,56 +209,78 @@ const ColorPreview = ({ styles, currentMode }: ColorPreviewProps) => {
           Chart & Visualization Colors
         </h3>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Chart 1" color={styles[currentMode]["chart-1"]} name="chart-1" />
-          <ColorPreviewItem label="Chart 2" color={styles[currentMode]["chart-2"]} name="chart-2" />
-          <ColorPreviewItem label="Chart 3" color={styles[currentMode]["chart-3"]} name="chart-3" />
-          <ColorPreviewItem label="Chart 4" color={styles[currentMode]["chart-4"]} name="chart-4" />
-          <ColorPreviewItem label="Chart 5" color={styles[currentMode]["chart-5"]} name="chart-5" />
+          <ColorPreviewItem
+            color={styles[currentMode]["chart-1"]}
+            label="Chart 1"
+            name="chart-1"
+          />
+          <ColorPreviewItem
+            color={styles[currentMode]["chart-2"]}
+            label="Chart 2"
+            name="chart-2"
+          />
+          <ColorPreviewItem
+            color={styles[currentMode]["chart-3"]}
+            label="Chart 3"
+            name="chart-3"
+          />
+          <ColorPreviewItem
+            color={styles[currentMode]["chart-4"]}
+            label="Chart 4"
+            name="chart-4"
+          />
+          <ColorPreviewItem
+            color={styles[currentMode]["chart-5"]}
+            label="Chart 5"
+            name="chart-5"
+          />
         </div>
       </div>
 
       {/* Sidebar Colors */}
       <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">Sidebar & Navigation Colors</h3>
+        <h3 className="text-muted-foreground text-sm font-semibold">
+          Sidebar & Navigation Colors
+        </h3>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
           <ColorPreviewItem
-            label="Sidebar Background"
             color={styles[currentMode].sidebar}
+            label="Sidebar Background"
             name="sidebar"
           />
           <ColorPreviewItem
-            label="Sidebar Foreground"
             color={styles[currentMode]["sidebar-foreground"]}
+            label="Sidebar Foreground"
             name="sidebar-foreground"
           />
           <ColorPreviewItem
-            label="Sidebar Primary"
             color={styles[currentMode]["sidebar-primary"]}
+            label="Sidebar Primary"
             name="sidebar-primary"
           />
           <ColorPreviewItem
-            label="Sidebar Primary Foreground"
             color={styles[currentMode]["sidebar-primary-foreground"]}
+            label="Sidebar Primary Foreground"
             name="sidebar-primary-foreground"
           />
           <ColorPreviewItem
-            label="Sidebar Accent"
             color={styles[currentMode]["sidebar-accent"]}
+            label="Sidebar Accent"
             name="sidebar-accent"
           />
           <ColorPreviewItem
-            label="Sidebar Accent Foreground"
             color={styles[currentMode]["sidebar-accent-foreground"]}
+            label="Sidebar Accent Foreground"
             name="sidebar-accent-foreground"
           />
           <ColorPreviewItem
-            label="Sidebar Border"
             color={styles[currentMode]["sidebar-border"]}
+            label="Sidebar Border"
             name="sidebar-border"
           />
           <ColorPreviewItem
-            label="Sidebar Ring"
             color={styles[currentMode]["sidebar-ring"]}
+            label="Sidebar Ring"
             name="sidebar-ring"
           />
         </div>

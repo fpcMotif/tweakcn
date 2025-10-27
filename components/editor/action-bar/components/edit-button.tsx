@@ -1,15 +1,20 @@
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { PenLine } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface EditButtonProps extends React.ComponentProps<typeof Button> {
   themeId: string;
 }
 
-export function EditButton({ themeId, disabled, className, ...props }: EditButtonProps) {
+export function EditButton({
+  themeId,
+  disabled,
+  className,
+  ...props
+}: EditButtonProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isEditing = pathname.includes(themeId);
@@ -18,13 +23,13 @@ export function EditButton({ themeId, disabled, className, ...props }: EditButto
   const href = `/editor/theme/${themeId}?${searchParams}`;
 
   return (
-    <TooltipWrapper label="Edit theme" asChild>
+    <TooltipWrapper asChild label="Edit theme">
       <Link href={href}>
         <Button
-          variant="ghost"
-          size="sm"
           className={cn(className)}
           disabled={disabled || isEditing}
+          size="sm"
+          variant="ghost"
           {...props}
         >
           <PenLine className="size-3.5" />

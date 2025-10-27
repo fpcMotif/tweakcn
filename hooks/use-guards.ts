@@ -6,7 +6,8 @@ import { useSubscription } from "./use-subscription";
 
 export function useGuards() {
   const { checkValidSession } = useSessionGuard();
-  const { checkValidSubscription, checkValidProSubscription } = useSubscriptionGuard();
+  const { checkValidSubscription, checkValidProSubscription } =
+    useSubscriptionGuard();
 
   return {
     checkValidSession,

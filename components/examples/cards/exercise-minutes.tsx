@@ -2,7 +2,13 @@
 
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -69,7 +75,7 @@ export function CardsExerciseMinutes() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full @3xl:h-[200px]">
+        <ChartContainer className="w-full @3xl:h-[200px]" config={chartConfig}>
           <LineChart
             accessibilityLayer
             data={data}
@@ -82,37 +88,37 @@ export function CardsExerciseMinutes() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="day"
-              tickLine={false}
               axisLine={false}
-              tickMargin={8}
+              dataKey="day"
               tickFormatter={(value) => value.slice(0, 3)}
+              tickLine={false}
+              tickMargin={8}
             />
             <Line
-              type="monotone"
-              dataKey="today"
-              strokeWidth={2}
-              stroke="var(--color-today)"
-              dot={{
-                fill: "var(--color-today)",
-              }}
               activeDot={{
                 r: 5,
               }}
+              dataKey="today"
+              dot={{
+                fill: "var(--color-today)",
+              }}
+              stroke="var(--color-today)"
+              strokeWidth={2}
+              type="monotone"
             />
             <Line
-              type="monotone"
-              strokeWidth={2}
+              activeDot={{
+                r: 5,
+              }}
               dataKey="average"
-              stroke="var(--color-average)"
-              strokeOpacity={0.5}
               dot={{
                 fill: "var(--color-average)",
                 opacity: 0.5,
               }}
-              activeDot={{
-                r: 5,
-              }}
+              stroke="var(--color-average)"
+              strokeOpacity={0.5}
+              strokeWidth={2}
+              type="monotone"
             />
             <ChartTooltip content={<ChartTooltipContent />} />
           </LineChart>

@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import { useEditorStore } from "../store/editor-store";
-import { applyThemeToElement } from "@/utils/apply-theme";
 import { useThemePresetFromUrl } from "@/hooks/use-theme-preset-from-url";
+import { applyThemeToElement } from "@/utils/apply-theme";
+import { useEditorStore } from "../store/editor-store";
 
 type Theme = "dark" | "light";
 

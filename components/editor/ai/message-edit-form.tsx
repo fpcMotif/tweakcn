@@ -1,10 +1,17 @@
+import { JSONContent } from "@tiptap/react";
+import { Check, X } from "lucide-react";
+import { useMemo, useReducer, useState } from "react";
 import { HorizontalScrollArea } from "@/components/horizontal-scroll-area";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { useDocumentDragAndDropIntent } from "@/hooks/use-document-drag-and-drop-intent";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { imageUploadReducer } from "@/hooks/use-image-upload-reducer";
-import { AI_PROMPT_CHARACTER_LIMIT, MAX_IMAGE_FILES, MAX_IMAGE_FILE_SIZE } from "@/lib/constants";
+import {
+  AI_PROMPT_CHARACTER_LIMIT,
+  MAX_IMAGE_FILE_SIZE,
+  MAX_IMAGE_FILES,
+} from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { AIPromptData, type ChatMessage } from "@/types/ai";
 import {
@@ -12,9 +19,6 @@ import {
   convertPromptDataToJSONContent,
   isEmptyPromptData,
 } from "@/utils/ai/ai-prompt";
-import { JSONContent } from "@tiptap/react";
-import { Check, X } from "lucide-react";
-import { useMemo, useReducer, useState } from "react";
 import CustomTextarea from "../custom-textarea";
 import { DragAndDropImageUploader } from "./drag-and-drop-image-uploader";
 import { ImageUploader } from "./image-uploader";
@@ -42,7 +46,9 @@ export function MessageEditForm({
 
   const [uploadedImages, dispatch] = useReducer(
     imageUploadReducer,
-    promptData?.images ? promptData.images.map((img) => ({ ...img, loading: false })) : []
+    promptData?.images
+      ? promptData.images.map((img) => ({ ...img, loading: false }))
+      : []
   );
 
   const {
@@ -70,7 +76,9 @@ export function MessageEditForm({
     onEditSubmit({
       ...promptData,
       ...newPromptData,
-      images: uploadedImages.filter((img) => !img.loading).map(({ url }) => ({ url })),
+      images: uploadedImages
+        .filter((img) => !img.loading)
+        .map(({ url }) => ({ url })),
     });
   };
 
@@ -81,8 +89,8 @@ export function MessageEditForm({
       {isUserDragging && (
         <div className={cn("flex h-16 items-center rounded-lg")}>
           <DragAndDropImageUploader
-            onDrop={handleImagesUpload}
             disabled={uploadedImages.some((img) => img.loading)}
+            onDrop={handleImagesUpload}
           />
         </div>
       )}
@@ -91,11 +99,11 @@ export function MessageEditForm({
           <HorizontalScrollArea className="w-full">
             {uploadedImages.map((img, idx) => (
               <UploadedImagePreview
-                key={idx}
-                src={img.url}
-                isImageLoading={img.loading}
                 handleImageRemove={() => handleImageRemove(idx)}
+                isImageLoading={img.loading}
+                key={idx}
                 showPreviewOnHover={false}
+                src={img.url}
               />
             ))}
           </HorizontalScrollArea>
@@ -103,42 +111,42 @@ export function MessageEditForm({
       )}
 
       <CustomTextarea
-        onContentChange={setEditJsonContent}
-        onSubmit={handleEditConfirm}
-        disabled={disabled}
         characterLimit={AI_PROMPT_CHARACTER_LIMIT}
-        onImagesPaste={handleImagesUpload}
-        initialEditorContent={editJsonContent}
         className="min-h-none size-full max-h-[300px] bg-transparent"
+        disabled={disabled}
+        initialEditorContent={editJsonContent}
+        onContentChange={setEditJsonContent}
+        onImagesPaste={handleImagesUpload}
+        onSubmit={handleEditConfirm}
       />
 
       <div className="@container/form flex items-center justify-between gap-2">
         <ImageUploader
-          fileInputRef={fileInputRef}
-          onImagesUpload={handleImagesUpload}
-          onClick={() => fileInputRef.current?.click()}
           disabled={!canUploadMore}
+          fileInputRef={fileInputRef}
+          onClick={() => fileInputRef.current?.click()}
+          onImagesUpload={handleImagesUpload}
         />
 
         <div className="flex items-center gap-2">
-          <TooltipWrapper label="Cancel edit" asChild>
+          <TooltipWrapper asChild label="Cancel edit">
             <Button
-              variant="outline"
-              size="sm"
-              onClick={onEditCancel}
               className="size-8 shadow-none"
+              onClick={onEditCancel}
+              size="sm"
+              variant="outline"
             >
               <X />
             </Button>
           </TooltipWrapper>
 
-          <TooltipWrapper label="Confirm edit" asChild>
+          <TooltipWrapper asChild label="Confirm edit">
             <Button
-              variant="secondary"
-              size="sm"
               className="size-8 shadow-none"
-              onClick={handleEditConfirm}
               disabled={isSomeImageUploading || isEmptyPrompt || disabled}
+              onClick={handleEditConfirm}
+              size="sm"
+              variant="secondary"
             >
               <Check />
             </Button>

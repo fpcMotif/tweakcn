@@ -1,4 +1,4 @@
-import { MyErrorResponseSchema, type ApiErrorCode } from "@/types/errors";
+import { type ApiErrorCode, MyErrorResponseSchema } from "@/types/errors";
 
 // This utility is specific to the Vercel AI SDK DefaultChatTransport behavior, where on
 // non-2xx responses it throws an Error whose `message` is set to the raw `response.text()`.
@@ -21,7 +21,10 @@ const KNOWN_CODES: ReadonlyArray<ApiErrorCode> = [
 ];
 
 function isApiErrorCode(value: unknown): value is ApiErrorCode {
-  return typeof value === "string" && (KNOWN_CODES as ReadonlyArray<string>).includes(value);
+  return (
+    typeof value === "string" &&
+    (KNOWN_CODES as ReadonlyArray<string>).includes(value)
+  );
 }
 
 export function parseAiSdkTransportError(

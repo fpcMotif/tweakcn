@@ -179,7 +179,10 @@ export const FALLBACK_FONTS: FontInfo[] = [
 
 // Build font-family value for CSS
 // e.g., font: "Inter", category: "sans-serif" -> "Inter, ui-sans-serif, system-ui, sans-serif"
-export function buildFontFamily(fontFamily: string, category: FontCategory): string {
+export function buildFontFamily(
+  fontFamily: string,
+  category: FontCategory
+): string {
   return `${fontFamily}, ${SYSTEM_FONTS_FALLBACKS[category]}`;
 }
 
@@ -201,13 +204,27 @@ export function extractFontFamily(fontFamilyValue: string): string | null {
 
 // Get default weights for a font based on available variants
 export function getDefaultWeights(variants: string[]): string[] {
-  const weightMap = ["100", "200", "300", "400", "500", "600", "700", "800", "900"];
-  const availableWeights = variants.filter((variant) => weightMap.includes(variant));
+  const weightMap = [
+    "100",
+    "200",
+    "300",
+    "400",
+    "500",
+    "600",
+    "700",
+    "800",
+    "900",
+  ];
+  const availableWeights = variants.filter((variant) =>
+    weightMap.includes(variant)
+  );
 
   if (availableWeights.length === 0) return ["400"]; // Fallback to normal weight
 
   const preferredWeights = ["400", "500", "600", "700"];
-  const selectedWeights = preferredWeights.filter((weight) => availableWeights.includes(weight));
+  const selectedWeights = preferredWeights.filter((weight) =>
+    availableWeights.includes(weight)
+  );
 
   // If none of the preferred weights are available, use the first two available
   if (selectedWeights.length === 0) {
@@ -247,7 +264,9 @@ export async function waitForFont(
     // Use the native document.fonts.load() method
     await Promise.race([
       document.fonts.load(font),
-      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), timeout)),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout")), timeout)
+      ),
     ]);
 
     return document.fonts.check(font);

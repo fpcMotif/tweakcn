@@ -40,7 +40,9 @@ export function CardsPaymentMethod() {
     <Card>
       <CardHeader>
         <CardTitle>Payment Method</CardTitle>
-        <CardDescription>Add a new payment method to your account.</CardDescription>
+        <CardDescription>
+          Add a new payment method to your account.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
@@ -52,16 +54,16 @@ export function CardsPaymentMethod() {
           <p className="text-muted-foreground text-sm">
             Select the plan that best fits your needs.
           </p>
-          <RadioGroup defaultValue="starter" className="grid gap-3">
+          <RadioGroup className="grid gap-3" defaultValue="starter">
             {plans.map((plan) => (
               <Label
                 className="has-[[data-state=checked]]:border-ring has-[[data-state=checked]]:bg-primary/5 flex items-start gap-3 rounded-lg border p-3"
                 key={plan.id}
               >
                 <RadioGroupItem
-                  value={plan.id}
-                  id={plan.name}
                   className="data-[state=checked]:border-primary"
+                  id={plan.name}
+                  value={plan.id}
                 />
                 <div className="grid gap-1 font-normal">
                   <div className="font-medium">{plan.name}</div>
@@ -81,7 +83,7 @@ export function CardsPaymentMethod() {
           <div className="flex flex-col gap-3">
             <Label htmlFor="month">Expires</Label>
             <Select>
-              <SelectTrigger id="month" aria-label="Month" className="w-full">
+              <SelectTrigger aria-label="Month" className="w-full" id="month">
                 <SelectValue placeholder="Month" />
               </SelectTrigger>
               <SelectContent>
@@ -103,7 +105,7 @@ export function CardsPaymentMethod() {
           <div className="flex flex-col gap-3">
             <Label htmlFor="year">Year</Label>
             <Select>
-              <SelectTrigger id="year" aria-label="Year" className="w-full">
+              <SelectTrigger aria-label="Year" className="w-full" id="year">
                 <SelectValue placeholder="Year" />
               </SelectTrigger>
               <SelectContent>

@@ -1,9 +1,9 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Moon, Sun } from "lucide-react";
 import { TooltipWrapper } from "./tooltip-wrapper";
 
 interface ThemeToggleProps extends React.ComponentProps<typeof Button> {}
@@ -17,8 +17,12 @@ export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
   };
 
   return (
-    <TooltipWrapper label="Toggle theme" asChild>
-      <Button className={cn("cursor-pointer", className)} {...props} onClick={handleThemeToggle}>
+    <TooltipWrapper asChild label="Toggle theme">
+      <Button
+        className={cn("cursor-pointer", className)}
+        {...props}
+        onClick={handleThemeToggle}
+      >
         {theme === "light" ? <Sun /> : <Moon />}
       </Button>
     </TooltipWrapper>

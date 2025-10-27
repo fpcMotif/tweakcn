@@ -1,10 +1,10 @@
 "use client";
 
+import { Gem } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSubscription } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
-import { Gem } from "lucide-react";
-import Link from "next/link";
 
 interface GetProCTAProps extends React.ComponentProps<typeof Button> {}
 
@@ -18,12 +18,12 @@ export function GetProCTA({ className, ...props }: GetProCTAProps) {
 
   return (
     <Button
-      variant="ghost"
+      asChild
       className={cn(
         "text-primary animate-in fade-in-50 bg-primary/10 hover:bg-primary hover:text-primary-foreground shadow-none duration-300",
         className
       )}
-      asChild
+      variant="ghost"
       {...props}
     >
       <Link href="/pricing">

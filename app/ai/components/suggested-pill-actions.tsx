@@ -1,5 +1,7 @@
 "use client";
 
+import { ImageIcon, Sparkles } from "lucide-react";
+import { useEffect, useReducer } from "react";
 import { PillActionButton } from "@/components/editor/ai/pill-action-button";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { imageUploadReducer } from "@/hooks/use-image-upload-reducer";
@@ -7,8 +9,6 @@ import { MAX_IMAGE_FILE_SIZE } from "@/lib/constants";
 import { AIPromptData } from "@/types/ai";
 import { createCurrentThemePrompt } from "@/utils/ai/ai-prompt";
 import { PROMPTS } from "@/utils/ai/prompts";
-import { ImageIcon, Sparkles } from "lucide-react";
-import { useEffect, useReducer } from "react";
 
 export function SuggestedPillActions({
   onThemeGeneration,
@@ -19,7 +19,12 @@ export function SuggestedPillActions({
 }) {
   const [uploadedImages, dispatch] = useReducer(imageUploadReducer, []);
 
-  const { fileInputRef, handleImagesUpload, canUploadMore, isSomeImageUploading } = useImageUpload({
+  const {
+    fileInputRef,
+    handleImagesUpload,
+    canUploadMore,
+    isSomeImageUploading,
+  } = useImageUpload({
     maxFiles: 1,
     maxFileSize: MAX_IMAGE_FILE_SIZE,
     images: uploadedImages,
@@ -60,24 +65,27 @@ export function SuggestedPillActions({
 
   return (
     <>
-      <PillActionButton onClick={handleImageButtonClick} disabled={isGeneratingTheme}>
+      <PillActionButton
+        disabled={isGeneratingTheme}
+        onClick={handleImageButtonClick}
+      >
         <input
-          type="file"
           accept="image/*"
-          multiple={false}
-          ref={fileInputRef}
-          onChange={handleImageUpload}
           disabled={isGeneratingTheme}
+          multiple={false}
+          onChange={handleImageUpload}
+          ref={fileInputRef}
           style={{ display: "none" }}
+          type="file"
         />
         <ImageIcon /> From an Image
       </PillActionButton>
 
       {Object.entries(PROMPTS).map(([key, { label, prompt }]) => (
         <PillActionButton
+          disabled={isGeneratingTheme}
           key={key}
           onClick={() => handleSetPrompt(prompt)}
-          disabled={isGeneratingTheme}
         >
           <Sparkles /> {label}
         </PillActionButton>

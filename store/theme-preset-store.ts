@@ -1,7 +1,7 @@
 import { create } from "zustand";
+import { getThemes } from "@/actions/themes";
 import { ThemePreset } from "@/types/theme";
 import { defaultPresets } from "@/utils/theme-presets";
-import { getThemes } from "@/actions/themes";
 
 interface ThemePresetStore {
   presets: Record<string, ThemePreset>;
@@ -35,14 +35,17 @@ export const useThemePresetStore = create<ThemePresetStore>()((set, get) => ({
   loadSavedPresets: async () => {
     try {
       const savedThemes = await getThemes();
-      const savedPresets = savedThemes.reduce((acc, theme) => {
-        acc[theme.id] = {
-          label: theme.name,
-          styles: theme.styles,
-          source: "SAVED",
-        };
-        return acc;
-      }, {} as Record<string, ThemePreset>);
+      const savedPresets = savedThemes.reduce(
+        (acc, theme) => {
+          acc[theme.id] = {
+            label: theme.name,
+            styles: theme.styles,
+            source: "SAVED",
+          };
+          return acc;
+        },
+        {} as Record<string, ThemePreset>
+      );
 
       set((state) => ({
         presets: {

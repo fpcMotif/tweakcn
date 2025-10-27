@@ -1,3 +1,4 @@
+import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,7 +9,6 @@ import {
   ResponsiveDialogTitle,
 } from "@/components/ui/revola";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Check, Copy } from "lucide-react";
 
 interface ShareDialogProps {
   open: boolean;
@@ -26,7 +26,7 @@ export function ShareDialog({ open, onOpenChange, url }: ShareDialogProps) {
   };
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange} onlyDialog>
+    <ResponsiveDialog onlyDialog onOpenChange={onOpenChange} open={open}>
       <ResponsiveDialogContent className="overflow-hidden shadow-lg sm:max-w-100">
         <div className="space-y-6 p-6">
           <ResponsiveDialogHeader>
@@ -38,13 +38,22 @@ export function ShareDialog({ open, onOpenChange, url }: ShareDialogProps) {
 
           <div className="flex items-center space-x-2">
             <Input
+              className="selection:bg-primary selection:text-primary-foreground flex-1"
+              onClick={(e) => e.currentTarget.select()}
               readOnly
               value={url}
-              onClick={(e) => e.currentTarget.select()}
-              className="selection:bg-primary selection:text-primary-foreground flex-1"
             />
-            <Button size="icon" disabled={isCopying} onClick={handleCopy} variant="outline">
-              {hasCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            <Button
+              disabled={isCopying}
+              onClick={handleCopy}
+              size="icon"
+              variant="outline"
+            >
+              {hasCopied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </div>

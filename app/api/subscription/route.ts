@@ -1,23 +1,42 @@
+import { Effect, pipe } from "effect";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { safeApiCall } from "@/lib/effect-helpers";
 import { getCurrentUserId, logError } from "@/lib/shared";
 import { validateSubscriptionAndUsage } from "@/lib/subscription";
-import { SubscriptionStatus } from "@/types/subscription";
-import { NextRequest, NextResponse } from "next/server";
+import type { SubscriptionStatus } from "@/types/subscription";
 
-export async function GET(request: NextRequest) {
-  try {
-    const userId = await getCurrentUserId(request);
-    const { isSubscribed, requestsRemaining, requestsUsed } =
-      await validateSubscriptionAndUsage(userId);
+export function GET(request: NextRequest) {
+  // Manage side effects and error handling using Effect-TS
+  const program = pipe(
+    safeApiCall(() => getCurrentUserId(request), "Get user ID"),
+    Effect.flatMap((userId) =>
+      safeApiCall(
+        () => validateSubscriptionAndUsage(userId),
+        "Validate subscription and usage"
+      )
+    ),
+    Effect.map(({ isSubscribed, requestsRemaining, requestsUsed }) => {
+      const response: SubscriptionStatus = {
+        isSubscribed,
+        requestsRemaining,
+        requestsUsed,
+      };
+      return NextResponse.json(response);
+    }),
+    Effect.catchAll((error) =>
+      Effect.sync(() => {
+        const errorObj = new Error(
+          error._tag === "ApiError" ? error.message : "Unknown error"
+        );
+        logError(errorObj);
+        return NextResponse.json(
+          { error: "Internal Server Error" },
+          { status: 500 }
+        );
+      })
+    )
+  );
 
-    const response: SubscriptionStatus = {
-      isSubscribed,
-      requestsRemaining,
-      requestsUsed,
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
-    logError(error as Error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-  }
+  return Effect.runPromise(program);
 }

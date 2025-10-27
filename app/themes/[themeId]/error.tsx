@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function ThemeError({
@@ -24,7 +24,7 @@ export default function ThemeError({
         </p>
         <div className="space-x-4">
           <Button onClick={reset}>Try again</Button>
-          <Button variant="outline" asChild>
+          <Button asChild variant="outline">
             <Link href="/settings">Return to Settings</Link>
           </Button>
         </div>

@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import {
   Accordion,
   AccordionContent,
@@ -5,7 +6,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "motion/react";
 
 const faqs = [
   {
@@ -52,14 +52,14 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="w-full py-20 md:py-32">
+    <section className="w-full py-20 md:py-32" id="faq">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="mb-12 flex flex-col items-center justify-center space-y-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <Badge
             className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
@@ -76,16 +76,19 @@ export function FAQ() {
         </motion.div>
 
         <div className="mx-auto max-w-3xl">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion className="w-full" collapsible type="single">
             {faqs.map((faq, i) => (
               <motion.div
-                key={i}
                 initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                key={i}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
               >
-                <AccordionItem value={`item-${i}`} className="border-border/40 group border-b py-2">
+                <AccordionItem
+                  className="border-border/40 group border-b py-2"
+                  value={`item-${i}`}
+                >
                   <AccordionTrigger className="group-hover:text-primary text-left font-medium transition-colors hover:no-underline">
                     {faq.question}
                   </AccordionTrigger>

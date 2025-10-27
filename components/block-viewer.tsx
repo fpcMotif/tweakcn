@@ -4,7 +4,11 @@ import React from "react";
 import { ImperativePanelHandle } from "react-resizable-panels";
 
 import { ComponentErrorBoundary } from "@/components/error-boundary";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +23,9 @@ const BlockViewerContext = React.createContext<BlockViewerContext | null>(null);
 function useBlockViewer() {
   const context = React.useContext(BlockViewerContext);
   if (!context) {
-    throw new Error("useBlockViewer must be used within a BlockViewerProvider.");
+    throw new Error(
+      "useBlockViewer must be used within a BlockViewerProvider."
+    );
   }
   return context;
 }
@@ -52,11 +58,11 @@ export function BlockViewer({
   return (
     <BlockViewerProvider>
       <div
-        data-slot="block-viewer"
         className={cn(
           "group/block-viewer bg-background @container isolate flex size-full min-w-0 flex-col overflow-clip",
           className
         )}
+        data-slot="block-viewer"
         {...props}
       >
         {children}
@@ -77,7 +83,10 @@ export function BlockViewerToolbar({
   const { resizablePanelRef, toggleValue, setToggleValue } = useBlockViewer();
 
   return (
-    <div data-slot="block-viewer-toolbar" className={cn("h-12 w-full border-b p-2", className)}>
+    <div
+      className={cn("h-12 w-full border-b p-2", className)}
+      data-slot="block-viewer-toolbar"
+    >
       <div className="flex size-full items-center justify-between gap-4">
         <div className="flex-1">
           {!!toolbarControls ? (
@@ -90,24 +99,33 @@ export function BlockViewerToolbar({
         <div className="hidden items-center justify-between lg:group-has-data-[slot=block-viewer-display]/block-viewer:flex">
           <ToggleGroup
             className="bg-background flex gap-0.5 rounded-lg border p-0.5"
-            type="single"
-            value={toggleValue}
             onValueChange={(value) => {
               if (value && resizablePanelRef?.current) {
                 resizablePanelRef.current.resize(parseInt(value));
                 setToggleValue(value);
               }
             }}
+            type="single"
+            value={toggleValue}
           >
-            <ToggleGroupItem value="100" className="flex size-7 items-center justify-center p-1">
+            <ToggleGroupItem
+              className="flex size-7 items-center justify-center p-1"
+              value="100"
+            >
               <Monitor className="size-4" />
             </ToggleGroupItem>
 
-            <ToggleGroupItem value="60" className="flex size-7 items-center justify-center p-1">
+            <ToggleGroupItem
+              className="flex size-7 items-center justify-center p-1"
+              value="60"
+            >
               <Tablet className="size-4" />
             </ToggleGroupItem>
 
-            <ToggleGroupItem value="30" className="flex size-7 items-center justify-center p-1">
+            <ToggleGroupItem
+              className="flex size-7 items-center justify-center p-1"
+              value="30"
+            >
               <Smartphone className="size-4" />
             </ToggleGroupItem>
           </ToggleGroup>
@@ -145,20 +163,23 @@ export function BlockViewerDisplay({
   return (
     <ComponentErrorBoundary name={name}>
       <div
-        id={name}
-        data-slot="block-viewer-display"
-        data-name={name.toLowerCase()}
         className={cn("size-full min-h-0 gap-4 overflow-hidden", className)}
+        data-name={name.toLowerCase()}
+        data-slot="block-viewer-display"
+        id={name}
         {...props}
       >
-        <ResizablePanelGroup direction="horizontal" className="relative isolate z-10 size-full">
+        <ResizablePanelGroup
+          className="relative isolate z-10 size-full"
+          direction="horizontal"
+        >
           <div className="bg-muted absolute inset-0 right-3 [background-image:radial-gradient(var(--muted-foreground),transparent_1px)] [background-size:1rem_1rem] opacity-60 dark:opacity-35" />
 
           <ResizablePanel
-            ref={resizablePanelRef}
             className="bg-background relative min-w-[350px] lg:aspect-auto"
             defaultSize={100}
             minSize={30}
+            ref={resizablePanelRef}
           >
             {children}
           </ResizablePanel>

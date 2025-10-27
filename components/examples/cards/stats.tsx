@@ -2,7 +2,13 @@
 
 import { Area, AreaChart, Line, LineChart } from "recharts";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 
 const data = [
@@ -61,7 +67,7 @@ export function CardsStats() {
           <CardDescription>+20.1% from last month</CardDescription>
         </CardHeader>
         <CardContent className="pb-0">
-          <ChartContainer config={chartConfig} className="h-[90px] w-full">
+          <ChartContainer className="h-[90px] w-full" config={chartConfig}>
             <LineChart
               data={data}
               margin={{
@@ -72,13 +78,13 @@ export function CardsStats() {
               }}
             >
               <Line
-                type="monotone"
-                strokeWidth={2}
-                dataKey="revenue"
-                stroke="var(--color-revenue)"
                 activeDot={{
                   r: 6,
                 }}
+                dataKey="revenue"
+                stroke="var(--color-revenue)"
+                strokeWidth={2}
+                type="monotone"
               />
             </LineChart>
           </ChartContainer>
@@ -91,14 +97,17 @@ export function CardsStats() {
           <CardDescription>+180.1% from last month</CardDescription>
         </CardHeader>
         <CardContent className="relative mt-auto flex-1 p-0">
-          <ChartContainer config={chartConfig} className="relative size-full h-[90px]">
+          <ChartContainer
+            className="relative size-full h-[90px]"
+            config={chartConfig}
+          >
             <AreaChart
+              className="size-fit"
               data={data}
               margin={{
                 left: 0,
                 right: 0,
               }}
-              className="size-fit"
             >
               <Area
                 dataKey="subscription"

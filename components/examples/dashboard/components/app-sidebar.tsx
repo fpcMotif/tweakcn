@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
@@ -16,6 +15,7 @@ import {
   SettingsIcon,
   UsersIcon,
 } from "lucide-react";
+import * as React from "react";
 
 import { NavDocuments } from "@/components/examples/dashboard/components/nav-documents";
 import { NavMain } from "@/components/examples/dashboard/components/nav-main";
@@ -169,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavSecondary className="mt-auto" items={data.navSecondary} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

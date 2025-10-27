@@ -1,7 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import { getMyUsageChartData, getMyUsageStats } from "@/actions/ai-usage";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -9,10 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getMyUsageStats, getMyUsageChartData } from "@/actions/ai-usage";
 
 type Timeframe = "1d" | "7d" | "30d";
 
@@ -70,7 +74,10 @@ export function UsageStats() {
   const formatDate = (dateString: string, timeframe: Timeframe) => {
     const date = new Date(dateString);
     if (timeframe === "1d") {
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     }
     return date.toLocaleDateString([], { month: "short", day: "numeric" });
   };
@@ -78,7 +85,10 @@ export function UsageStats() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-end">
-        <Select value={timeframe} onValueChange={(value: Timeframe) => setTimeframe(value)}>
+        <Select
+          onValueChange={(value: Timeframe) => setTimeframe(value)}
+          value={timeframe}
+        >
           <SelectTrigger className="w-[160px]">
             <SelectValue />
           </SelectTrigger>
@@ -99,7 +109,9 @@ export function UsageStats() {
             </div>
           ) : (
             <div className="space-y-1">
-              <div className="text-3xl font-bold tracking-tight">{stats?.requests || 0}</div>
+              <div className="text-3xl font-bold tracking-tight">
+                {stats?.requests || 0}
+              </div>
               <p className="text-muted-foreground text-sm">
                 requests in {timeframeLabels[timeframe].toLowerCase()}
               </p>
@@ -118,14 +130,14 @@ export function UsageStats() {
               <Skeleton className="h-[200px] w-full rounded-md" />
             </div>
           ) : chartData.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[200px] w-full">
+            <ChartContainer className="h-[200px] w-full" config={chartConfig}>
               <BarChart data={chartData}>
                 <XAxis
+                  axisLine={false}
+                  className="text-xs"
                   dataKey="date"
                   tickFormatter={(value) => formatDate(value, timeframe)}
-                  axisLine={false}
                   tickLine={false}
-                  className="text-xs"
                 />
                 <YAxis hide />
                 <ChartTooltip
@@ -142,7 +154,9 @@ export function UsageStats() {
           ) : (
             <div className="flex h-[200px] items-center justify-center">
               <div className="text-center">
-                <p className="text-muted-foreground text-sm">No usage data available</p>
+                <p className="text-muted-foreground text-sm">
+                  No usage data available
+                </p>
                 <p className="text-muted-foreground mt-1 text-xs">
                   Make some AI requests to see your usage statistics
                 </p>

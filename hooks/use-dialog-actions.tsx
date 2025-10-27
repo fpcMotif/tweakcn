@@ -1,3 +1,5 @@
+import { usePostHog } from "posthog-js/react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { CodePanelDialog } from "@/components/editor/code-panel-dialog";
 import CssImportDialog from "@/components/editor/css-import-dialog";
 import { ShareDialog } from "@/components/editor/share-dialog";
@@ -11,8 +13,6 @@ import { useAuthStore } from "@/store/auth-store";
 import { useEditorStore } from "@/store/editor-store";
 import { useThemePresetStore } from "@/store/theme-preset-store";
 import { parseCssInput } from "@/utils/parse-css-input";
-import { usePostHog } from "posthog-js/react";
-import { createContext, ReactNode, useContext, useState } from "react";
 
 interface DialogActionsContextType {
   // Dialog states
@@ -47,8 +47,12 @@ function useDialogActionsStore(): DialogActionsContextType {
   const [shareUrl, setShareUrl] = useState("");
   const [dialogKey, _setDialogKey] = useState(0);
 
-  const { themeState, setThemeState, applyThemePreset, hasThemeChangedFromCheckpoint } =
-    useEditorStore();
+  const {
+    themeState,
+    setThemeState,
+    applyThemePreset,
+    hasThemeChangedFromCheckpoint,
+  } = useEditorStore();
   const { getPreset } = useThemePresetStore();
   const { data: session } = authClient.useSession();
   const { openAuthDialog } = useAuthStore();
@@ -86,7 +90,10 @@ function useDialogActionsStore(): DialogActionsContextType {
 
   const handleSaveClick = (options?: { shareAfterSave?: boolean }) => {
     if (!session) {
-      openAuthDialog("signin", options?.shareAfterSave ? "SAVE_THEME_FOR_SHARE" : "SAVE_THEME");
+      openAuthDialog(
+        "signin",
+        options?.shareAfterSave ? "SAVE_THEME_FOR_SHARE" : "SAVE_THEME"
+      );
       return;
     }
 
@@ -118,7 +125,10 @@ function useDialogActionsStore(): DialogActionsContextType {
         setSaveDialogOpen(false);
       }, 50);
     } catch (error) {
-      console.error("Save operation failed (error likely handled by hook):", error);
+      console.error(
+        "Save operation failed (error likely handled by hook):",
+        error
+      );
     }
   };
 
@@ -180,7 +190,8 @@ function useDialogActionsStore(): DialogActionsContextType {
   return value;
 }
 
-export const DialogActionsContext = createContext<DialogActionsContextType | null>(null);
+export const DialogActionsContext =
+  createContext<DialogActionsContextType | null>(null);
 
 export function DialogActionsProvider({ children }: { children: ReactNode }) {
   const { themeState } = useEditorStore();
@@ -192,24 +203,24 @@ export function DialogActionsProvider({ children }: { children: ReactNode }) {
 
       {/* Global Dialogs */}
       <CssImportDialog
-        open={store.cssImportOpen}
-        onOpenChange={store.setCssImportOpen}
         onImport={store.handleCssImport}
+        onOpenChange={store.setCssImportOpen}
+        open={store.cssImportOpen}
       />
       <CodePanelDialog
-        open={store.codePanelOpen}
         onOpenChange={store.setCodePanelOpen}
+        open={store.codePanelOpen}
         themeEditorState={themeState}
       />
       <ThemeSaveDialog
-        open={store.saveDialogOpen}
+        isSaving={store.isCreatingTheme}
         onOpenChange={store.setSaveDialogOpen}
         onSave={store.saveTheme}
-        isSaving={store.isCreatingTheme}
+        open={store.saveDialogOpen}
       />
       <ShareDialog
-        open={store.shareDialogOpen}
         onOpenChange={store.setShareDialogOpen}
+        open={store.shareDialogOpen}
         url={store.shareUrl}
       />
     </DialogActionsContext>
@@ -220,7 +231,9 @@ export function useDialogActions(): DialogActionsContextType {
   const context = useContext(DialogActionsContext);
 
   if (!context) {
-    throw new Error("useDialogActions must be used within a DialogActionsProvider");
+    throw new Error(
+      "useDialogActions must be used within a DialogActionsProvider"
+    );
   }
 
   return context;

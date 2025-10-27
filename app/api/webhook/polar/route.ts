@@ -1,6 +1,6 @@
+import { Webhooks } from "@polar-sh/nextjs";
 import { db } from "@/db";
 import { subscription } from "@/db/schema";
-import { Webhooks } from "@polar-sh/nextjs";
 
 function safeParseDate(value: string | Date | null | undefined): Date | null {
   if (!value) return null;
@@ -36,7 +36,8 @@ export const POST = Webhooks({
           currency: data.currency,
           recurringInterval: data.recurringInterval,
           status: data.status,
-          currentPeriodStart: safeParseDate(data.currentPeriodStart) || new Date(),
+          currentPeriodStart:
+            safeParseDate(data.currentPeriodStart) || new Date(),
           currentPeriodEnd: safeParseDate(data.currentPeriodEnd) || new Date(),
           cancelAtPeriodEnd: data.cancelAtPeriodEnd || false,
           canceledAt: safeParseDate(data.canceledAt),
@@ -50,7 +51,9 @@ export const POST = Webhooks({
           customerCancellationReason: data.customerCancellationReason || null,
           customerCancellationComment: data.customerCancellationComment || null,
           metadata: data.metadata ? JSON.stringify(data.metadata) : null,
-          customFieldData: data.customFieldData ? JSON.stringify(data.customFieldData) : null,
+          customFieldData: data.customFieldData
+            ? JSON.stringify(data.customFieldData)
+            : null,
           userId: userId as string | null,
         };
 
@@ -83,8 +86,10 @@ export const POST = Webhooks({
               productId: subscriptionData.productId,
               discountId: subscriptionData.discountId,
               checkoutId: subscriptionData.checkoutId,
-              customerCancellationReason: subscriptionData.customerCancellationReason,
-              customerCancellationComment: subscriptionData.customerCancellationComment,
+              customerCancellationReason:
+                subscriptionData.customerCancellationReason,
+              customerCancellationComment:
+                subscriptionData.customerCancellationComment,
               metadata: subscriptionData.metadata,
               customFieldData: subscriptionData.customFieldData,
               userId: subscriptionData.userId,

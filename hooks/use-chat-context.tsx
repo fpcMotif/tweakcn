@@ -1,16 +1,15 @@
 "use client";
 
-import { SUBSCRIPTION_STATUS_QUERY_KEY } from "@/hooks/use-subscription";
-import { toast } from "@/hooks/use-toast";
-import { useAIChatStore } from "@/store/ai-chat-store";
-import { ChatMessage } from "@/types/ai";
-import { applyGeneratedTheme } from "@/utils/ai/apply-theme";
-
-import { parseAiSdkTransportError } from "@/lib/ai/parse-ai-sdk-transport-error";
 import { useChat } from "@ai-sdk/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { DefaultChatTransport } from "ai";
 import { createContext, useContext, useEffect, useRef } from "react";
+import { SUBSCRIPTION_STATUS_QUERY_KEY } from "@/hooks/use-subscription";
+import { toast } from "@/hooks/use-toast";
+import { parseAiSdkTransportError } from "@/lib/ai/parse-ai-sdk-transport-error";
+import { useAIChatStore } from "@/store/ai-chat-store";
+import { ChatMessage } from "@/types/ai";
+import { applyGeneratedTheme } from "@/utils/ai/apply-theme";
 
 interface ChatContext extends ReturnType<typeof useChat<ChatMessage>> {
   startNewChat: () => void;
@@ -48,7 +47,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       }
     },
     onFinish: () => {
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_STATUS_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [SUBSCRIPTION_STATUS_QUERY_KEY],
+      });
     },
   });
 
@@ -84,7 +85,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   }, [hasStoreHydrated, storedMessages]);
 
   return (
-    <ChatContext.Provider value={{ ...chat, startNewChat, resetMessagesUpToIndex }}>
+    <ChatContext.Provider
+      value={{ ...chat, startNewChat, resetMessagesUpToIndex }}
+    >
       {children}
     </ChatContext.Provider>
   );

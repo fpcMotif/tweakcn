@@ -1,10 +1,15 @@
 "use client";
 
+import { ArrowUpIcon, CheckIcon, PlusIcon } from "lucide-react";
 import * as React from "react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import {
   Command,
   CommandEmpty,
@@ -22,9 +27,13 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from "@/components/ui/revola";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { ArrowUpIcon, CheckIcon, PlusIcon } from "lucide-react";
 
 const users = [
   {
@@ -87,7 +96,7 @@ export function CardsChat() {
         <CardHeader className="flex flex-row items-center">
           <div className="flex items-center gap-4">
             <Avatar className="border">
-              <AvatarImage src="/avatars/01.png" alt="Image" />
+              <AvatarImage alt="Image" src="/avatars/01.png" />
               <AvatarFallback>S</AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-0.5">
@@ -99,10 +108,10 @@ export function CardsChat() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  size="icon"
-                  variant="secondary"
                   className="ml-auto size-8 rounded-full"
                   onClick={() => setOpen(true)}
+                  size="icon"
+                  variant="secondary"
                 >
                   <PlusIcon />
                   <span className="sr-only">New message</span>
@@ -116,13 +125,13 @@ export function CardsChat() {
           <div className="flex flex-col gap-4">
             {messages.map((message, index) => (
               <div
-                key={index}
                 className={cn(
                   "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
                   message.role === "user"
                     ? "bg-primary text-primary-foreground ml-auto"
                     : "bg-muted"
                 )}
+                key={index}
               >
                 {message.content}
               </div>
@@ -131,6 +140,7 @@ export function CardsChat() {
         </CardContent>
         <CardFooter>
           <form
+            className="relative w-full"
             onSubmit={(event) => {
               event.preventDefault();
               if (inputLength === 0) return;
@@ -143,21 +153,20 @@ export function CardsChat() {
               ]);
               setInput("");
             }}
-            className="relative w-full"
           >
             <Input
-              id="message"
-              placeholder="Type your message..."
-              className="flex-1 pr-10"
               autoComplete="off"
-              value={input}
+              className="flex-1 pr-10"
+              id="message"
               onChange={(event) => setInput(event.target.value)}
+              placeholder="Type your message..."
+              value={input}
             />
             <Button
-              type="submit"
-              size="icon"
               className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full"
               disabled={inputLength === 0}
+              size="icon"
+              type="submit"
             >
               <ArrowUpIcon className="size-3.5" />
               <span className="sr-only">Send</span>
@@ -165,12 +174,13 @@ export function CardsChat() {
           </form>
         </CardFooter>
       </Card>
-      <ResponsiveDialog open={open} onOpenChange={setOpen}>
+      <ResponsiveDialog onOpenChange={setOpen} open={open}>
         <ResponsiveDialogContent className="flex max-h-[85%] flex-col gap-0">
           <ResponsiveDialogHeader className="p-4 pt-0 sm:pt-5">
             <ResponsiveDialogTitle>New message</ResponsiveDialogTitle>
             <ResponsiveDialogDescription>
-              Invite a user to this thread. This will create a new group message.
+              Invite a user to this thread. This will create a new group
+              message.
             </ResponsiveDialogDescription>
           </ResponsiveDialogHeader>
 
@@ -181,27 +191,35 @@ export function CardsChat() {
               <CommandGroup>
                 {users.map((user) => (
                   <CommandItem
-                    key={user.email}
-                    data-active={selectedUsers.includes(user)}
                     className="gap-2 data-[active=true]:opacity-50"
+                    data-active={selectedUsers.includes(user)}
+                    key={user.email}
                     onSelect={() => {
                       if (selectedUsers.includes(user)) {
                         return setSelectedUsers(
-                          selectedUsers.filter((selectedUser) => selectedUser !== user)
+                          selectedUsers.filter(
+                            (selectedUser) => selectedUser !== user
+                          )
                         );
                       }
                       return setSelectedUsers(
-                        [...users].filter((u) => [...selectedUsers, user].includes(u))
+                        [...users].filter((u) =>
+                          [...selectedUsers, user].includes(u)
+                        )
                       );
                     }}
                   >
                     <Avatar className="size-7.5 border">
-                      <AvatarImage src={user.avatar} alt="Image" />
+                      <AvatarImage alt="Image" src={user.avatar} />
                       <AvatarFallback>{user.name[0]}</AvatarFallback>
                     </Avatar>
                     <div className="ml-2">
-                      <p className="text-sm leading-none font-medium">{user.name}</p>
-                      <p className="text-muted-foreground text-sm">{user.email}</p>
+                      <p className="text-sm leading-none font-medium">
+                        {user.name}
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        {user.email}
+                      </p>
                     </div>
                     {selectedUsers.includes(user) ? (
                       <CheckIcon className="text-primary ml-auto flex size-4" />
@@ -216,20 +234,25 @@ export function CardsChat() {
             {selectedUsers.length > 0 ? (
               <div className="flex -space-x-2 overflow-hidden">
                 {selectedUsers.map((user) => (
-                  <Avatar key={user.email} className="inline-block size-7.5 border">
+                  <Avatar
+                    className="inline-block size-7.5 border"
+                    key={user.email}
+                  >
                     <AvatarImage src={user.avatar} />
                     <AvatarFallback>{user.name[0]}</AvatarFallback>
                   </Avatar>
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground text-sm">Select users to add to this thread.</p>
+              <p className="text-muted-foreground text-sm">
+                Select users to add to this thread.
+              </p>
             )}
             <Button
+              disabled={selectedUsers.length < 2}
               onClick={() => {
                 setOpen(false);
               }}
-              disabled={selectedUsers.length < 2}
             >
               Continue
             </Button>

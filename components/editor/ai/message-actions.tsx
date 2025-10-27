@@ -1,10 +1,10 @@
+import { Edit, RefreshCw } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { DebugButton } from "@/components/debug-button";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { type ChatMessage } from "@/types/ai";
-import { Edit, RefreshCw } from "lucide-react";
 
 type MessageActionsProps = {
   message: ChatMessage;
@@ -35,7 +35,10 @@ export function MessageActions({
     };
 
     if (isUser && message.metadata) {
-      return message.metadata.promptData?.content ?? convertTextPartsToString(message);
+      return (
+        message.metadata.promptData?.content ??
+        convertTextPartsToString(message)
+      );
     }
 
     return convertTextPartsToString(message);
@@ -50,13 +53,13 @@ export function MessageActions({
       )}
     >
       {onRetry && (
-        <TooltipWrapper label="Retry" asChild>
+        <TooltipWrapper asChild label="Retry">
           <Button
-            size="icon"
-            variant="ghost"
             className="size-7 [&>svg]:size-3.5"
             disabled={isGeneratingTheme}
             onClick={onRetry}
+            size="icon"
+            variant="ghost"
           >
             <RefreshCw />
           </Button>
@@ -64,20 +67,23 @@ export function MessageActions({
       )}
 
       {onEdit && isUser && (
-        <TooltipWrapper label="Edit" asChild>
+        <TooltipWrapper asChild label="Edit">
           <Button
-            size="icon"
-            variant="ghost"
             className="size-7 [&>svg]:size-3.5"
             disabled={isGeneratingTheme || isEditing}
             onClick={onEdit}
+            size="icon"
+            variant="ghost"
           >
             <Edit />
           </Button>
         </TooltipWrapper>
       )}
 
-      <CopyButton textToCopy={getCopyContent()} className="size-7 [&>svg]:size-3.5" />
+      <CopyButton
+        className="size-7 [&>svg]:size-3.5"
+        textToCopy={getCopyContent()}
+      />
 
       <DebugButton
         className="size-7 [&>svg]:size-3.5"

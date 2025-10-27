@@ -1,15 +1,16 @@
 "use client";
 
-import { Theme } from "@/types/theme"; // Assuming Theme type includes foreground colors
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+  Copy,
+  Edit,
+  ExternalLink,
+  Loader2,
+  MoreVertical,
+  Trash2,
+  Zap,
+} from "lucide-react";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,12 +21,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { MoreVertical, Trash2, Edit, Loader2, Zap, ExternalLink, Copy } from "lucide-react";
-import { useMemo, useState } from "react";
-import { useEditorStore } from "@/store/editor-store";
-import { useDeleteTheme } from "@/hooks/themes";
-import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "@/components/ui/use-toast";
+import { useDeleteTheme } from "@/hooks/themes";
+import { cn } from "@/lib/utils";
+import { useEditorStore } from "@/store/editor-store";
+import { Theme } from "@/types/theme"; // Assuming Theme type includes foreground colors
+
 interface ThemeCardProps {
   theme: Theme;
   className?: string;
@@ -85,7 +94,10 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
       // Get background color, fallback to a default if necessary (e.g., white)
       bg: theme.styles[mode][def.bgKey] || "#ffffff",
       // Get foreground color, fallback to main foreground or a default (e.g., black)
-      fg: theme.styles[mode][def.fgKey] || theme.styles[mode].foreground || "#000000",
+      fg:
+        theme.styles[mode][def.fgKey] ||
+        theme.styles[mode].foreground ||
+        "#000000",
     }));
   }, [mode, theme.styles]);
 
@@ -100,11 +112,11 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
         {colorSwatches.map((swatch) => (
           <div
             // Use a combination for a more robust key
-            key={swatch.name + swatch.bg}
             className={cn(
               "group/swatch relative h-full flex-1 transition-all duration-300 ease-in-out",
               "hover:flex-grow-[1.5]"
             )}
+            key={swatch.name + swatch.bg}
             style={{ backgroundColor: swatch.bg }}
           >
             <div
@@ -124,7 +136,9 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
 
       <div className="bg-background flex items-center justify-between p-4">
         <div>
-          <h3 className={cn("text-foreground text-sm font-medium")}>{theme.name}</h3>
+          <h3 className={cn("text-foreground text-sm font-medium")}>
+            {theme.name}
+          </h3>
           <p className="text-muted-foreground text-xs">
             {new Date(theme.createdAt).toLocaleDateString("en-US", {
               day: "numeric",
@@ -140,7 +154,7 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-popover w-48">
-            <DropdownMenuItem onClick={handleQuickApply} className="gap-2">
+            <DropdownMenuItem className="gap-2" onClick={handleQuickApply}>
               <Zap className="h-4 w-4" />
               Quick Apply
             </DropdownMenuItem>
@@ -156,15 +170,15 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
                 Edit Theme
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleShare} className="gap-2">
+            <DropdownMenuItem className="gap-2" onClick={handleShare}>
               <Copy className="h-4 w-4" />
               Copy URL
             </DropdownMenuItem>
             <DropdownMenuSeparator className="mx-2" />
             <DropdownMenuItem
-              onClick={handleDelete}
               className="text-destructive focus:text-destructive gap-2"
               disabled={deleteThemeMutation.isPending}
+              onClick={handleDelete}
             >
               {deleteThemeMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -177,20 +191,23 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
         </DropdownMenu>
       </div>
 
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+      <AlertDialog onOpenChange={setShowDeleteDialog} open={showDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete your {theme.name} theme?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Are you sure you want to delete your {theme.name} theme?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your theme.
+              This action cannot be undone. This will permanently delete your
+              theme.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleConfirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               disabled={deleteThemeMutation.isPending}
+              onClick={handleConfirmDelete}
             >
               {deleteThemeMutation.isPending ? (
                 <>
@@ -198,7 +215,7 @@ export function ThemeCard({ theme, className }: ThemeCardProps) {
                   Deleting...
                 </>
               ) : (
-                'Delete'
+                "Delete"
               )}
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -1,6 +1,6 @@
+import { COMMON_STYLES, defaultThemeState } from "@/config/theme";
 import { ThemeStyleProps } from "@/types/theme";
 import { colorFormatter } from "./color-converter";
-import { COMMON_STYLES, defaultThemeState } from "@/config/theme";
 
 export const variableNames = Object.keys(defaultThemeState.styles.light);
 const nonColorVariables = COMMON_STYLES;

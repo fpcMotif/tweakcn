@@ -1,3 +1,5 @@
+import { AlertTriangle, Check, Contrast, Moon, Sun } from "lucide-react";
+import { useState } from "react";
 import { useTheme } from "@/components/theme-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,8 +15,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { ThemeStyleProps } from "@/types/theme";
-import { AlertTriangle, Check, Contrast, Moon, Sun } from "lucide-react";
-import { useState } from "react";
 import { useContrastChecker } from "../../hooks/use-contrast-checker";
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -189,7 +189,7 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
   return (
     <ResponsiveDialog>
       <ResponsiveDialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="w-full justify-start px-2">
+        <Button className="w-full justify-start px-2" size="sm" variant="ghost">
           <Contrast className="h-4 w-4" />
           <span className="text-sm">Contrast</span>
         </Button>
@@ -199,12 +199,13 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
           <ResponsiveDialogHeader className="text-left">
             <ResponsiveDialogTitle>Contrast Checker</ResponsiveDialogTitle>
             <ResponsiveDialogDescription>
-              WCAG 2.0 AA requires a contrast ratio of at least {MIN_CONTRAST_RATIO}:1{" • "}
+              WCAG 2.0 AA requires a contrast ratio of at least{" "}
+              {MIN_CONTRAST_RATIO}:1{" • "}
               <a
-                href="https://www.w3.org/TR/WCAG21/"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="text-primary hover:text-primary/80 underline transition-colors"
+                href="https://www.w3.org/TR/WCAG21/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 Learn more
               </a>
@@ -215,9 +216,9 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  variant="ghost"
-                  size="sm"
                   onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
+                  size="sm"
+                  variant="ghost"
                 >
                   {theme === "light" ? (
                     <Sun className="h-3.5 w-3.5" />
@@ -231,17 +232,17 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
               </TooltipContent>
             </Tooltip>
             <Button
-              variant={filter === "all" ? "default" : "outline"}
-              size="sm"
               onClick={() => setFilter("all")}
+              size="sm"
+              variant={filter === "all" ? "default" : "outline"}
             >
               All
             </Button>
             <Button
-              size="sm"
               disabled={totalIssues === 0}
-              variant={filter === "issues" ? "default" : "outline"}
               onClick={() => setFilter("issues")}
+              size="sm"
+              variant={filter === "issues" ? "default" : "outline"}
             >
               <AlertTriangle className={cn("mr-1 h-3 w-3")} />
               Issues ({totalIssues})
@@ -252,7 +253,7 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
         <ScrollArea className="relative flex flex-1 flex-col">
           <div className="space-y-6 px-6">
             {groupedPairs.map((group) => (
-              <div key={group.category} className="">
+              <div className="" key={group.category}>
                 <div className="bg-background sticky -top-px z-10 flex items-center gap-2 pb-4 sm:rounded-b-xl">
                   <h2 className="text-md font-semibold">{group.label}</h2>
                   <Separator className="flex-1" />
@@ -264,11 +265,15 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
                     const isValid =
                       result?.contrastRatio !== undefined &&
                       result?.contrastRatio >= MIN_CONTRAST_RATIO;
-                    const contrastRatio = result?.contrastRatio?.toFixed(2) ?? "N/A";
+                    const contrastRatio =
+                      result?.contrastRatio?.toFixed(2) ?? "N/A";
                     return (
                       <Card
+                        className={cn(
+                          "transition-all duration-200",
+                          !isValid && "border-dashed"
+                        )}
                         key={pair.id}
-                        className={cn("transition-all duration-200", !isValid && "border-dashed")}
                       >
                         <CardContent className="p-4">
                           <div className="mb-3 flex items-center justify-between">
@@ -279,16 +284,18 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
                               )}
                             >
                               {pair.label}
-                              {!isValid && <AlertTriangle className="ml-1 size-3.5" />}
+                              {!isValid && (
+                                <AlertTriangle className="ml-1 size-3.5" />
+                              )}
                             </h3>
                             <Badge
-                              variant={isValid ? "default" : "destructive"}
                               className={cn(
                                 "flex items-center gap-1 text-xs",
                                 isValid
                                   ? "bg-muted text-muted-foreground"
                                   : "bg-destructive text-destructive-foreground"
                               )}
+                              variant={isValid ? "default" : "destructive"}
                             >
                               {isValid ? (
                                 <>
@@ -307,13 +314,16 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
                             <div className="flex flex-1 flex-col items-center gap-3">
                               <div className="flex w-full items-center gap-3">
                                 <div
-                                  style={{
-                                    backgroundColor: pair.background ?? "#000000",
-                                  }}
                                   className="h-12 w-12 flex-shrink-0 rounded-md border shadow-sm"
+                                  style={{
+                                    backgroundColor:
+                                      pair.background ?? "#000000",
+                                  }}
                                 ></div>
                                 <div className="flex flex-col">
-                                  <span className="text-xs font-medium">Background</span>
+                                  <span className="text-xs font-medium">
+                                    Background
+                                  </span>
                                   <span className="text-muted-foreground font-mono text-xs">
                                     {pair.background}
                                   </span>
@@ -321,13 +331,16 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
                               </div>
                               <div className="flex w-full items-center gap-3">
                                 <div
-                                  style={{
-                                    backgroundColor: pair.foreground ?? "#ffffff",
-                                  }}
                                   className="h-12 w-12 flex-shrink-0 rounded-md border shadow-sm"
+                                  style={{
+                                    backgroundColor:
+                                      pair.foreground ?? "#ffffff",
+                                  }}
                                 ></div>
                                 <div className="flex flex-col">
-                                  <span className="text-xs font-medium">Foreground</span>
+                                  <span className="text-xs font-medium">
+                                    Foreground
+                                  </span>
                                   <span className="text-muted-foreground font-mono text-xs">
                                     {pair.foreground}
                                   </span>
@@ -335,28 +348,31 @@ const ContrastChecker = ({ currentStyles }: ContrastCheckerProps) => {
                               </div>
                             </div>
                             <div
-                              style={{
-                                backgroundColor: pair.background ?? "transparent",
-                              }}
                               className="flex h-full min-h-[120px] flex-1 items-center justify-center overflow-hidden rounded-lg border shadow-sm"
+                              style={{
+                                backgroundColor:
+                                  pair.background ?? "transparent",
+                              }}
                             >
                               {pair.foreground && pair.background ? (
                                 <div className="p-4 text-center">
                                   <p
-                                    style={{ color: pair.foreground }}
                                     className="mb-2 text-4xl font-bold tracking-wider"
+                                    style={{ color: pair.foreground }}
                                   >
                                     Aa
                                   </p>
                                   <p
-                                    style={{ color: pair.foreground }}
                                     className="text-sm font-medium"
+                                    style={{ color: pair.foreground }}
                                   >
                                     Sample Text
                                   </p>
                                 </div>
                               ) : (
-                                <p className="text-muted-foreground text-xs">Preview</p>
+                                <p className="text-muted-foreground text-xs">
+                                  Preview
+                                </p>
                               )}
                             </div>
                           </div>

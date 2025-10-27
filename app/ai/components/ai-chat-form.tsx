@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUp, Loader, StopCircle } from "lucide-react";
 import { AIChatFormBody } from "@/components/editor/ai/ai-chat-form-body";
 import { AlertBanner } from "@/components/editor/ai/alert-banner";
 import { EnhancePromptButton } from "@/components/editor/ai/enhance-prompt-button";
@@ -13,7 +14,6 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { MAX_IMAGE_FILES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { AIPromptData } from "@/types/ai";
-import { ArrowUp, Loader, StopCircle } from "lucide-react";
 
 export function AIChatForm({
   onThemeGeneration,
@@ -44,14 +44,20 @@ export function AIChatForm({
   const isPro = subscriptionStatus?.isSubscribed ?? false;
   const hasFreeRequestsLeft = (subscriptionStatus?.requestsRemaining ?? 0) > 0;
 
-  const { startEnhance, stopEnhance, enhancedPromptAsJsonContent, isEnhancingPrompt } =
-    useAIEnhancePrompt();
+  const {
+    startEnhance,
+    stopEnhance,
+    enhancedPromptAsJsonContent,
+    isEnhancingPrompt,
+  } = useAIEnhancePrompt();
 
   const handleEnhancePrompt = () => {
     if (!checkValidSession() || !checkValidSubscription()) return;
 
     // Only send images that are not loading, and strip loading property
-    const images = uploadedImages.filter((img) => !img.loading).map(({ url }) => ({ url }));
+    const images = uploadedImages
+      .filter((img) => !img.loading)
+      .map(({ url }) => ({ url }));
     startEnhance({ ...promptData, images });
   };
 
@@ -59,7 +65,9 @@ export function AIChatForm({
     if (!checkValidSession() || !checkValidSubscription()) return; // Act as an early return
 
     // Only send images that are not loading, and strip loading property
-    const images = uploadedImages.filter((img) => !img.loading).map(({ url }) => ({ url }));
+    const images = uploadedImages
+      .filter((img) => !img.loading)
+      .map(({ url }) => ({ url }));
 
     // Proceed only if there is text, or at least one image
     if (isEmptyPrompt && images.length === 0) return;
@@ -80,8 +88,6 @@ export function AIChatForm({
 
       <div className="bg-background relative z-10 flex size-full min-h-[100px] flex-1 flex-col gap-2 overflow-hidden rounded-lg border p-2 shadow-xs">
         <AIChatFormBody
-          isUserDragging={isUserDragging}
-          disabled={isEnhancingPrompt}
           canSubmit={
             !isGeneratingTheme &&
             !isEnhancingPrompt &&
@@ -89,42 +95,43 @@ export function AIChatForm({
             !isSomeImageUploading &&
             !isInitializing
           }
-          uploadedImages={uploadedImages}
-          handleImagesUpload={handleImagesUpload}
-          handleImageRemove={handleImageRemove}
+          disabled={isEnhancingPrompt}
+          externalEditorContent={enhancedPromptAsJsonContent}
           handleContentChange={handleContentChange}
           handleGenerate={handleGenerate}
+          handleImageRemove={handleImageRemove}
+          handleImagesUpload={handleImagesUpload}
           initialEditorContent={editorContentDraft ?? undefined}
-          textareaKey={editorContentDraft ? "with-draft" : "no-draft"}
-          externalEditorContent={enhancedPromptAsJsonContent}
           isStreamingContent={isEnhancingPrompt}
+          isUserDragging={isUserDragging}
+          textareaKey={editorContentDraft ? "with-draft" : "no-draft"}
+          uploadedImages={uploadedImages}
         />
 
         <div className="flex items-center justify-between gap-2">
           <div className="flex w-full max-w-64 items-center gap-2 overflow-hidden">
             <ThemePresetSelect
-              disabled={isGeneratingTheme || isEnhancingPrompt || isInitializing}
-              withCycleThemes={false}
-              variant="outline"
-              size="sm"
               className="shadow-none"
+              disabled={
+                isGeneratingTheme || isEnhancingPrompt || isInitializing
+              }
+              size="sm"
+              variant="outline"
+              withCycleThemes={false}
             />
           </div>
 
           <div className="flex items-center gap-2">
             {(isPro || hasFreeRequestsLeft) && promptData?.content ? (
               <EnhancePromptButton
+                disabled={isGeneratingTheme || isInitializing}
                 isEnhancing={isEnhancingPrompt}
                 onStart={handleEnhancePrompt}
                 onStop={stopEnhance}
-                disabled={isGeneratingTheme || isInitializing}
               />
             ) : null}
 
             <ImageUploader
-              fileInputRef={fileInputRef}
-              onImagesUpload={handleImagesUpload}
-              onClick={() => fileInputRef.current?.click()}
               disabled={
                 isGeneratingTheme ||
                 isEnhancingPrompt ||
@@ -132,23 +139,27 @@ export function AIChatForm({
                 uploadedImages.some((img) => img.loading) ||
                 uploadedImages.length >= MAX_IMAGE_FILES
               }
+              fileInputRef={fileInputRef}
+              onClick={() => fileInputRef.current?.click()}
+              onImagesUpload={handleImagesUpload}
             />
 
             {isGeneratingTheme ? (
               <Button
-                variant="destructive"
-                size="sm"
+                className={cn(
+                  "flex items-center gap-1",
+                  "@max-[350px]/form:w-8"
+                )}
                 onClick={onCancelThemeGeneration}
-                className={cn("flex items-center gap-1", "@max-[350px]/form:w-8")}
+                size="sm"
+                variant="destructive"
               >
                 <StopCircle />
                 <span className="hidden @[350px]/form:inline-flex">Stop</span>
               </Button>
             ) : (
               <Button
-                size="icon"
                 className="size-8 shadow-none"
-                onClick={handleGenerate}
                 disabled={
                   isEmptyPrompt ||
                   isSomeImageUploading ||
@@ -156,8 +167,14 @@ export function AIChatForm({
                   isEnhancingPrompt ||
                   isInitializing
                 }
+                onClick={handleGenerate}
+                size="icon"
               >
-                {isGeneratingTheme ? <Loader className="animate-spin" /> : <ArrowUp />}
+                {isGeneratingTheme ? (
+                  <Loader className="animate-spin" />
+                ) : (
+                  <ArrowUp />
+                )}
               </Button>
             )}
           </div>

@@ -1,4 +1,8 @@
+import { Calendar, Check, Circle, Mail } from "lucide-react";
+import { Metadata } from "next";
+import Link from "next/link";
 import { NoiseEffect } from "@/components/effects/noise-effect";
+import { Testimonials } from "@/components/home/testimonials";
 import {
   Accordion,
   AccordionContent,
@@ -6,15 +10,17 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { AI_REQUEST_FREE_TIER_LIMIT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { FREE_SUB_FEATURES, PRO_SUB_FEATURES } from "@/utils/subscription";
-import { Calendar, Check, Circle, Mail } from "lucide-react";
-import Link from "next/link";
 import { CheckoutButton } from "./components/checkout-button";
-import { Metadata } from "next";
-import { Testimonials } from "@/components/home/testimonials";
 
 export const metadata: Metadata = {
   title: "Pricing — tweakcn",
@@ -37,7 +43,8 @@ export default function PricingPage() {
             Choose your perfect plan
           </h1>
           <p className="text-muted-foreground mx-auto max-w-3xl text-base text-balance md:text-lg">
-            Start building beautiful themes for free. Upgrade to Pro when you&apos;re ready.
+            Start building beautiful themes for free. Upgrade to Pro when
+            you&apos;re ready.
           </p>
         </section>
 
@@ -50,15 +57,19 @@ export default function PricingPage() {
                 <CardTitle className="text-4xl font-medium">Free</CardTitle>
               </div>
               <div className="flex items-baseline">
-                <span className="text-4xl font-bold tracking-tight lg:text-5xl">$0</span>
+                <span className="text-4xl font-bold tracking-tight lg:text-5xl">
+                  $0
+                </span>
                 <span className="text-muted-foreground text-lg">/month</span>
               </div>
-              <p className="text-muted-foreground text-sm">No credit card required</p>
+              <p className="text-muted-foreground text-sm">
+                No credit card required
+              </p>
             </CardHeader>
             <CardContent className="flex-1 pt-6">
               <ul className="space-y-3">
                 {FREE_SUB_FEATURES.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3">
+                  <li className="flex items-start gap-3" key={index}>
                     <div className="bg-primary/15 flex items-center justify-center rounded-full p-1">
                       {feature.status === "done" ? (
                         <Check className="text-primary size-3 stroke-2" />
@@ -74,9 +85,9 @@ export default function PricingPage() {
             <CardFooter>
               <Button
                 asChild
-                variant="outline"
                 className="hover:bg-muted/50 h-12 w-full text-base font-medium transition-all duration-200"
                 size="lg"
+                variant="outline"
               >
                 <Link href="/editor/theme">Get Started Free</Link>
               </Button>
@@ -93,10 +104,14 @@ export default function PricingPage() {
                   <CardTitle className="text-4xl font-medium">Pro</CardTitle>
                 </div>
                 <div className="flex items-baseline">
-                  <span className="text-4xl font-bold tracking-tight lg:text-5xl">$8</span>
+                  <span className="text-4xl font-bold tracking-tight lg:text-5xl">
+                    $8
+                  </span>
                   <span className="text-muted-foreground text-lg">/month</span>
                 </div>
-                <p className="text-muted-foreground text-sm">Billed monthly • Cancel anytime</p>
+                <p className="text-muted-foreground text-sm">
+                  Billed monthly • Cancel anytime
+                </p>
               </CardHeader>
               <CardContent className="flex-1 pt-6">
                 <p className="text-muted-foreground mb-4 text-sm font-medium">
@@ -104,11 +119,13 @@ export default function PricingPage() {
                 </p>
                 <ul className="space-y-3">
                   {PRO_SUB_FEATURES.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-3">
+                    <li className="flex items-start gap-3" key={index}>
                       <div
                         className={cn(
                           "flex items-center justify-center rounded-full p-1",
-                          feature.status === "done" ? "bg-primary/15" : "bg-muted-foreground/25"
+                          feature.status === "done"
+                            ? "bg-primary/15"
+                            : "bg-muted-foreground/25"
                         )}
                       >
                         {feature.status === "done" ? (
@@ -120,7 +137,9 @@ export default function PricingPage() {
                       <span
                         className={cn(
                           "text-sm font-medium",
-                          feature.status === "done" ? "text-foreground" : "text-muted-foreground"
+                          feature.status === "done"
+                            ? "text-foreground"
+                            : "text-muted-foreground"
                         )}
                       >
                         {feature.description}
@@ -130,7 +149,10 @@ export default function PricingPage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <CheckoutButton size="lg" className="h-12 w-full text-base font-medium" />
+                <CheckoutButton
+                  className="h-12 w-full text-base font-medium"
+                  size="lg"
+                />
               </CardFooter>
             </div>
           </Card>
@@ -147,25 +169,31 @@ export default function PricingPage() {
               FAQs
             </h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-base text-balance md:text-lg">
-              Here&apos;s everything you may want to know. For any other info, just{" "}
-              <Link href="mailto:sahaj@tweakcn.com" className="text-primary hover:underline">
+              Here&apos;s everything you may want to know. For any other info,
+              just{" "}
+              <Link
+                className="text-primary hover:underline"
+                href="mailto:sahaj@tweakcn.com"
+              >
                 reach us
               </Link>
               .
             </p>
           </div>
 
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion className="w-full" collapsible type="single">
             {PRICING_FAQS.map((faq, i) => (
               <AccordionItem
+                className="border-border/40 group border-b py-2"
                 key={i}
                 value={`item-${i}`}
-                className="border-border/40 group border-b py-2"
               >
                 <AccordionTrigger className="group-hover:text-primary text-left font-medium transition-colors hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+                <AccordionContent className="text-muted-foreground">
+                  {faq.answer}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

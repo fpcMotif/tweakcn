@@ -1,17 +1,16 @@
 "use client";
 
-import * as React from "react";
-
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
+import * as React from "react";
 import { Drawer as DrawerPrimitive, Content as VaulDrawerContent } from "vaul";
-
+import useMediaQuery from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 
-import useMediaQuery from "@/hooks/use-media-query";
-
-export type ResponsiveDialogProps = React.ComponentProps<typeof DrawerPrimitive.Root>;
+export type ResponsiveDialogProps = React.ComponentProps<
+  typeof DrawerPrimitive.Root
+>;
 
 type ResponsiveDialogContextProps = {
   modal?: boolean;
@@ -26,7 +25,8 @@ type ResponsiveDialogProviderProps = {
   children: React.ReactNode;
 } & ResponsiveDialogContextProps;
 
-const ResponsiveDialogContext = React.createContext<ResponsiveDialogContextProps | null>(null);
+const ResponsiveDialogContext =
+  React.createContext<ResponsiveDialogContextProps | null>(null);
 const MOBILE_BREAKPOINT = "(min-width: 640px)";
 
 const ResponsiveDialogProvider = ({
@@ -51,7 +51,9 @@ export const useResponsiveDialog = () => {
   const context = React.useContext(ResponsiveDialogContext);
 
   if (!context) {
-    throw new Error("useResponsiveDialog must be used within a <ResponsiveDialog />");
+    throw new Error(
+      "useResponsiveDialog must be used within a <ResponsiveDialog />"
+    );
   }
 
   return context;
@@ -68,41 +70,51 @@ const ResponsiveDialog = ({
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
   ...props
-}: ResponsiveDialogProps & { onlyDrawer?: boolean; onlyDialog?: boolean; alert?: boolean }) => {
+}: ResponsiveDialogProps & {
+  onlyDrawer?: boolean;
+  onlyDialog?: boolean;
+  alert?: boolean;
+}) => {
   const [internalState, setInternalState] = React.useState<boolean>(false);
 
   const isControlledOpen = typeof controlledOpen === "undefined";
   const toggleInternalState = () => setInternalState((prev) => !prev);
 
   const open = isControlledOpen ? internalState : controlledOpen;
-  const onOpenChange = isControlledOpen ? toggleInternalState : controlledOnOpenChange;
+  const onOpenChange = isControlledOpen
+    ? toggleInternalState
+    : controlledOnOpenChange;
 
   const isDesktop = useMediaQuery(MOBILE_BREAKPOINT);
 
   const shouldUseDialog = onlyDialog || (!onlyDrawer && isDesktop);
-  const ResponsiveDialog = shouldUseDialog ? DialogPrimitive.Root : DrawerPrimitive.Root;
+  const ResponsiveDialog = shouldUseDialog
+    ? DialogPrimitive.Root
+    : DrawerPrimitive.Root;
 
   const effectiveModal = alert ? true : modal;
   const effectiveDismissible = alert ? true : dismissible;
 
- const isIOS = typeof window !== "undefined" && /iPad|iPhone|iPod/.test(navigator.userAgent)
+  const isIOS =
+    typeof window !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
   return (
     <ResponsiveDialogProvider
-      modal={effectiveModal}
-      dismissible={effectiveDismissible}
-      direction={direction}
-      onlyDrawer={onlyDrawer}
-      onlyDialog={onlyDialog}
       alert={alert}
+      direction={direction}
+      dismissible={effectiveDismissible}
+      modal={effectiveModal}
+      onlyDialog={onlyDialog}
+      onlyDrawer={onlyDrawer}
     >
       <ResponsiveDialog
-        modal={effectiveModal}
         direction={direction}
         dismissible={effectiveDismissible}
-        shouldScaleBackground={shouldScaleBackground}
-        open={open}
+        modal={effectiveModal}
         onOpenChange={onOpenChange}
+        open={open}
         repositionInputs={!isIOS}
+        shouldScaleBackground={shouldScaleBackground}
         {...props}
       />
     </ResponsiveDialogProvider>
@@ -131,7 +143,9 @@ const ResponsiveDialogPortal = ({
   const isDesktop = useMediaQuery(MOBILE_BREAKPOINT);
 
   const shouldUseDialog = onlyDialog || (!onlyDrawer && isDesktop);
-  const ResponsiveDialogPortal = shouldUseDialog ? DialogPrimitive.Portal : DrawerPrimitive.Portal;
+  const ResponsiveDialogPortal = shouldUseDialog
+    ? DialogPrimitive.Portal
+    : DrawerPrimitive.Portal;
   return <ResponsiveDialogPortal {...props} />;
 };
 ResponsiveDialogPortal.displayName = "ResponsiveDialogPortal";
@@ -166,7 +180,9 @@ const ResponsiveDialogClose = ({
   const isDesktop = useMediaQuery(MOBILE_BREAKPOINT);
 
   const shouldUseDialog = onlyDialog || (!onlyDrawer && isDesktop);
-  const ResponsiveDialogClose = shouldUseDialog ? DialogPrimitive.Close : DrawerPrimitive.Close;
+  const ResponsiveDialogClose = shouldUseDialog
+    ? DialogPrimitive.Close
+    : DrawerPrimitive.Close;
 
   const shouldPreventClose = !dismissible && !alert;
 
@@ -249,15 +265,19 @@ const ResponsiveDialogContent = React.forwardRef<
     },
     ref
   ) => {
-    const { direction, modal, dismissible, alert, onlyDrawer, onlyDialog } = useResponsiveDialog();
+    const { direction, modal, dismissible, alert, onlyDrawer, onlyDialog } =
+      useResponsiveDialog();
 
     const isDesktop = useMediaQuery(MOBILE_BREAKPOINT);
     const shouldUseDialog = onlyDialog || (!onlyDrawer && isDesktop);
-    const ResponsiveDialogContent = shouldUseDialog ? DialogPrimitive.Content : VaulDrawerContent;
+    const ResponsiveDialogContent = shouldUseDialog
+      ? DialogPrimitive.Content
+      : VaulDrawerContent;
 
     const shouldShowCloseButton = !alert && showCloseButton;
     const shouldPreventEscape = !dismissible && !alert;
-    const shouldPreventOutsideInteraction = !modal || (!dismissible && !alert) || alert;
+    const shouldPreventOutsideInteraction =
+      !modal || (!dismissible && !alert) || alert;
 
     return (
       <ResponsiveDialogPortal>
@@ -311,17 +331,32 @@ const ResponsiveDialogContent = React.forwardRef<
 );
 ResponsiveDialogContent.displayName = "ResponsiveDialogContent";
 
-const ResponsiveDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+const ResponsiveDialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)} {...props} />
+    <div
+      className={cn(
+        "flex flex-col gap-1.5 text-center sm:text-left",
+        className
+      )}
+      {...props}
+    />
   );
 };
 ResponsiveDialogHeader.displayName = "ResponsiveDialogHeader";
 
-const ResponsiveDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+const ResponsiveDialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <footer
-      className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+      className={cn(
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        className
+      )}
       {...props}
     />
   );
@@ -336,11 +371,16 @@ const ResponsiveDialogTitle = React.forwardRef<
   const isDesktop = useMediaQuery(MOBILE_BREAKPOINT);
 
   const shouldUseDialog = onlyDialog || (!onlyDrawer && isDesktop);
-  const ResponsiveDialogTitle = shouldUseDialog ? DialogPrimitive.Title : DrawerPrimitive.Title;
+  const ResponsiveDialogTitle = shouldUseDialog
+    ? DialogPrimitive.Title
+    : DrawerPrimitive.Title;
   return (
     <ResponsiveDialogTitle
+      className={cn(
+        "text-lg leading-none font-semibold tracking-tight",
+        className
+      )}
       ref={ref}
-      className={cn("text-lg leading-none font-semibold tracking-tight", className)}
       {...props}
     />
   );
@@ -361,8 +401,8 @@ const ResponsiveDialogDescription = React.forwardRef<
     : DrawerPrimitive.Description;
   return (
     <ResponsiveDialogDescription
-      ref={ref}
       className={cn("text-muted-foreground text-sm", className)}
+      ref={ref}
       {...props}
     />
   );

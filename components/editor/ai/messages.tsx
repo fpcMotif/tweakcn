@@ -1,3 +1,5 @@
+import { X } from "lucide-react";
+import { useEffect, useMemo, useRef } from "react";
 import Logo from "@/assets/logo.svg";
 import {
   Conversation,
@@ -9,6 +11,7 @@ import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { useChatContext } from "@/hooks/use-chat-context";
 import { useScrollStartEnd } from "@/hooks/use-scroll-start-end";
+import { parseAiSdkTransportError } from "@/lib/ai/parse-ai-sdk-transport-error";
 import { cn } from "@/lib/utils";
 import { AIPromptData, type ChatMessage } from "@/types/ai";
 import {
@@ -16,9 +19,6 @@ import {
   getLastAssistantMessage,
   getUserMessages,
 } from "@/utils/ai/messages";
-import { parseAiSdkTransportError } from "@/lib/ai/parse-ai-sdk-transport-error";
-import { X } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
 import { LoadingLogo } from "./loading-logo";
 import Message from "./message";
 
@@ -42,7 +42,8 @@ export function Messages({
   isGeneratingTheme,
 }: ChatMessagesProps) {
   const { status, error, clearError } = useChatContext();
-  const { isScrollStart, isScrollEnd, scrollStartRef, scrollEndRef } = useScrollStartEnd();
+  const { isScrollStart, isScrollEnd, scrollStartRef, scrollEndRef } =
+    useScrollStartEnd();
 
   const previousUserMsgLength = useRef<number>(
     messages.filter((message) => message.role === "user").length
@@ -54,7 +55,8 @@ export function Messages({
     if (!scrollEndElement) return;
 
     const currentUserMsgCount = getUserMessages(messages).length;
-    const didUserMsgCountChange = previousUserMsgLength.current !== currentUserMsgCount;
+    const didUserMsgCountChange =
+      previousUserMsgLength.current !== currentUserMsgCount;
 
     if (!didUserMsgCountChange && status === "streaming") return;
 
@@ -65,17 +67,22 @@ export function Messages({
     });
   }, [messages, status]);
 
-  const visibleMessages = useMemo(() => filterMessagesToDisplay(messages), [messages]);
+  const visibleMessages = useMemo(
+    () => filterMessagesToDisplay(messages),
+    [messages]
+  );
 
   const showLoadingMessage = useMemo(() => {
     const isSubmitted = status === "submitted";
     const isStreaming = status === "streaming";
     const isError = status === "error";
-    const lastAssistantMsgHasText = getLastAssistantMessage(messages)?.parts.some(
-      (part) => part.type === "text" && Boolean(part.text)
-    );
+    const lastAssistantMsgHasText = getLastAssistantMessage(
+      messages
+    )?.parts.some((part) => part.type === "text" && Boolean(part.text));
 
-    return !isError && (isSubmitted || (isStreaming && !lastAssistantMsgHasText));
+    return (
+      !isError && (isSubmitted || (isStreaming && !lastAssistantMsgHasText))
+    );
   }, [status, messages]);
 
   const errorText = useMemo(() => {
@@ -101,20 +108,23 @@ export function Messages({
           <div className="flex flex-col gap-8 pb-8 wrap-anywhere whitespace-pre-wrap">
             {visibleMessages.map((message, index) => {
               const isLastMessage = index === messages.length - 1;
-              const isStreaming = status === "submitted" || status === "streaming";
+              const isStreaming =
+                status === "submitted" || status === "streaming";
               const isLastMessageStreaming =
                 message.role === "assistant" && isStreaming && isLastMessage;
               return (
                 <Message
+                  isEditing={editingMessageIndex === index}
+                  isGeneratingTheme={isGeneratingTheme}
+                  isLastMessageStreaming={isLastMessageStreaming}
                   key={message.id}
                   message={message}
-                  onRetry={() => onRetry(index)}
-                  isEditing={editingMessageIndex === index}
                   onEdit={() => onEdit(index)}
-                  onEditSubmit={(newPromptData) => onEditSubmit(index, newPromptData)}
                   onEditCancel={onEditCancel}
-                  isLastMessageStreaming={isLastMessageStreaming}
-                  isGeneratingTheme={isGeneratingTheme}
+                  onEditSubmit={(newPromptData) =>
+                    onEditSubmit(index, newPromptData)
+                  }
+                  onRetry={() => onRetry(index)}
                 />
               );
             })}
@@ -126,7 +136,7 @@ export function Messages({
                   <LoadingLogo />
                 </div>
 
-                <Loader variant="dots" size="sm" />
+                <Loader size="sm" variant="dots" />
               </div>
             )}
 
@@ -138,7 +148,11 @@ export function Messages({
                     "border-border/50! bg-destructive relative flex size-6 shrink-0 items-center justify-center rounded-full border select-none"
                   )}
                 >
-                  <Logo className={cn("text-destructive-foreground size-full p-0.5")} />
+                  <Logo
+                    className={cn(
+                      "text-destructive-foreground size-full p-0.5"
+                    )}
+                  />
                 </div>
 
                 <div
@@ -148,12 +162,12 @@ export function Messages({
                 >
                   <p className="text-xs">{errorText}</p>
 
-                  <TooltipWrapper label="Clear error" asChild>
+                  <TooltipWrapper asChild label="Clear error">
                     <Button
-                      variant="ghost"
-                      size="icon"
                       className="invisible ml-auto size-4 shrink-0 group-hover/error-banner:visible [&>svg]:size-3"
                       onClick={clearError}
+                      size="icon"
+                      variant="ghost"
                     >
                       <X />
                     </Button>

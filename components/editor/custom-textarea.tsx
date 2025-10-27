@@ -1,14 +1,14 @@
 "use client";
 
-import { suggestion } from "@/components/editor/mention-suggestion";
-import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import CharacterCount from "@tiptap/extension-character-count";
 import Mention from "@tiptap/extension-mention";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
+import { suggestion } from "@/components/editor/mention-suggestion";
+import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface CustomTextareaProps {
   className?: string;
@@ -70,7 +70,12 @@ export default function CustomTextarea({
           return true;
         }
 
-        if (event.key === "Enter" && !event.shiftKey && !disabled && canSubmit) {
+        if (
+          event.key === "Enter" &&
+          !event.shiftKey &&
+          !disabled &&
+          canSubmit
+        ) {
           const mentionPluginKey = Mention.options.suggestion.pluginKey;
 
           if (!mentionPluginKey) {
@@ -105,7 +110,9 @@ export default function CustomTextarea({
         // Check for image files
         if (onImagesPaste) {
           const files = Array.from(clipboardData.files);
-          const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+          const imageFiles = files.filter((file) =>
+            file.type.startsWith("image/")
+          );
 
           if (imageFiles.length > 0) {
             event.preventDefault();
@@ -115,7 +122,8 @@ export default function CustomTextarea({
         }
 
         const pastedText = clipboardData.getData("text/plain");
-        const currentCharacterCount = editor?.storage.characterCount.characters() || 0;
+        const currentCharacterCount =
+          editor?.storage.characterCount.characters() || 0;
         const totalCharacters = currentCharacterCount + pastedText.length;
 
         if (totalCharacters > characterLimit) {
@@ -172,11 +180,12 @@ export default function CustomTextarea({
 
   const characterCount = editor.storage.characterCount.characters();
   const isLimitExceeded = characterLimit && characterCount > characterLimit;
-  const shouldShowCount = characterLimit && characterCount >= characterLimit * 0.9;
+  const shouldShowCount =
+    characterLimit && characterCount >= characterLimit * 0.9;
 
   return (
     <div className="relative isolate">
-      <EditorContent editor={editor} aria-disabled={disabled} />
+      <EditorContent aria-disabled={disabled} editor={editor} />
       {shouldShowCount && (
         <div className="absolute right-3 bottom-2 z-10 flex text-xs hover:opacity-0">
           <span

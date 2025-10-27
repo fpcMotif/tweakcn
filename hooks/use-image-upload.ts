@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { MAX_SVG_FILE_SIZE } from "@/lib/constants";
 import { PromptImage } from "@/types/ai";
@@ -6,7 +7,6 @@ import {
   optimizeSvgContent,
   validateSvgContent,
 } from "@/utils/ai/image-upload";
-import { useRef } from "react";
 
 export type PromptImageWithLoading = PromptImage & { loading: boolean };
 
@@ -25,7 +25,12 @@ interface UseImageUploadOptions {
   dispatch: (action: ImageUploadAction) => void;
 }
 
-export function useImageUpload({ maxFiles, maxFileSize, images, dispatch }: UseImageUploadOptions) {
+export function useImageUpload({
+  maxFiles,
+  maxFileSize,
+  images,
+  dispatch,
+}: UseImageUploadOptions) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 

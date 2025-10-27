@@ -1,5 +1,8 @@
 "use client";
 
+import { Edit, Moon, MoreVertical, Share, Sun } from "lucide-react";
+import { notFound, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,14 +13,15 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { useEditorStore } from "@/store/editor-store";
 import type { Theme } from "@/types/theme";
-import { Edit, Moon, MoreVertical, Share, Sun } from "lucide-react";
-import { notFound, useRouter } from "next/navigation";
-import { useEffect } from "react";
 import ThemePreviewPanel from "./editor/theme-preview-panel";
 
 export default function ThemeView({ theme }: { theme: Theme }) {
-  const { themeState, setThemeState, saveThemeCheckpoint, restoreThemeCheckpoint } =
-    useEditorStore();
+  const {
+    themeState,
+    setThemeState,
+    saveThemeCheckpoint,
+    restoreThemeCheckpoint,
+  } = useEditorStore();
   const router = useRouter();
   const currentMode = themeState.currentMode;
 
@@ -65,16 +69,20 @@ export default function ThemeView({ theme }: { theme: Theme }) {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{theme.name}</h1>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={toggleTheme}>
-            {currentMode === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+          <Button onClick={toggleTheme} size="icon" variant="outline">
+            {currentMode === "dark" ? (
+              <Sun className="size-4" />
+            ) : (
+              <Moon className="size-4" />
+            )}
           </Button>
-          <Button variant="outline" size="default" onClick={handleShare}>
+          <Button onClick={handleShare} size="default" variant="outline">
             <Share className="size-4" />
             Share
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button size="icon" variant="ghost">
                 <MoreVertical className="size-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -89,7 +97,7 @@ export default function ThemeView({ theme }: { theme: Theme }) {
       </div>
 
       <div className="-m-4 mt-6 flex h-[min(80svh,900px)] flex-col">
-        <ThemePreviewPanel styles={theme.styles} currentMode={currentMode} />
+        <ThemePreviewPanel currentMode={currentMode} styles={theme.styles} />
       </div>
     </>
   );

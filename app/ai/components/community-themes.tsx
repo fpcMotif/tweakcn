@@ -1,9 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { Suspense } from "react";
-import { CommunityThemeCard, CommunityThemeCardSkeleton } from "./community-theme-card";
+import { Button } from "@/components/ui/button";
 import { ThemePreset } from "@/types/theme";
 import { defaultPresets } from "@/utils/theme-presets";
+import {
+  CommunityThemeCard,
+  CommunityThemeCardSkeleton,
+} from "./community-theme-card";
 
 // TODO: Remove this once we have a real API to fetch the community themes
 const getDefaultThemePresets = async () => {
@@ -19,7 +22,7 @@ export async function CommunityThemes() {
       <div className="flex flex-col gap-1">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold">From the Community</h2>
-          <Button variant="link" className="h-fit gap-1 p-0 [&>svg]:size-3">
+          <Button className="h-fit gap-1 p-0 [&>svg]:size-3" variant="link">
             View All <ChevronRight />
           </Button>
         </div>
@@ -49,7 +52,9 @@ interface CommunityThemeCardsProps {
   themePresetsPromise: Promise<Record<string, ThemePreset>>;
 }
 
-export async function CommunityThemeCards({ themePresetsPromise }: CommunityThemeCardsProps) {
+export async function CommunityThemeCards({
+  themePresetsPromise,
+}: CommunityThemeCardsProps) {
   const themePresets = await themePresetsPromise;
   const presets = Object.entries(themePresets).reduce(
     (acc, [id, preset]) => {

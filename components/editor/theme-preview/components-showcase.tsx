@@ -1,5 +1,6 @@
-import { ThemeEditorPreviewProps } from "@/types/theme";
-import { Settings, Info, AlertTriangle, Star } from "lucide-react";
+import { AlertTriangle, Info, Settings, Star } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,24 +10,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
+import { ThemeEditorPreviewProps } from "@/types/theme";
 
 interface ComponentsShowcaseProps {
   styles: ThemeEditorPreviewProps["styles"];
   currentMode: ThemeEditorPreviewProps["currentMode"];
 }
 
-const ComponentsShowcase = ({ styles, currentMode }: ComponentsShowcaseProps) => {
+const ComponentsShowcase = ({
+  styles,
+  currentMode,
+}: ComponentsShowcaseProps) => {
   if (!styles || !styles[currentMode]) {
     return null;
   }
@@ -62,7 +65,9 @@ const ComponentsShowcase = ({ styles, currentMode }: ComponentsShowcaseProps) =>
 
       {/* Cards & Containers */}
       <section className="space-y-3">
-        <h3 className="text-sm font-medium border-b pb-2">Cards & Containers</h3>
+        <h3 className="text-sm font-medium border-b pb-2">
+          Cards & Containers
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card>
             <CardHeader>
@@ -73,8 +78,8 @@ const ComponentsShowcase = ({ styles, currentMode }: ComponentsShowcaseProps) =>
             </CardHeader>
             <CardContent>
               <p className="text-sm">
-                This card demonstrates the card background and foreground colors,
-                with content showing regular text.
+                This card demonstrates the card background and foreground
+                colors, with content showing regular text.
               </p>
             </CardContent>
             <CardFooter className="flex justify-between">
@@ -180,13 +185,16 @@ const ComponentsShowcase = ({ styles, currentMode }: ComponentsShowcaseProps) =>
             <TableRow>
               <TableCell className="font-medium">Alex Johnson</TableCell>
               <TableCell>
-                <Badge variant="outline" className="bg-green-500/10 text-green-600">
+                <Badge
+                  className="bg-green-500/10 text-green-600"
+                  variant="outline"
+                >
                   Active
                 </Badge>
               </TableCell>
               <TableCell>Admin</TableCell>
               <TableCell className="text-right">
-                <Button variant="ghost" size="sm">
+                <Button size="sm" variant="ghost">
                   <Settings className="h-4 w-4" />
                 </Button>
               </TableCell>
@@ -195,15 +203,15 @@ const ComponentsShowcase = ({ styles, currentMode }: ComponentsShowcaseProps) =>
               <TableCell className="font-medium">Sarah Chen</TableCell>
               <TableCell>
                 <Badge
-                  variant="outline"
                   className="bg-destructive/10 text-destructive"
+                  variant="outline"
                 >
                   Inactive
                 </Badge>
               </TableCell>
               <TableCell>User</TableCell>
               <TableCell className="text-right">
-                <Button variant="ghost" size="sm">
+                <Button size="sm" variant="ghost">
                   <Settings className="h-4 w-4" />
                 </Button>
               </TableCell>

@@ -3,12 +3,36 @@ export const FIGMA_CONSTANTS = {
   previewUrl:
     "https://www.figma.com/design/J1e0cfCkDffMx6I0D0g5Nd/PREVIEW-%E2%80%A2-Shadcraft-%E2%80%A2-Beta-0.1.0?node-id=7050-2702&p=f&m=dev",
   designers: [
-    { name: "Designer 1", avatar: "/figma-onboarding/avatar-1.png", fallback: "D1" },
-    { name: "Designer 2", avatar: "/figma-onboarding/avatar-2.png", fallback: "D2" },
-    { name: "Designer 3", avatar: "/figma-onboarding/avatar-3.png", fallback: "D3" },
-    { name: "Designer 4", avatar: "/figma-onboarding/avatar-4.png", fallback: "D4" },
-    { name: "Designer 5", avatar: "/figma-onboarding/avatar-5.png", fallback: "D5" },
-    { name: "Designer 6", avatar: "/figma-onboarding/avatar-6.png", fallback: "D6" },
+    {
+      name: "Designer 1",
+      avatar: "/figma-onboarding/avatar-1.png",
+      fallback: "D1",
+    },
+    {
+      name: "Designer 2",
+      avatar: "/figma-onboarding/avatar-2.png",
+      fallback: "D2",
+    },
+    {
+      name: "Designer 3",
+      avatar: "/figma-onboarding/avatar-3.png",
+      fallback: "D3",
+    },
+    {
+      name: "Designer 4",
+      avatar: "/figma-onboarding/avatar-4.png",
+      fallback: "D4",
+    },
+    {
+      name: "Designer 5",
+      avatar: "/figma-onboarding/avatar-5.png",
+      fallback: "D5",
+    },
+    {
+      name: "Designer 6",
+      avatar: "/figma-onboarding/avatar-6.png",
+      fallback: "D6",
+    },
   ],
   steps: [
     {

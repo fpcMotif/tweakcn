@@ -1,29 +1,34 @@
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
-  InspectorState,
   areInspectorStatesEqual,
   createInspectorState,
   getEmptyInspectorState,
+  InspectorState,
 } from "../../lib/inspector/inspector-state-utils";
 
 export const useInspectorState = () => {
-  const [inspector, setInspector] = useState<InspectorState>(getEmptyInspectorState());
+  const [inspector, setInspector] = useState<InspectorState>(
+    getEmptyInspectorState()
+  );
   const [inspectorEnabled, setInspectorEnabled] = useState(false);
   const lastElementRef = useRef<HTMLElement | null>(null);
   const isOverlayHiddenRef = useRef<boolean>(false);
 
-  const updateInspectorState = useCallback((rect: DOMRect, matches: string[]) => {
-    setInspector((prev: InspectorState) => {
-      const newState = createInspectorState(rect, matches);
+  const updateInspectorState = useCallback(
+    (rect: DOMRect, matches: string[]) => {
+      setInspector((prev: InspectorState) => {
+        const newState = createInspectorState(rect, matches);
 
-      if (areInspectorStatesEqual(prev, newState)) {
-        return prev;
-      }
+        if (areInspectorStatesEqual(prev, newState)) {
+          return prev;
+        }
 
-      isOverlayHiddenRef.current = false;
-      return newState;
-    });
-  }, []);
+        isOverlayHiddenRef.current = false;
+        return newState;
+      });
+    },
+    []
+  );
 
   const clearInspectorState = useCallback(() => {
     if (lastElementRef.current || !isOverlayHiddenRef.current) {

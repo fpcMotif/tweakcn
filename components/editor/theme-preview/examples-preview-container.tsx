@@ -1,7 +1,7 @@
 import { Suspense } from "react";
+import { Loading } from "@/components/loading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { Loading } from "@/components/loading";
 
 const LoadingSkeleton = () => (
   <div className="absolute inset-0 flex flex-col">

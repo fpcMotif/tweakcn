@@ -1,14 +1,14 @@
 "use server";
 
-import { getMyAllTimeRequestCount } from "@/actions/ai-usage";
-import { SubscriptionRequiredError } from "@/types/errors";
-import { SubscriptionCheck } from "@/types/subscription";
+import { and, eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
-import { AI_REQUEST_FREE_TIER_LIMIT } from "./constants";
-import { getCurrentUserId } from "./shared";
+import { getMyAllTimeRequestCount } from "@/actions/ai-usage";
 import { db } from "@/db";
 import { subscription } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
+import { SubscriptionRequiredError } from "@/types/errors";
+import { SubscriptionCheck } from "@/types/subscription";
+import { AI_REQUEST_FREE_TIER_LIMIT } from "./constants";
+import { getCurrentUserId } from "./shared";
 
 export async function getMyActiveSubscription(
   userId: string
@@ -16,11 +16,15 @@ export async function getMyActiveSubscription(
   const sub = await db
     .select()
     .from(subscription)
-    .where(and(eq(subscription.userId, userId), eq(subscription.status, "active")));
+    .where(
+      and(eq(subscription.userId, userId), eq(subscription.status, "active"))
+    );
   return sub[0];
 }
 
-export async function validateSubscriptionAndUsage(userId: string): Promise<SubscriptionCheck> {
+export async function validateSubscriptionAndUsage(
+  userId: string
+): Promise<SubscriptionCheck> {
   try {
     const [activeSubscription, requestsUsed] = await Promise.all([
       getMyActiveSubscription(userId),
@@ -29,7 +33,8 @@ export async function validateSubscriptionAndUsage(userId: string): Promise<Subs
 
     const isSubscribed =
       !!activeSubscription &&
-      activeSubscription?.productId === process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
+      activeSubscription?.productId ===
+        process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
 
     if (isSubscribed) {
       return {
@@ -40,7 +45,10 @@ export async function validateSubscriptionAndUsage(userId: string): Promise<Subs
       };
     }
 
-    const requestsRemaining = Math.max(0, AI_REQUEST_FREE_TIER_LIMIT - requestsUsed);
+    const requestsRemaining = Math.max(
+      0,
+      AI_REQUEST_FREE_TIER_LIMIT - requestsUsed
+    );
     const canProceed = requestsUsed < AI_REQUEST_FREE_TIER_LIMIT;
 
     if (!canProceed) {
@@ -65,7 +73,9 @@ export async function validateSubscriptionAndUsage(userId: string): Promise<Subs
   }
 }
 
-export async function requireSubscriptionOrFreeUsage(req: NextRequest): Promise<void> {
+export async function requireSubscriptionOrFreeUsage(
+  req: NextRequest
+): Promise<void> {
   const userId = await getCurrentUserId(req);
   const validation = await validateSubscriptionAndUsage(userId);
 

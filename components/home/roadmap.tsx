@@ -1,12 +1,13 @@
+import { Folder, Grid, Layers, Palette, Repeat, Users } from "lucide-react";
+import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "motion/react";
-import { Folder, Grid, Layers, Palette, Repeat, Users } from "lucide-react";
 
 const roadmapItems = [
   {
     title: "Global Theme Editor",
-    description: "Create and manage complete themes with presets for your entire application.",
+    description:
+      "Create and manage complete themes with presets for your entire application.",
     status: "Done",
     icon: <Palette className="size-5" />,
   },
@@ -48,18 +49,18 @@ const roadmapItems = [
 export function Roadmap() {
   return (
     <section
-      id="roadmap"
       className="from-muted/30 relative isolate w-full overflow-hidden bg-linear-180 from-50% to-transparent py-20 md:py-32"
+      id="roadmap"
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(from_var(--secondary)_r_g_b_/0.05),transparent_50%)]"></div>
 
       <div className="relative container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="mb-16 flex flex-col items-center justify-center space-y-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <Badge
             className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
@@ -71,20 +72,20 @@ export function Roadmap() {
             What&apos;s Coming Next
           </h2>
           <p className="text-muted-foreground max-w-[800px] md:text-lg">
-            We&apos;re constantly working to improve tweakcn and add new features. Here&apos;s
-            what&apos;s on our roadmap.
+            We&apos;re constantly working to improve tweakcn and add new
+            features. Here&apos;s what&apos;s on our roadmap.
           </p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {roadmapItems.map((item, i) => (
             <motion.div
-              key={i}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              key={i}
               transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true }}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <Card className="border-border/40 from-card to-card/50 hover:border-primary/20 h-full overflow-hidden bg-gradient-to-b backdrop-blur transition-all hover:shadow-lg">
                 <CardContent className="flex h-full flex-col p-6">
@@ -94,6 +95,7 @@ export function Roadmap() {
                   <div className="mb-2 flex items-center justify-between">
                     <h3 className="text-xl font-bold">{item.title}</h3>
                     <Badge
+                      className="shadow-sm"
                       variant={
                         item.status === "In Progress"
                           ? "default"
@@ -101,7 +103,6 @@ export function Roadmap() {
                             ? "secondary"
                             : "outline"
                       }
-                      className="shadow-sm"
                     >
                       {item.status}
                     </Badge>

@@ -1,12 +1,16 @@
 "use client";
 
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Separator } from "@/components/ui/separator";
-import { useClassNames } from "@/hooks/use-theme-inspector-classnames";
-import { cn } from "@/lib/utils";
 import { Inspect } from "lucide-react";
 import React from "react";
 import { createPortal } from "react-dom";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Separator } from "@/components/ui/separator";
+import { useClassNames } from "@/hooks/use-theme-inspector-classnames";
+import { cn } from "@/lib/utils";
 import InspectorClassItem from "./inspector-class-item";
 
 interface InspectorState {
@@ -20,10 +24,19 @@ interface InspectorOverlayProps {
   rootRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const InspectorOverlay = ({ inspector, enabled, rootRef }: InspectorOverlayProps) => {
+const InspectorOverlay = ({
+  inspector,
+  enabled,
+  rootRef,
+}: InspectorOverlayProps) => {
   const classNames = useClassNames(inspector.className);
 
-  if (!enabled || !inspector.rect || typeof window === "undefined" || !rootRef.current) {
+  if (
+    !enabled ||
+    !inspector.rect ||
+    typeof window === "undefined" ||
+    !rootRef.current
+  ) {
     return null;
   }
 
@@ -37,14 +50,14 @@ const InspectorOverlay = ({ inspector, enabled, rootRef }: InspectorOverlayProps
   };
 
   return createPortal(
-    <HoverCard open={true} defaultOpen={false}>
+    <HoverCard defaultOpen={false} open={true}>
       <HoverCardTrigger asChild>
         <div
-          data-inspector-overlay
           className={cn(
             "ring-primary ring-offset-background/90 pointer-events-none absolute z-50 ring-3 ring-offset-2",
             "transition-all duration-100 ease-in-out"
           )}
+          data-inspector-overlay
           style={{
             top: relativeRect.top,
             left: relativeRect.left,
@@ -55,12 +68,12 @@ const InspectorOverlay = ({ inspector, enabled, rootRef }: InspectorOverlayProps
       </HoverCardTrigger>
 
       <HoverCardContent
-        data-inspector-overlay
-        side="top"
         align="start"
         className={cn(
           "bg-popover/85 text-popover-foreground pointer-events-auto relative w-auto max-w-[50vw] rounded-lg border p-0 shadow-xl backdrop-blur-lg"
         )}
+        data-inspector-overlay
+        side="top"
         sideOffset={8}
       >
         <div className="text-muted-foreground flex items-center gap-1.5 px-2 pt-2 text-sm">
@@ -70,7 +83,7 @@ const InspectorOverlay = ({ inspector, enabled, rootRef }: InspectorOverlayProps
         <Separator className="my-1" />
         <div className="flex flex-col gap-1 px-1 pb-2">
           {classNames.map((cls) => (
-            <InspectorClassItem key={cls} className={cls} />
+            <InspectorClassItem className={cls} key={cls} />
           ))}
         </div>
       </HoverCardContent>

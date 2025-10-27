@@ -1,8 +1,8 @@
 "use client";
 
-import { useSubscription } from "@/hooks/use-subscription";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useSubscription } from "@/hooks/use-subscription";
 
 export function AIAnnouncement() {
   const { subscriptionStatus, isPending } = useSubscription();
@@ -15,8 +15,8 @@ export function AIAnnouncement() {
   return (
     <div className="mx-auto max-w-3xl">
       <Link
-        href="/pricing"
         className="group bg-muted flex items-center justify-between gap-2 rounded-full px-2 py-1.5 shadow-sm transition-all duration-200 hover:shadow-md"
+        href="/pricing"
       >
         <span className="text-muted-foreground group-hover:text-foreground text-sm font-medium transition-colors">
           Upgrade to Pro for unlimited requests

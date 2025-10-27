@@ -1,6 +1,6 @@
+import * as React from "react";
 import { TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import * as React from "react";
 
 const TabsTriggerPill = ({
   children,

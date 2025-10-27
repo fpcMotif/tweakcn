@@ -11,7 +11,9 @@ export const findThemeClasses = (
     const cls = getClassString(current);
     const classNames = cls.split(/\s+/).filter(Boolean);
     const matches = Array.from(
-      new Set(classNames.filter((className) => THEME_CLASS_REGEX.test(className)))
+      new Set(
+        classNames.filter((className) => THEME_CLASS_REGEX.test(className))
+      )
     );
 
     if (matches.length > 0) {

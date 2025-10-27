@@ -1,7 +1,11 @@
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 
-export default function ThemeLayout({ children }: { children: React.ReactNode }) {
+export default function ThemeLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col">
       <Header />

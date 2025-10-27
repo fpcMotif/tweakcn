@@ -1,6 +1,6 @@
-import { useCallback, useEffect, MouseEvent } from "react";
-import { debounce } from "../../utils/debounce";
+import { MouseEvent, useCallback, useEffect } from "react";
 import { findThemeClasses } from "../../lib/inspector/theme-class-finder";
+import { debounce } from "../../utils/debounce";
 
 interface UseInspectorMouseEventsProps {
   inspectorEnabled: boolean;
@@ -77,12 +77,19 @@ export const useInspectorMouseEvents = ({
       debouncedInspectorUpdate.cancel();
     };
 
-    document.addEventListener("mousemove", handleDocumentMouseMove, { passive: true });
+    document.addEventListener("mousemove", handleDocumentMouseMove, {
+      passive: true,
+    });
 
     return () => {
       document.removeEventListener("mousemove", handleDocumentMouseMove);
     };
-  }, [inspectorEnabled, clearInspectorState, debouncedInspectorUpdate, rootRef]);
+  }, [
+    inspectorEnabled,
+    clearInspectorState,
+    debouncedInspectorUpdate,
+    rootRef,
+  ]);
 
   useEffect(() => {
     return () => {

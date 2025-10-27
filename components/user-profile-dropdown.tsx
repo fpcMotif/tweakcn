@@ -1,5 +1,10 @@
 "use client";
 
+import { BookLock, Gem, Loader2, LogOut, Settings } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { usePostHog } from "posthog-js/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,11 +18,6 @@ import {
 import { useSubscription } from "@/hooks/use-subscription";
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/auth-store";
-import { BookLock, Gem, Loader2, LogOut, Settings } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { usePostHog } from "posthog-js/react";
 
 export function UserProfileDropdown() {
   const { data: session, isPending } = authClient.useSession();
@@ -38,50 +38,58 @@ export function UserProfileDropdown() {
     <AnimatePresence mode="wait">
       {isPending ? (
         <motion.div
-          key="spinner"
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
           className="flex size-8 items-center justify-center"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          key="spinner"
+          transition={{ duration: 0.2 }}
         >
           <Loader2 className="text-muted-foreground size-7 animate-spin" />
         </motion.div>
       ) : !session?.user ? (
         <motion.div
-          key="auth-buttons"
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
           className="flex gap-3.5"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          key="auth-buttons"
+          transition={{ duration: 0.2 }}
         >
           <Button
-            variant="link"
-            onClick={() => openAuthDialog("signin")}
             className="text-foreground hover:text-primary h-8 px-0 hover:no-underline"
+            onClick={() => openAuthDialog("signin")}
+            variant="link"
           >
             Sign In
           </Button>
-          <Button onClick={() => openAuthDialog("signup")} className="h-8">
+          <Button className="h-8" onClick={() => openAuthDialog("signup")}>
             Sign Up
           </Button>
         </motion.div>
       ) : (
         <motion.div
-          key="user-dropdown"
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
           className="flex"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          key="user-dropdown"
+          transition={{ duration: 0.2 }}
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="0 relative isolate size-8 rounded-full">
+              <Button
+                className="0 relative isolate size-8 rounded-full"
+                variant="ghost"
+              >
                 <Avatar className="size-8">
-                  <AvatarImage src={session.user.image || ""} alt={session.user.name || ""} />
-                  <AvatarFallback>{session.user.name?.[0] || "U"}</AvatarFallback>
+                  <AvatarImage
+                    alt={session.user.name || ""}
+                    src={session.user.image || ""}
+                  />
+                  <AvatarFallback>
+                    {session.user.name?.[0] || "U"}
+                  </AvatarFallback>
                 </Avatar>
 
                 {isPro && (
@@ -91,7 +99,7 @@ export function UserProfileDropdown() {
                 )}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuContent align="end" className="w-56" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-0.5">
                   <p className="text-sm leading-tight font-medium">

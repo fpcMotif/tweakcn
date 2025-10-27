@@ -32,8 +32,8 @@ export function DataTableRowActions<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          variant="ghost"
         >
           <MoreHorizontal />
           <span className="sr-only">Open menu</span>

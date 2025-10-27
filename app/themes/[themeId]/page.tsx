@@ -1,6 +1,6 @@
+import { Metadata } from "next";
 import { getTheme } from "@/actions/themes";
 import ThemeView from "@/components/theme-view";
-import { Metadata } from "next";
 
 interface ThemePageProps {
   params: Promise<{
@@ -8,7 +8,9 @@ interface ThemePageProps {
   }>;
 }
 
-export async function generateMetadata({ params }: ThemePageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ThemePageProps): Promise<Metadata> {
   const { themeId } = await params;
   const theme = await getTheme(themeId);
 

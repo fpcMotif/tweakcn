@@ -1,5 +1,3 @@
-import CodePanel from "./code-panel";
-import { ThemeEditorState } from "@/types/editor";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -7,6 +5,8 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from "@/components/ui/revola";
+import { ThemeEditorState } from "@/types/editor";
+import CodePanel from "./code-panel";
 
 interface CodePanelDialogProps {
   open: boolean;
@@ -14,9 +14,13 @@ interface CodePanelDialogProps {
   themeEditorState: ThemeEditorState;
 }
 
-export function CodePanelDialog({ open, onOpenChange, themeEditorState }: CodePanelDialogProps) {
+export function CodePanelDialog({
+  open,
+  onOpenChange,
+  themeEditorState,
+}: CodePanelDialogProps) {
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+    <ResponsiveDialog onOpenChange={onOpenChange} open={open}>
       <ResponsiveDialogContent className="h-[90dvh] max-h-[90dvh] overflow-hidden shadow-lg sm:h-[80dvh] sm:max-h-[min(700px,90dvh)] sm:w-[calc(100%-2rem)] sm:max-w-4xl">
         <div className="h-full space-y-6 overflow-auto px-6 pb-6 sm:py-6">
           <ResponsiveDialogHeader className="sr-only">

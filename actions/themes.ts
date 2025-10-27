@@ -1,22 +1,22 @@
 "use server";
 
+import cuid from "cuid";
+import { and, eq } from "drizzle-orm";
+import { headers } from "next/headers";
+import { cache } from "react";
 import { z } from "zod";
 import { db } from "@/db";
 import { theme as themeTable } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
-import cuid from "cuid";
 import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { themeStylesSchema, type ThemeStyles } from "@/types/theme";
-import { cache } from "react";
-import {
-  UnauthorizedError,
-  ValidationError,
-  ThemeNotFoundError,
-  ThemeLimitError,
-} from "@/types/errors";
 import { MAX_FREE_THEMES } from "@/lib/constants";
 import { getMyActiveSubscription } from "@/lib/subscription";
+import {
+  ThemeLimitError,
+  ThemeNotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from "@/types/errors";
+import { type ThemeStyles, themeStylesSchema } from "@/types/theme";
 
 // Helper to get user ID with better error handling
 async function getCurrentUserId(): Promise<string> {
@@ -42,18 +42,29 @@ function logError(error: Error, context: Record<string, any>) {
     console.warn("Expected error:", { error: error.message, context });
   } else {
     // Unexpected errors should be reported
-    console.error("Unexpected error:", { error: error.message, stack: error.stack, context });
+    console.error("Unexpected error:", {
+      error: error.message,
+      stack: error.stack,
+      context,
+    });
   }
 }
 
 const createThemeSchema = z.object({
-  name: z.string().min(1, "Theme name cannot be empty").max(50, "Theme name too long"),
+  name: z
+    .string()
+    .min(1, "Theme name cannot be empty")
+    .max(50, "Theme name too long"),
   styles: themeStylesSchema,
 });
 
 const updateThemeSchema = z.object({
   id: z.string().min(1, "Theme ID required"),
-  name: z.string().min(1, "Theme name cannot be empty").max(50, "Theme name too long").optional(),
+  name: z
+    .string()
+    .min(1, "Theme name cannot be empty")
+    .max(50, "Theme name too long")
+    .optional(),
   styles: themeStylesSchema.optional(),
 });
 
@@ -61,7 +72,10 @@ const updateThemeSchema = z.object({
 export async function getThemes() {
   try {
     const userId = await getCurrentUserId();
-    const userThemes = await db.select().from(themeTable).where(eq(themeTable.userId, userId));
+    const userThemes = await db
+      .select()
+      .from(themeTable)
+      .where(eq(themeTable.userId, userId));
     return userThemes;
   } catch (error) {
     logError(error as Error, { action: "getThemes" });
@@ -75,7 +89,11 @@ export const getTheme = cache(async (themeId: string) => {
       throw new ValidationError("Theme ID required");
     }
 
-    const [theme] = await db.select().from(themeTable).where(eq(themeTable.id, themeId)).limit(1);
+    const [theme] = await db
+      .select()
+      .from(themeTable)
+      .where(eq(themeTable.id, themeId))
+      .limit(1);
 
     if (!theme) {
       throw new ThemeNotFoundError();
@@ -88,7 +106,10 @@ export const getTheme = cache(async (themeId: string) => {
   }
 });
 
-export async function createTheme(formData: { name: string; styles: ThemeStyles }) {
+export async function createTheme(formData: {
+  name: string;
+  styles: ThemeStyles;
+}) {
   try {
     const userId = await getCurrentUserId();
 
@@ -98,16 +119,22 @@ export async function createTheme(formData: { name: string; styles: ThemeStyles 
     }
 
     // Check theme limit
-    const userThemes = await db.select().from(themeTable).where(eq(themeTable.userId, userId));
+    const userThemes = await db
+      .select()
+      .from(themeTable)
+      .where(eq(themeTable.userId, userId));
 
     if (userThemes.length >= MAX_FREE_THEMES) {
       const activeSubscription = await getMyActiveSubscription(userId);
       const isSubscribed =
         !!activeSubscription &&
-        activeSubscription?.productId === process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
+        activeSubscription?.productId ===
+          process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
 
       if (!isSubscribed) {
-        throw new ThemeLimitError(`You cannot have more than ${MAX_FREE_THEMES} themes.`);
+        throw new ThemeLimitError(
+          `You cannot have more than ${MAX_FREE_THEMES} themes.`
+        );
       }
     }
 
@@ -129,12 +156,19 @@ export async function createTheme(formData: { name: string; styles: ThemeStyles 
 
     return insertedTheme;
   } catch (error) {
-    logError(error as Error, { action: "createTheme", formData: { name: formData.name } });
+    logError(error as Error, {
+      action: "createTheme",
+      formData: { name: formData.name },
+    });
     throw error;
   }
 }
 
-export async function updateTheme(formData: { id: string; name?: string; styles?: ThemeStyles }) {
+export async function updateTheme(formData: {
+  id: string;
+  name?: string;
+  styles?: ThemeStyles;
+}) {
   try {
     const userId = await getCurrentUserId();
 

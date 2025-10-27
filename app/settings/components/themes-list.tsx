@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowUpDown, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,8 +13,6 @@ import {
 } from "@/components/ui/select";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Theme } from "@/types/theme";
-import { ArrowUpDown, Search } from "lucide-react";
-import { useEffect, useState } from "react";
 import { ThemeCard } from "./theme-card";
 
 interface ThemesListProps {
@@ -53,13 +53,13 @@ export function ThemesList({ themes }: ThemesListProps) {
         <div className="relative w-fit">
           <Search className="text-muted-foreground absolute top-2.5 left-2.5 size-4" />
           <Input
-            placeholder="Search themes..."
             className="w-full pl-8"
-            value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search themes..."
+            value={searchTerm}
           />
         </div>
-        <Select value={sortOption} onValueChange={setSortOption}>
+        <Select onValueChange={setSortOption} value={sortOption}>
           <SelectTrigger className="w-[80px] gap-2 md:w-[180px]">
             <ArrowUpDown className="text-muted-foreground h-4 w-4" />
             {!isMobile && <SelectValue placeholder="Sort by" />}

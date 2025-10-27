@@ -4,7 +4,13 @@ import { ArrowRight, CircleCheck } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 
@@ -83,19 +89,27 @@ const Pricing2 = ({
             <p className="text-muted-foreground @3xl:text-xl">{description}</p>
             <div className="text-foreground flex items-center gap-3 text-lg">
               Monthly
-              <Switch checked={isYearly} onCheckedChange={() => setIsYearly(!isYearly)} />
+              <Switch
+                checked={isYearly}
+                onCheckedChange={() => setIsYearly(!isYearly)}
+              />
               Yearly
             </div>
           </div>
 
           <div className="flex flex-col items-stretch gap-6 @3xl:flex-row">
             {plans.map((plan) => (
-              <Card key={plan.id} className="flex w-80 flex-col justify-between text-left">
+              <Card
+                className="flex w-80 flex-col justify-between text-left"
+                key={plan.id}
+              >
                 <CardHeader>
                   <CardTitle>
                     <p>{plan.name}</p>
                   </CardTitle>
-                  <p className="text-muted-foreground text-sm">{plan.description}</p>
+                  <p className="text-muted-foreground text-sm">
+                    {plan.description}
+                  </p>
                   <span className="text-4xl font-bold">
                     {isYearly ? plan.yearlyPrice : plan.monthlyPrice}
                   </span>
@@ -110,11 +124,13 @@ const Pricing2 = ({
                 <CardContent>
                   <Separator className="mb-6" />
                   {plan.id === "pro" && (
-                    <p className="mb-3 font-semibold">Everything in Plus, and:</p>
+                    <p className="mb-3 font-semibold">
+                      Everything in Plus, and:
+                    </p>
                   )}
                   <ul className="space-y-4">
                     {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
+                      <li className="flex items-center gap-2" key={index}>
                         <CircleCheck className="size-4" />
                         <span>{feature.text}</span>
                       </li>

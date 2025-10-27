@@ -1,6 +1,6 @@
+import { useCallback, useEffect, useRef } from "react";
 import { Response } from "@/components/ai-elements/response";
 import { useStreamText } from "@/hooks/use-stream-text";
-import { useCallback, useEffect, useRef } from "react";
 
 interface StreamTextProps {
   text: string;

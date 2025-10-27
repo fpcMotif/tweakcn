@@ -35,7 +35,9 @@ export function useFeedbackText({
     };
   }, [showFeedbackText]);
 
-  const stepsElapsed = Math.floor(elapsedTimeGenerating / rotationIntervalInSeconds);
+  const stepsElapsed = Math.floor(
+    elapsedTimeGenerating / rotationIntervalInSeconds
+  );
   const feedbackIndex = stepsElapsed % feedbackMessages.length;
   const feedbackText = feedbackMessages[feedbackIndex];
   return feedbackText;

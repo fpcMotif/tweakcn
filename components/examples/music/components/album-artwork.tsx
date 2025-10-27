@@ -1,6 +1,5 @@
-import * as React from "react";
 import { PlusCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -11,6 +10,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { cn } from "@/lib/utils";
 import { Album } from "../data/albums";
 import { playlists } from "../data/playlists";
 
@@ -35,12 +35,12 @@ export function AlbumArtwork({
         <ContextMenuTrigger>
           <div className="overflow-hidden rounded-md">
             <img
-              src={album.cover}
               alt={album.name}
               className={cn(
                 "h-auto w-auto object-cover transition-all hover:scale-105",
                 aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
               )}
+              src={album.cover}
               style={{
                 width: width ? `${width}px` : "auto",
                 height: height ? `${height}px` : "auto",
@@ -61,14 +61,14 @@ export function AlbumArtwork({
               {playlists.map((playlist) => (
                 <ContextMenuItem key={playlist}>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
+                    className="mr-2 h-4 w-4"
                     fill="none"
                     stroke="currentColor"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    className="mr-2 h-4 w-4"
                     viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path d="M21 15V6M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM12 12H3M16 6H3M12 18H3" />
                   </svg>

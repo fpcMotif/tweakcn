@@ -1,7 +1,11 @@
-import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
 
-export function FrameHighlight({ children, className, ...props }: ComponentProps<"span">) {
+export function FrameHighlight({
+  children,
+  className,
+  ...props
+}: ComponentProps<"span">) {
   return (
     <>
       {" "}
@@ -22,7 +26,12 @@ export function FrameHighlight({ children, className, ...props }: ComponentProps
 
 function Corner({ className }: ComponentProps<"svg">) {
   return (
-    <svg width="5" height="5" viewBox="0 0 5 5" className={cn("absolute", className)}>
+    <svg
+      className={cn("absolute", className)}
+      height="5"
+      viewBox="0 0 5 5"
+      width="5"
+    >
       <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z"></path>
     </svg>
   );

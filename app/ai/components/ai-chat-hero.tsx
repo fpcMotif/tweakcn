@@ -1,13 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { HorizontalScrollArea } from "@/components/horizontal-scroll-area";
-import { useChatContext } from "@/hooks/use-chat-context";
 import { useAIThemeGenerationCore } from "@/hooks/use-ai-theme-generation-core";
+import { useChatContext } from "@/hooks/use-chat-context";
 import { useGuards } from "@/hooks/use-guards";
 import { usePostLoginAction } from "@/hooks/use-post-login-action";
 import { usePreferencesStore } from "@/store/preferences-store";
 import { AIPromptData } from "@/types/ai";
-import { useRouter } from "next/navigation";
 import { AIChatForm } from "./ai-chat-form";
 import { ChatHeading } from "./chat-heading";
 import { SuggestedPillActions } from "./suggested-pill-actions";
@@ -22,7 +22,8 @@ export function AIChatHero() {
   const { setChatSuggestionsOpen } = usePreferencesStore();
 
   const handleRedirectAndThemeGeneration = (promptData: AIPromptData) => {
-    if (!checkValidSession("signup", "AI_GENERATE_FROM_PAGE", { promptData })) return;
+    if (!checkValidSession("signup", "AI_GENERATE_FROM_PAGE", { promptData }))
+      return;
     if (!checkValidSubscription()) return;
 
     startNewChat();
@@ -45,17 +46,17 @@ export function AIChatHero() {
         <div className="relative mx-auto flex w-full flex-col gap-2">
           <div className="relative isolate z-10 w-full">
             <AIChatForm
-              onThemeGeneration={handleRedirectAndThemeGeneration}
               isGeneratingTheme={isGeneratingTheme}
               onCancelThemeGeneration={cancelThemeGeneration}
+              onThemeGeneration={handleRedirectAndThemeGeneration}
             />
           </div>
 
           {/* Quick suggestions */}
           <HorizontalScrollArea className="mx-auto py-2">
             <SuggestedPillActions
-              onThemeGeneration={handleRedirectAndThemeGeneration}
               isGeneratingTheme={isGeneratingTheme}
+              onThemeGeneration={handleRedirectAndThemeGeneration}
             />
           </HorizontalScrollArea>
         </div>

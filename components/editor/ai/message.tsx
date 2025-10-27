@@ -39,7 +39,12 @@ export default function Message({
   const showMessageActions = !isLastMessageStreaming;
 
   return (
-    <div className={cn("flex w-full items-start gap-4", isUser ? "justify-end" : "justify-start")}>
+    <div
+      className={cn(
+        "flex w-full items-start gap-4",
+        isUser ? "justify-end" : "justify-start"
+      )}
+    >
       <div className={cn("flex w-full max-w-[90%] items-start")}>
         <div
           className={cn(
@@ -48,27 +53,30 @@ export default function Message({
         >
           {isUser && (
             <UserMessage
-              message={message}
               isEditing={isEditing}
-              onRetry={onRetry}
-              onEdit={onEdit}
-              onEditSubmit={onEditSubmit}
-              onEditCancel={onEditCancel}
               isGeneratingTheme={isGeneratingTheme}
+              message={message}
+              onEdit={onEdit}
+              onEditCancel={onEditCancel}
+              onEditSubmit={onEditSubmit}
+              onRetry={onRetry}
             />
           )}
 
           {isAssistant && (
-            <AssistantMessage message={message} isLastMessageStreaming={isLastMessageStreaming} />
+            <AssistantMessage
+              isLastMessageStreaming={isLastMessageStreaming}
+              message={message}
+            />
           )}
 
           {showMessageActions && (
             <MessageActions
-              message={message}
-              onRetry={onRetry}
-              onEdit={onEdit}
               isEditing={isEditing}
               isGeneratingTheme={isGeneratingTheme}
+              message={message}
+              onEdit={onEdit}
+              onRetry={onRetry}
             />
           )}
         </div>
@@ -82,7 +90,10 @@ interface AssistantMessageProps {
   isLastMessageStreaming: boolean;
 }
 
-function AssistantMessage({ message, isLastMessageStreaming }: AssistantMessageProps) {
+function AssistantMessage({
+  message,
+  isLastMessageStreaming,
+}: AssistantMessageProps) {
   const { themeState } = useEditorStore();
 
   return (
@@ -109,11 +120,11 @@ function AssistantMessage({ message, isLastMessageStreaming }: AssistantMessageP
           if (type === "text") {
             return (
               <StreamText
-                key={key}
-                text={part.text}
-                className="w-fit text-sm"
                 animate={isLastMessageStreaming}
+                className="w-fit text-sm"
+                key={key}
                 markdown
+                text={part.text}
               />
             );
           }
@@ -125,14 +136,17 @@ function AssistantMessage({ message, isLastMessageStreaming }: AssistantMessageP
               const themeStyles = part.output;
               return (
                 <ChatThemePreview
+                  className="p-0"
                   key={key}
                   status="complete"
                   themeStyles={themeStyles}
-                  className="p-0"
                 >
                   <ScrollArea className="h-48">
                     <div className="p-2">
-                      <ColorPreview styles={themeStyles} currentMode={themeState.currentMode} />
+                      <ColorPreview
+                        currentMode={themeState.currentMode}
+                        styles={themeStyles}
+                      />
                     </div>
                   </ScrollArea>
                 </ChatThemePreview>
@@ -140,10 +154,14 @@ function AssistantMessage({ message, isLastMessageStreaming }: AssistantMessageP
             }
 
             if (state === "output-error") {
-              return <ChatThemePreview key={key} status="error" className="p-0" />;
+              return (
+                <ChatThemePreview className="p-0" key={key} status="error" />
+              );
             }
 
-            return <ChatThemePreview key={key} status="loading" className="p-0" />;
+            return (
+              <ChatThemePreview className="p-0" key={key} status="loading" />
+            );
           }
         })}
       </div>
@@ -176,7 +194,9 @@ function UserMessage({
       return buildAIPromptRender(promptData);
     }
 
-    return message.parts.map((part) => (part.type === "text" ? part.text : "")).join("");
+    return message.parts
+      .map((part) => (part.type === "text" ? part.text : ""))
+      .join("");
   };
 
   const msgContent = getDisplayContent();
@@ -187,18 +207,18 @@ function UserMessage({
     if (images.length === 1) {
       return (
         <div className="self-end">
-          <ChatImagePreview src={images[0].url} alt="Image preview" />
+          <ChatImagePreview alt="Image preview" src={images[0].url} />
         </div>
       );
     } else if (images.length > 1) {
       return (
         <div className="flex flex-row items-center justify-end gap-1 self-end">
           {images.map((image, idx) => (
-            <div key={idx} className="aspect-square size-full max-w-32 flex-1">
+            <div className="aspect-square size-full max-w-32 flex-1" key={idx}>
               <ChatImagePreview
+                alt="Image preview"
                 className="size-full object-cover"
                 src={image.url}
-                alt="Image preview"
               />
             </div>
           ))}
@@ -214,11 +234,11 @@ function UserMessage({
   if (isEditing) {
     return (
       <MessageEditForm
+        disabled={isGeneratingTheme}
         key={message.id}
         message={message}
-        onEditSubmit={onEditSubmit}
         onEditCancel={onEditCancel}
-        disabled={isGeneratingTheme}
+        onEditSubmit={onEditSubmit}
       />
     );
   }

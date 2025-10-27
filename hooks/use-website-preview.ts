@@ -20,7 +20,10 @@ const initialState: WebsitePreviewState = {
   error: null,
 };
 
-function reducer(state: WebsitePreviewState, action: Action): WebsitePreviewState {
+function reducer(
+  state: WebsitePreviewState,
+  action: Action
+): WebsitePreviewState {
   switch (action.type) {
     case "SET_LOADING":
       return { ...state, isLoading: action.payload };
@@ -41,7 +44,9 @@ export interface UseWebsitePreviewProps {
   allowCrossOrigin?: boolean;
 }
 
-export function useWebsitePreview({ allowCrossOrigin = false }: UseWebsitePreviewProps) {
+export function useWebsitePreview({
+  allowCrossOrigin = false,
+}: UseWebsitePreviewProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const loadingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -49,7 +54,9 @@ export function useWebsitePreview({ allowCrossOrigin = false }: UseWebsitePrevie
   const inputUrl = useWebsitePreviewStore((state) => state.inputUrl);
   const currentUrl = useWebsitePreviewStore((state) => state.currentUrl);
   const setInputUrlStore = useWebsitePreviewStore((state) => state.setInputUrl);
-  const setCurrentUrlStore = useWebsitePreviewStore((state) => state.setCurrentUrl);
+  const setCurrentUrlStore = useWebsitePreviewStore(
+    (state) => state.setCurrentUrl
+  );
   const resetStore = useWebsitePreviewStore((state) => state.reset);
 
   const clearLoadingTimeout = () => {
@@ -79,7 +86,8 @@ export function useWebsitePreview({ allowCrossOrigin = false }: UseWebsitePrevie
       loadingTimeoutRef.current = setTimeout(() => {
         dispatch({
           type: "SET_LOAD_ERROR",
-          payload: "Loading timeout - the website may be taking too long to respond",
+          payload:
+            "Loading timeout - the website may be taking too long to respond",
         });
         loadingTimeoutRef.current = null;
       }, LOADING_TIMEOUT_MS);
@@ -102,7 +110,10 @@ export function useWebsitePreview({ allowCrossOrigin = false }: UseWebsitePrevie
     }
 
     let formattedUrl = inputUrl.trim();
-    if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+    if (
+      !formattedUrl.startsWith("http://") &&
+      !formattedUrl.startsWith("https://")
+    ) {
       formattedUrl = "https://" + formattedUrl;
     }
 

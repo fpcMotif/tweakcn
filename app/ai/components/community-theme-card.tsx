@@ -1,12 +1,12 @@
 "use client";
 
+import { Moon, MoreVertical, Sun } from "lucide-react";
 import Logo from "@/assets/logo.svg";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/editor-store";
 import { Theme, ThemePreset } from "@/types/theme";
-import { Moon, MoreVertical, Sun } from "lucide-react";
 
 // This is repeating from `dashboard/components/theme-card.tsx`
 type SwatchDefinition = {
@@ -25,7 +25,11 @@ const swatchDefinitions: SwatchDefinition[] = [
   { name: "Background", bgKey: "background", fgKey: "foreground" },
 ];
 
-export function CommunityThemeCard({ themePreset }: { themePreset: ThemePreset }) {
+export function CommunityThemeCard({
+  themePreset,
+}: {
+  themePreset: ThemePreset;
+}) {
   const { themeState } = useEditorStore();
   const mode = themeState.currentMode;
 
@@ -33,10 +37,10 @@ export function CommunityThemeCard({ themePreset }: { themePreset: ThemePreset }
     <div className="group/card relative flex flex-col gap-2">
       <div className="group/preview relative flex h-56 overflow-hidden rounded-lg border">
         <div className="from-foreground/20 to-foreground-10 absolute inset-0 z-1 flex flex-col items-center justify-center gap-2 bg-gradient-to-b opacity-0 transition-opacity duration-300 ease-in-out group-hover/preview:opacity-100">
-          <Button variant="outline" size="sm" className="w-28 drop-shadow">
+          <Button className="w-28 drop-shadow" size="sm" variant="outline">
             View Details
           </Button>
-          <Button size="sm" className="w-28 drop-shadow">
+          <Button className="w-28 drop-shadow" size="sm">
             View in Editor
           </Button>
         </div>
@@ -50,11 +54,13 @@ export function CommunityThemeCard({ themePreset }: { themePreset: ThemePreset }
             </div>
             {swatchDefinitions.map((swatch) => (
               <div
-                key={swatch.name + swatch.bgKey + "light"}
                 className={cn(
                   "group/swatch relative h-full flex-1 transition-all duration-300 ease-in-out"
                 )}
-                style={{ backgroundColor: themePreset.styles.light[swatch.bgKey] }}
+                key={swatch.name + swatch.bgKey + "light"}
+                style={{
+                  backgroundColor: themePreset.styles.light[swatch.bgKey],
+                }}
               ></div>
             ))}
           </div>
@@ -66,11 +72,13 @@ export function CommunityThemeCard({ themePreset }: { themePreset: ThemePreset }
             </div>
             {swatchDefinitions.map((swatch) => (
               <div
-                key={swatch.name + swatch.bgKey + "dark"}
                 className={cn(
                   "group/swatch relative h-full flex-1 transition-all duration-300 ease-in-out"
                 )}
-                style={{ backgroundColor: themePreset.styles.dark[swatch.bgKey] }}
+                key={swatch.name + swatch.bgKey + "dark"}
+                style={{
+                  backgroundColor: themePreset.styles.dark[swatch.bgKey],
+                }}
               ></div>
             ))}
           </div>
@@ -83,7 +91,8 @@ export function CommunityThemeCard({ themePreset }: { themePreset: ThemePreset }
           style={
             {
               "--primary": themePreset.styles[mode].primary,
-              "--primary-foreground": themePreset.styles[mode]["primary-foreground"],
+              "--primary-foreground":
+                themePreset.styles[mode]["primary-foreground"],
               "--secondary": themePreset.styles[mode].secondary,
             } as React.CSSProperties
           }
@@ -91,13 +100,15 @@ export function CommunityThemeCard({ themePreset }: { themePreset: ThemePreset }
           <Logo className="text-primary-foreground size-full p-2 drop-shadow-lg" />
         </div>
         <div className="flex flex-col gap-1">
-          <h3 className="line-clamp-1 text-sm leading-none font-medium">{themePreset.label}</h3>
+          <h3 className="line-clamp-1 text-sm leading-none font-medium">
+            {themePreset.label}
+          </h3>
           <p className="text-muted-foreground line-clamp-1 text-xs">
             {themePreset.createdAt ?? "Unknown creation date"}
           </p>
         </div>
 
-        <Button variant="ghost" size="icon" className="ml-auto">
+        <Button className="ml-auto" size="icon" variant="ghost">
           <MoreVertical />
         </Button>
       </div>

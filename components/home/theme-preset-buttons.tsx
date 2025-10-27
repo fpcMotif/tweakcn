@@ -1,12 +1,18 @@
 "use client";
 
-import { AnimationOptions, AnimationPlaybackControls, motion, TargetAndTransition, useAnimate } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { getPresetThemeStyles } from "@/utils/theme-preset-helper";
-import { cn } from "@/lib/utils";
-import { colorFormatter } from "@/utils/color-converter";
-import { ThemeEditorState } from "@/types/editor";
+import {
+  AnimationOptions,
+  AnimationPlaybackControls,
+  motion,
+  TargetAndTransition,
+  useAnimate,
+} from "motion/react";
 import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ThemeEditorState } from "@/types/editor";
+import { colorFormatter } from "@/utils/color-converter";
+import { getPresetThemeStyles } from "@/utils/theme-preset-helper";
 
 // ColorBox component remains internal to ThemePresetButtons
 const ColorBox = ({ color }: { color: string }) => {
@@ -90,11 +96,8 @@ export function ThemePresetButtons({
   return (
     // Container for the rows with vertical gap
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
       className="w-full overflow-hidden mb-8 flex flex-col py-2 -my-2"
+      initial={{ opacity: 0, y: 20 }}
       style={{
         gap: `${rowGapPx}px`,
         maskImage:
@@ -102,12 +105,15 @@ export function ThemePresetButtons({
         WebkitMaskImage:
           "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)", // Added for Safari compatibility
       }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
     >
       {rowsData.map((rowData) => (
         <AnimatedRow
           key={rowData!.key}
-          target={rowData!.animate}
           options={rowData!.transition}
+          target={rowData!.animate}
         >
           {/* Inner div necessary for spacing when using justify-content */}
           <div className="flex flex-shrink-0" style={{ gap: `${gapPx}px` }}>
@@ -119,10 +125,10 @@ export function ThemePresetButtons({
               return (
                 // Wrapper for each button
                 <motion.div
-                  key={`${presetName}-${rowData!.key}-${index}`} // More unique key
-                  className="flex-shrink-0 min-w-[160px]" // Fixed width
-                  whileHover={{ scale: 1.02, y: -3, zIndex: 20 }} // Pop on hover
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="flex-shrink-0 min-w-[160px]" // More unique key
+                  key={`${presetName}-${rowData!.key}-${index}`} // Fixed width
+                  transition={{ duration: 0.2, ease: "easeOut" }} // Pop on hover
+                  whileHover={{ scale: 1.02, y: -3, zIndex: 20 }}
                 >
                   <Button
                     className={cn(
@@ -130,7 +136,7 @@ export function ThemePresetButtons({
                       "hover:shadow-lg px-4 py-3",
                       isSelected ? "ring-2 ring-primary/50 shadow-md" : ""
                     )}
-                    variant="ghost"
+                    onClick={() => applyThemePreset(presetName)}
                     style={{
                       backgroundColor: bgColor
                         .replace("hsl", "hsla")
@@ -138,7 +144,7 @@ export function ThemePresetButtons({
                         .replace(")", ", 0.10)"),
                       color: themeStyles.foreground,
                     }}
-                    onClick={() => applyThemePreset(presetName)}
+                    variant="ghost"
                   >
                     <div className="flex items-center gap-2.5 text-center">
                       <div className="flex gap-1">
@@ -177,10 +183,10 @@ function AnimatedRow({ children, target, options }: AnimatedRowProps) {
 
   return (
     <motion.div
-      ref={scope}
       className="flex"
-      onHoverStart={() => controls.current?.pause()}
       onHoverEnd={() => controls.current?.play()}
+      onHoverStart={() => controls.current?.pause()}
+      ref={scope}
     >
       {children}
     </motion.div>

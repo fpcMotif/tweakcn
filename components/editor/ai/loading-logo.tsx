@@ -1,5 +1,5 @@
-import Logo from "@/assets/logo.svg";
 import { Sparkle } from "lucide-react";
+import Logo from "@/assets/logo.svg";
 
 export function LoadingLogo() {
   return (

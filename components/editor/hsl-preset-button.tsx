@@ -1,9 +1,14 @@
 "use client";
 
 import type React from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface HslPresetButtonProps {
   label: string;
@@ -35,8 +40,18 @@ export const HslPresetButton: React.FC<HslPresetButtonProps> = ({
   selected,
   adjustColorByHsl,
 }) => {
-  const previewBg = adjustColorByHsl(baseBg, hueShift, saturationScale, lightnessScale);
-  const previewPrimary = adjustColorByHsl(basePrimary, hueShift, saturationScale, lightnessScale);
+  const previewBg = adjustColorByHsl(
+    baseBg,
+    hueShift,
+    saturationScale,
+    lightnessScale
+  );
+  const previewPrimary = adjustColorByHsl(
+    basePrimary,
+    hueShift,
+    saturationScale,
+    lightnessScale
+  );
   const previewSecondary = adjustColorByHsl(
     baseSecondary,
     hueShift,
@@ -49,20 +64,25 @@ export const HslPresetButton: React.FC<HslPresetButtonProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            type="button"
-            onClick={onClick}
-            size="sm"
-            variant="outline"
             className={cn(
               "relative h-8 w-full overflow-hidden rounded-md p-0 shadow-sm transition-all duration-200",
               "hover:scale-105 hover:shadow-md",
-              selected ? "ring-primary ring-1 ring-offset-1" : "border-border border"
+              selected
+                ? "ring-primary ring-1 ring-offset-1"
+                : "border-border border"
             )}
+            onClick={onClick}
+            size="sm"
             style={{ background: previewBg }}
+            type="button"
+            variant="outline"
           >
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex h-full w-full">
-                <div className="h-full w-1/2 rounded-l-md" style={{ background: previewPrimary }} />
+                <div
+                  className="h-full w-1/2 rounded-l-md"
+                  style={{ background: previewPrimary }}
+                />
                 <div
                   className="h-full w-1/2 rounded-r-md"
                   style={{ background: previewSecondary }}
@@ -74,7 +94,7 @@ export const HslPresetButton: React.FC<HslPresetButtonProps> = ({
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom" className="text-xs font-medium">
+        <TooltipContent className="text-xs font-medium" side="bottom">
           {label}
         </TooltipContent>
       </Tooltip>

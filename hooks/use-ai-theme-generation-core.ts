@@ -6,7 +6,8 @@ export function useAIThemeGenerationCore() {
   const isGeneratingTheme = status === "submitted" || status === "streaming";
 
   const generateThemeCore = async (promptData?: AIPromptData) => {
-    if (!promptData) throw new Error("Failed to generate theme. Please try again.");
+    if (!promptData)
+      throw new Error("Failed to generate theme. Please try again.");
 
     sendMessage({
       text: promptData.content,

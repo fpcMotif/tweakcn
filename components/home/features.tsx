@@ -1,7 +1,15 @@
+import {
+  BrainCircuit,
+  Code,
+  Contrast,
+  FileCode,
+  Gem,
+  Layers,
+  Paintbrush,
+} from "lucide-react";
+import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { BrainCircuit, Code, Contrast, FileCode, Gem, Layers, Paintbrush } from "lucide-react";
-import { motion } from "motion/react";
 
 const features = [
   {
@@ -12,7 +20,8 @@ const features = [
   },
   {
     title: "Typography Settings",
-    description: "Fine-tune font size, weight, and text transform to create the perfect look.",
+    description:
+      "Fine-tune font size, weight, and text transform to create the perfect look.",
     icon: <FileCode className="size-5" />,
   },
   {
@@ -59,16 +68,16 @@ const item = {
 
 export function Features() {
   return (
-    <section id="features" className="relative isolate w-full py-20 md:py-32">
+    <section className="relative isolate w-full py-20 md:py-32" id="features">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(from_var(--primary)_r_g_b_/_0.03),transparent_70%)]"></div>
 
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="mb-12 flex flex-col items-center justify-center space-y-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <Badge
             className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
@@ -81,16 +90,17 @@ export function Features() {
             Powerful Customization Tools
           </h2>
           <p className="text-muted-foreground max-w-[800px] md:text-lg">
-            All the tools you need to customize your shadcn/ui components and make them unique.
+            All the tools you need to customize your shadcn/ui components and
+            make them unique.
           </p>
         </motion.div>
 
         <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          initial="hidden"
+          variants={container}
+          viewport={{ once: true }}
+          whileInView="show"
         >
           {features.map((feature, i) => (
             <motion.div
@@ -112,7 +122,9 @@ export function Features() {
                       </span>
                     )}
                   </h3>
-                  <p className="text-muted-foreground text-pretty">{feature.description}</p>
+                  <p className="text-muted-foreground text-pretty">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>

@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   AlertCircle,
   Archive,
@@ -12,19 +11,23 @@ import {
   Trash2,
   Users2,
 } from "lucide-react";
-
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import * as React from "react";
 import { AccountSwitcher } from "@/components/examples/mail/components/account-switcher";
 import { MailDisplay } from "@/components/examples/mail/components/mail-display";
 import { MailList } from "@/components/examples/mail/components/mail-list";
 import { Nav } from "@/components/examples/mail/components/nav";
 import { type Mail } from "@/components/examples/mail/data";
 import { useMail } from "@/components/examples/mail/use-mail";
+import { Input } from "@/components/ui/input";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface MailProps {
   accounts: {
@@ -51,18 +54,22 @@ export function Mail({
   return (
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
+        className="h-full max-h-[800px] items-stretch"
         direction="horizontal"
         onLayout={(sizes: number[]) => {
           document.cookie = `react-resizable-panels:layout:mail=${JSON.stringify(sizes)}`;
         }}
-        className="h-full max-h-[800px] items-stretch"
       >
         <ResizablePanel
-          defaultSize={defaultLayout[0]}
+          className={cn(
+            isCollapsed &&
+              "min-w-[50px] transition-all duration-300 ease-in-out"
+          )}
           collapsedSize={navCollapsedSize}
           collapsible={true}
-          minSize={15}
+          defaultSize={defaultLayout[0]}
           maxSize={20}
+          minSize={15}
           onCollapse={() => {
             setIsCollapsed(true);
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
@@ -71,7 +78,6 @@ export function Mail({
             setIsCollapsed(false);
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
           }}
-          className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
         >
           <div
             className={cn(
@@ -79,7 +85,7 @@ export function Mail({
               isCollapsed ? "h-[52px]" : "px-2"
             )}
           >
-            <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
+            <AccountSwitcher accounts={accounts} isCollapsed={isCollapsed} />
           </div>
           <Separator />
           <Nav
@@ -175,21 +181,23 @@ export function Mail({
               <form>
                 <div className="relative">
                   <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
-                  <Input placeholder="Search" className="pl-8" />
+                  <Input className="pl-8" placeholder="Search" />
                 </div>
               </form>
             </div>
-            <TabsContent value="all" className="m-0 h-screen">
+            <TabsContent className="m-0 h-screen" value="all">
               <MailList items={mails} />
             </TabsContent>
-            <TabsContent value="unread" className="m-0 h-screen">
+            <TabsContent className="m-0 h-screen" value="unread">
               <MailList items={mails.filter((item) => !item.read)} />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
-          <MailDisplay mail={mails.find((item) => item.id === mail.selected) || null} />
+          <MailDisplay
+            mail={mails.find((item) => item.id === mail.selected) || null}
+          />
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

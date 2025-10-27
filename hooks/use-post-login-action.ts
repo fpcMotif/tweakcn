@@ -58,7 +58,9 @@ export function usePostLoginAction<T = any>(
 }
 
 // Internal function to actually execute handlers
-async function executePostLoginActionInternal(actionPayload: StoredPostLoginAction) {
+async function executePostLoginActionInternal(
+  actionPayload: StoredPostLoginAction
+) {
   if (!actionPayload) return;
 
   const actionType = actionPayload.type;
@@ -71,7 +73,9 @@ async function executePostLoginActionInternal(actionPayload: StoredPostLoginActi
 }
 
 // This function should be called when a user successfully logs in
-export async function executePostLoginAction(actionPayload: StoredPostLoginAction) {
+export async function executePostLoginAction(
+  actionPayload: StoredPostLoginAction
+) {
   if (!actionPayload) return;
 
   const actionType = actionPayload.type;

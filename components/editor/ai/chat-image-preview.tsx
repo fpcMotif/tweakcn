@@ -1,3 +1,6 @@
+import { ImageIcon } from "lucide-react";
+import Image from "next/image";
+import { ComponentProps } from "react";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -6,29 +9,32 @@ import {
   ResponsiveDialogTrigger,
 } from "@/components/ui/revola";
 import { cn } from "@/lib/utils";
-import { ImageIcon } from "lucide-react";
-import Image from "next/image";
-import { ComponentProps } from "react";
 
 interface ChatImagePreviewProps extends ComponentProps<typeof Image> {
   name?: string;
 }
 
-export function ChatImagePreview({ name, src, className, alt, ...props }: ChatImagePreviewProps) {
+export function ChatImagePreview({
+  name,
+  src,
+  className,
+  alt,
+  ...props
+}: ChatImagePreviewProps) {
   return (
     <ResponsiveDialog onlyDialog>
       <ResponsiveDialogTrigger asChild>
         <div className="group/preview relative isolate size-full cursor-pointer overflow-hidden rounded-lg border">
           <Image
-            width={250}
-            height={250}
-            src={src}
+            alt={alt || "Image preview"}
             className={cn(
               "h-auto max-h-[250px] w-auto max-w-[250px] object-cover object-center",
               className
             )}
-            alt={alt || "Image preview"}
+            height={250}
+            src={src}
             title={name}
+            width={250}
             {...props}
           />
 
@@ -39,18 +45,18 @@ export function ChatImagePreview({ name, src, className, alt, ...props }: ChatIm
       </ResponsiveDialogTrigger>
 
       <ResponsiveDialogContent
-        closeButtonClassName="bg-white/10 backdrop-blur-md"
         className="size-fit max-h-[80dvh] overflow-hidden sm:max-w-[80vw]"
+        closeButtonClassName="bg-white/10 backdrop-blur-md"
       >
         <ResponsiveDialogHeader className="sr-only">
           <ResponsiveDialogTitle>Image Preview</ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <Image
-          src={src}
-          width={500}
-          height={500}
           alt="Full image preview"
           className="size-auto max-h-[80vh] max-w-[80vw] object-contain"
+          height={500}
+          src={src}
+          width={500}
         />
       </ResponsiveDialogContent>
     </ResponsiveDialog>
