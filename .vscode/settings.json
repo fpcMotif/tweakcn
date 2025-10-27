@@ -6,7 +6,7 @@
     "source.organizeImports.biome": "explicit"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -26,7 +26,6 @@
   "oxc.enable": true,
   "oxc.trace.server": "off",
   "oxc.lint.enable": true,
-  "biome.lsp.bin": "./node_modules/@biomejs/biome/bin/biome",
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }

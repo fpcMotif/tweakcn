@@ -7,7 +7,16 @@
     "jsx-a11y": "warn",
     "nextjs": "warn",
     "unicorn": "warn",
-    "import": "warn"
+    "import": "warn",
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   },
   "ignorePatterns": [
     "node_modules",

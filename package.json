@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "oxlint .",
     "lint:biome": "bun x ultracite check",
@@ -147,5 +147,10 @@
     "*.{json,jsonc,css,scss,md,mdx}": [
       "bun x ultracite fix"
     ]
+  },
+  "postcss": {
+    "plugins": {
+      "@tailwindcss/postcss": {}
+    }
   }
 }
