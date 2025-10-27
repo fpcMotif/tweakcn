@@ -6,7 +6,7 @@ import { toast } from "@/components/ui/use-toast";
 import { MAX_FREE_THEMES } from "@/lib/constants";
 import { useGetProDialogStore } from "@/store/get-pro-dialog-store";
 import { useThemePresetStore } from "@/store/theme-preset-store";
-import { Theme, ThemeStyles } from "@/types/theme";
+import type { Theme, ThemeStyles } from "@/types/theme";
 import { themeKeys } from "./use-themes-data";
 
 function handleMutationError(error: Error, operation: string) {
@@ -53,7 +53,7 @@ export function useCreateTheme() {
   const { registerPreset } = useThemePresetStore();
   const { openGetProDialog } = useGetProDialogStore();
 
-  return useMutation({
+  return useMutation<Theme, Error, { name: string; styles: ThemeStyles }>({
     mutationFn: (data: { name: string; styles: ThemeStyles }) =>
       createTheme(data),
     retry(failureCount, error) {
@@ -62,7 +62,7 @@ export function useCreateTheme() {
       }
       return failureCount < 3;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: Theme) => {
       queryClient.setQueryData(
         themeKeys.lists(),
         (old: Theme[] | undefined) => {
@@ -70,10 +70,12 @@ export function useCreateTheme() {
         }
       );
 
-      registerPreset(data.id, {
+      registerPreset(String(data.id), {
         label: data.name,
         source: "SAVED",
-        createdAt: data.createdAt.toISOString(),
+        createdAt:
+          data.createdAt?.toISOString() ||
+          new Date(data._creationTime).toISOString(),
         styles: data.styles,
       });
 
@@ -104,7 +106,12 @@ export function useUpdateTheme() {
   const queryClient = useQueryClient();
   const { updatePreset } = useThemePresetStore();
 
-  return useMutation({
+  return useMutation<
+    Theme,
+    Error,
+    { id: string; name?: string; styles?: ThemeStyles },
+    { previousThemes?: Theme[]; previousTheme?: Theme }
+  >({
     mutationFn: (data: { id: string; name?: string; styles?: ThemeStyles }) =>
       updateTheme(data),
     onMutate: async (updatedTheme) => {
@@ -113,8 +120,10 @@ export function useUpdateTheme() {
         queryKey: themeKeys.detail(updatedTheme.id),
       });
 
-      const previousThemes = queryClient.getQueryData(themeKeys.lists());
-      const previousTheme = queryClient.getQueryData(
+      const previousThemes = queryClient.getQueryData<Theme[]>(
+        themeKeys.lists()
+      );
+      const previousTheme = queryClient.getQueryData<Theme>(
         themeKeys.detail(updatedTheme.id)
       );
 
@@ -137,20 +146,24 @@ export function useUpdateTheme() {
 
       return { previousThemes, previousTheme };
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData(themeKeys.detail(data.id), data);
+    onSuccess: (data: Theme) => {
+      queryClient.setQueryData(themeKeys.detail(String(data.id)), data);
       queryClient.setQueryData(
         themeKeys.lists(),
         (old: Theme[] | undefined) => {
           if (!old) return [data];
-          return old.map((theme) => (theme.id === data.id ? data : theme));
+          return old.map((theme) =>
+            String(theme.id) === String(data.id) ? data : theme
+          );
         }
       );
 
-      updatePreset(data.id, {
+      updatePreset(String(data.id), {
         label: data.name,
         source: "SAVED",
-        createdAt: data.createdAt.toISOString(),
+        createdAt:
+          data.createdAt?.toISOString() ||
+          new Date(data._creationTime).toISOString(),
         styles: data.styles,
       });
 
@@ -185,11 +198,18 @@ export function useDeleteTheme() {
   const { unregisterPreset } = useThemePresetStore();
   const router = useRouter();
 
-  return useMutation({
+  return useMutation<
+    { id: string; name: string },
+    Error,
+    string,
+    { previousThemes?: Theme[]; themeId: string }
+  >({
     mutationFn: (themeId: string) => deleteTheme(themeId),
     onMutate: async (themeId) => {
       await queryClient.cancelQueries({ queryKey: themeKeys.lists() });
-      const previousThemes = queryClient.getQueryData(themeKeys.lists());
+      const previousThemes = queryClient.getQueryData<Theme[]>(
+        themeKeys.lists()
+      );
 
       queryClient.setQueryData(
         themeKeys.lists(),
@@ -200,7 +220,7 @@ export function useDeleteTheme() {
 
       return { previousThemes, themeId };
     },
-    onSuccess: (data, themeId) => {
+    onSuccess: (data: { id: string; name: string }, themeId: string) => {
       unregisterPreset(themeId);
       queryClient.removeQueries({ queryKey: themeKeys.detail(themeId) });
 

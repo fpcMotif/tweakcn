@@ -1,0 +1,4 @@
+# Convex generated files
+convex/_generated/
+convex/tsconfig.json
+

@@ -13,6 +13,16 @@ export async function GET(
 
   try {
     const theme = await getTheme(id);
+
+    if (!theme) {
+      return new NextResponse("Theme not found", {
+        status: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     const generatedRegistryItem = generateThemeRegistryItemFromStyles(
       theme.name,
       theme.styles

@@ -1,231 +1,142 @@
 "use server";
 
-import cuid from "cuid";
-import { and, eq } from "drizzle-orm";
-import { headers } from "next/headers";
-import { cache } from "react";
-import { z } from "zod";
-import { db } from "@/db";
-import { theme as themeTable } from "@/db/schema";
-import { auth } from "@/lib/auth";
-import { MAX_FREE_THEMES } from "@/lib/constants";
-import { getMyActiveSubscription } from "@/lib/subscription";
-import {
-  ThemeLimitError,
-  ThemeNotFoundError,
-  UnauthorizedError,
-  ValidationError,
-} from "@/types/errors";
-import { type ThemeStyles, themeStylesSchema } from "@/types/theme";
+import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server";
+import { fetchMutation, fetchQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 
-// Helper to get user ID with better error handling
-async function getCurrentUserId(): Promise<string> {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user?.id) {
-    throw new UnauthorizedError();
-  }
-
-  return session.user.id;
-}
-
-// Log errors for observability
-function logError(error: Error, context: Record<string, any>) {
-  console.error("Theme action error:", error, context);
-
-  // TODO: Add server-side error reporting to PostHog or your preferred service
-  // For production, you'd want to send critical errors to an external service
-  if (error.name === "UnauthorizedError" || error.name === "ValidationError") {
-    // These are expected errors, log but don't report
-    console.warn("Expected error:", { error: error.message, context });
-  } else {
-    // Unexpected errors should be reported
-    console.error("Unexpected error:", {
-      error: error.message,
-      stack: error.stack,
-      context,
-    });
-  }
-}
-
-const createThemeSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Theme name cannot be empty")
-    .max(50, "Theme name too long"),
-  styles: themeStylesSchema,
-});
-
-const updateThemeSchema = z.object({
-  id: z.string().min(1, "Theme ID required"),
-  name: z
-    .string()
-    .min(1, "Theme name cannot be empty")
-    .max(50, "Theme name too long")
-    .optional(),
-  styles: themeStylesSchema.optional(),
-});
-
-// Layer 1: Clean server actions with proper error handling
+/**
+ * Server action to get all themes for the authenticated user
+ */
 export async function getThemes() {
-  try {
-    const userId = await getCurrentUserId();
-    const userThemes = await db
-      .select()
-      .from(themeTable)
-      .where(eq(themeTable.userId, userId));
-    return userThemes;
-  } catch (error) {
-    logError(error as Error, { action: "getThemes" });
-    throw error;
-  }
+  const token = await convexAuthNextjsToken();
+
+  const themes = await fetchQuery(api.themes.getThemes, {}, { token });
+
+  return themes.map((theme) => ({
+    id: theme._id,
+    name: theme.name,
+    styles: theme.styles,
+    _creationTime: theme._creationTime,
+    createdAt: new Date(theme._creationTime),
+  }));
 }
 
-export const getTheme = cache(async (themeId: string) => {
-  try {
-    if (!themeId) {
-      throw new ValidationError("Theme ID required");
-    }
+/**
+ * Server action to get a single theme by ID
+ */
+export async function getTheme(themeId: string | Id<"themes">) {
+  const token = await convexAuthNextjsToken();
 
-    const [theme] = await db
-      .select()
-      .from(themeTable)
-      .where(eq(themeTable.id, themeId))
-      .limit(1);
+  const theme = await fetchQuery(
+    api.themes.getTheme,
+    { themeId: themeId as Id<"themes"> },
+    { token }
+  );
 
-    if (!theme) {
-      throw new ThemeNotFoundError();
-    }
-
-    return theme;
-  } catch (error) {
-    logError(error as Error, { action: "getTheme", themeId });
-    throw error;
+  if (!theme) {
+    return null;
   }
-});
 
-export async function createTheme(formData: {
-  name: string;
-  styles: ThemeStyles;
-}) {
-  try {
-    const userId = await getCurrentUserId();
-
-    const validation = createThemeSchema.safeParse(formData);
-    if (!validation.success) {
-      throw new ValidationError("Invalid input", validation.error.format());
-    }
-
-    // Check theme limit
-    const userThemes = await db
-      .select()
-      .from(themeTable)
-      .where(eq(themeTable.userId, userId));
-
-    if (userThemes.length >= MAX_FREE_THEMES) {
-      const activeSubscription = await getMyActiveSubscription(userId);
-      const isSubscribed =
-        !!activeSubscription &&
-        activeSubscription?.productId ===
-          process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
-
-      if (!isSubscribed) {
-        throw new ThemeLimitError(
-          `You cannot have more than ${MAX_FREE_THEMES} themes.`
-        );
-      }
-    }
-
-    const { name, styles } = validation.data;
-    const newThemeId = cuid();
-    const now = new Date();
-
-    const [insertedTheme] = await db
-      .insert(themeTable)
-      .values({
-        id: newThemeId,
-        userId: userId,
-        name: name,
-        styles: styles,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .returning();
-
-    return insertedTheme;
-  } catch (error) {
-    logError(error as Error, {
-      action: "createTheme",
-      formData: { name: formData.name },
-    });
-    throw error;
-  }
+  return {
+    id: theme._id,
+    name: theme.name,
+    styles: theme.styles,
+    _creationTime: theme._creationTime,
+    createdAt: new Date(theme._creationTime),
+  };
 }
 
-export async function updateTheme(formData: {
+/**
+ * Server action to create a new theme
+ */
+export async function createTheme(data: { name: string; styles: any }) {
+  const token = await convexAuthNextjsToken();
+
+  const themeId = await fetchMutation(
+    api.themes.createTheme,
+    { name: data.name, styles: data.styles },
+    { token }
+  );
+
+  const theme = await fetchQuery(api.themes.getTheme, { themeId }, { token });
+
+  if (!theme) {
+    throw new Error("Failed to create theme");
+  }
+
+  return {
+    id: theme._id,
+    name: theme.name,
+    styles: theme.styles,
+    _creationTime: theme._creationTime,
+    createdAt: new Date(theme._creationTime),
+  };
+}
+
+/**
+ * Server action to update a theme
+ */
+export async function updateTheme(data: {
   id: string;
   name?: string;
-  styles?: ThemeStyles;
+  styles?: any;
 }) {
-  try {
-    const userId = await getCurrentUserId();
+  const token = await convexAuthNextjsToken();
 
-    const validation = updateThemeSchema.safeParse(formData);
-    if (!validation.success) {
-      throw new ValidationError("Invalid input", validation.error.format());
-    }
+  await fetchMutation(
+    api.themes.updateTheme,
+    {
+      id: data.id as Id<"themes">,
+      name: data.name,
+      styles: data.styles,
+    },
+    { token }
+  );
 
-    const { id: themeId, name, styles } = validation.data;
+  const theme = await fetchQuery(
+    api.themes.getTheme,
+    { themeId: data.id as Id<"themes"> },
+    { token }
+  );
 
-    if (!name && !styles) {
-      throw new ValidationError("No update data provided");
-    }
-
-    const updateData: Partial<typeof themeTable.$inferInsert> = {
-      updatedAt: new Date(),
-    };
-    if (name) updateData.name = name;
-    if (styles) updateData.styles = styles;
-
-    const [updatedTheme] = await db
-      .update(themeTable)
-      .set(updateData)
-      .where(and(eq(themeTable.id, themeId), eq(themeTable.userId, userId)))
-      .returning();
-
-    if (!updatedTheme) {
-      throw new ThemeNotFoundError("Theme not found or not owned by user");
-    }
-
-    return updatedTheme;
-  } catch (error) {
-    logError(error as Error, { action: "updateTheme", themeId: formData.id });
-    throw error;
+  if (!theme) {
+    throw new Error("Failed to update theme");
   }
+
+  return {
+    id: theme._id,
+    name: theme.name,
+    styles: theme.styles,
+    _creationTime: theme._creationTime,
+    createdAt: new Date(theme._creationTime),
+  };
 }
 
+/**
+ * Server action to delete a theme
+ */
 export async function deleteTheme(themeId: string) {
-  try {
-    const userId = await getCurrentUserId();
+  const token = await convexAuthNextjsToken();
 
-    if (!themeId) {
-      throw new ValidationError("Theme ID required");
-    }
+  const theme = await fetchQuery(
+    api.themes.getTheme,
+    { themeId: themeId as Id<"themes"> },
+    { token }
+  );
 
-    const [deletedTheme] = await db
-      .delete(themeTable)
-      .where(and(eq(themeTable.id, themeId), eq(themeTable.userId, userId)))
-      .returning({ id: themeTable.id, name: themeTable.name });
-
-    if (!deletedTheme) {
-      throw new ThemeNotFoundError("Theme not found or not owned by user");
-    }
-
-    return deletedTheme;
-  } catch (error) {
-    logError(error as Error, { action: "deleteTheme", themeId });
-    throw error;
+  if (!theme) {
+    throw new Error("Theme not found");
   }
+
+  await fetchMutation(
+    api.themes.deleteTheme,
+    { themeId: themeId as Id<"themes"> },
+    { token }
+  );
+
+  return {
+    id: theme._id,
+    name: theme.name,
+  };
 }

@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/editor-store";
-import { Theme, ThemePreset } from "@/types/theme";
+import type { ThemePreset } from "@/types/theme";
 
 // This is repeating from `dashboard/components/theme-card.tsx`
 type SwatchDefinition = {
   name: string; // Text to display on hover
-  bgKey: keyof Theme["styles"]["light" | "dark"]; // Key for background color
-  fgKey: keyof Theme["styles"]["light" | "dark"]; // Key for text color
+  bgKey: string; // Key for background color
+  fgKey: string; // Key for text color
 };
 
 // This is repeating from `dashboard/components/theme-card.tsx`
@@ -59,7 +59,10 @@ export function CommunityThemeCard({
                 )}
                 key={swatch.name + swatch.bgKey + "light"}
                 style={{
-                  backgroundColor: themePreset.styles.light[swatch.bgKey],
+                  backgroundColor:
+                    themePreset.styles.light[
+                      swatch.bgKey as keyof typeof themePreset.styles.light
+                    ],
                 }}
               ></div>
             ))}
@@ -77,7 +80,10 @@ export function CommunityThemeCard({
                 )}
                 key={swatch.name + swatch.bgKey + "dark"}
                 style={{
-                  backgroundColor: themePreset.styles.dark[swatch.bgKey],
+                  backgroundColor:
+                    themePreset.styles.dark[
+                      swatch.bgKey as keyof typeof themePreset.styles.dark
+                    ],
                 }}
               ></div>
             ))}

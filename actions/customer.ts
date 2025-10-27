@@ -1,9 +1,14 @@
 import "server-only";
 
 import { Customer } from "@polar-sh/sdk/models/components/customer.js";
-import { User } from "better-auth";
 import { polar } from "@/lib/polar";
 import { logError } from "@/lib/shared";
+
+type User = {
+  id: string;
+  email: string;
+  name: string;
+};
 
 export const getOrCreateCustomer = async (user: User) => {
   let customer: Customer | null = null;

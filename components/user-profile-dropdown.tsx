@@ -16,11 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSubscription } from "@/hooks/use-subscription";
-import { authClient } from "@/lib/auth-client";
+import { authClient, useAuthActions } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/auth-store";
 
 export function UserProfileDropdown() {
   const { data: session, isPending } = authClient.useSession();
+  const { signOut } = useAuthActions();
   const { openAuthDialog } = useAuthStore();
   const posthog = usePostHog();
   const router = useRouter();
@@ -30,7 +31,7 @@ export function UserProfileDropdown() {
 
   const handleLogOut = async () => {
     posthog.reset();
-    await authClient.signOut();
+    await signOut();
     router.refresh();
   };
 

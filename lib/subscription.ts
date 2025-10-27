@@ -1,87 +1,36 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
-import { getMyAllTimeRequestCount } from "@/actions/ai-usage";
-import { db } from "@/db";
-import { subscription } from "@/db/schema";
 import { SubscriptionRequiredError } from "@/types/errors";
-import { SubscriptionCheck } from "@/types/subscription";
-import { AI_REQUEST_FREE_TIER_LIMIT } from "./constants";
-import { getCurrentUserId } from "./shared";
 
-export async function getMyActiveSubscription(
-  userId: string
-): Promise<typeof subscription.$inferSelect | null> {
-  const sub = await db
-    .select()
-    .from(subscription)
-    .where(
-      and(eq(subscription.userId, userId), eq(subscription.status, "active"))
-    );
-  return sub[0];
+/**
+ * Subscription validation functions for Convex migration
+ *
+ * Note: These functions are now handled by Convex queries/mutations.
+ * See convex/subscriptions.ts for the actual implementation.
+ *
+ * This file is kept for backwards compatibility with API routes
+ * but should be migrated to call Convex functions directly.
+ */
+
+export async function getMyActiveSubscription(_userId: string): Promise<any> {
+  throw new Error(
+    "getMyActiveSubscription: Use Convex query api.subscriptions.getMyActiveSubscription instead"
+  );
 }
 
 export async function validateSubscriptionAndUsage(
-  userId: string
-): Promise<SubscriptionCheck> {
-  try {
-    const [activeSubscription, requestsUsed] = await Promise.all([
-      getMyActiveSubscription(userId),
-      getMyAllTimeRequestCount(userId),
-    ]);
-
-    const isSubscribed =
-      !!activeSubscription &&
-      activeSubscription?.productId ===
-        process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
-
-    if (isSubscribed) {
-      return {
-        canProceed: true,
-        isSubscribed: true,
-        requestsUsed,
-        requestsRemaining: Infinity, // Unlimited for subscribers
-      };
-    }
-
-    const requestsRemaining = Math.max(
-      0,
-      AI_REQUEST_FREE_TIER_LIMIT - requestsUsed
-    );
-    const canProceed = requestsUsed < AI_REQUEST_FREE_TIER_LIMIT;
-
-    if (!canProceed) {
-      return {
-        canProceed: false,
-        isSubscribed: false,
-        requestsUsed,
-        requestsRemaining: 0,
-        error: `You've reached your free limit of ${AI_REQUEST_FREE_TIER_LIMIT} requests. Please upgrade to continue.`,
-      };
-    }
-
-    return {
-      canProceed: true,
-      isSubscribed: false,
-      requestsUsed,
-      requestsRemaining,
-    };
-  } catch (error) {
-    console.error("Error validating subscription:", error);
-    throw error;
-  }
+  _userId: string
+): Promise<any> {
+  throw new Error(
+    "validateSubscriptionAndUsage: Use Convex query api.subscriptions.validateSubscriptionAndUsage instead"
+  );
 }
 
 export async function requireSubscriptionOrFreeUsage(
-  req: NextRequest
+  _req: NextRequest
 ): Promise<void> {
-  const userId = await getCurrentUserId(req);
-  const validation = await validateSubscriptionAndUsage(userId);
-
-  if (!validation.canProceed) {
-    throw new SubscriptionRequiredError(validation.error, {
-      requestsRemaining: validation.requestsRemaining,
-    });
-  }
+  throw new SubscriptionRequiredError(
+    "Use Convex functions for subscription validation"
+  );
 }

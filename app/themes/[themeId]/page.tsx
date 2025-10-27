@@ -38,6 +38,16 @@ export default async function ThemePage({ params }: ThemePageProps) {
   const { themeId } = await params;
   const theme = await getTheme(themeId);
 
+  if (!theme) {
+    return (
+      <div className="flex flex-1 flex-col">
+        <div className="container mx-auto px-4 py-8">
+          <p>Theme not found</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="container mx-auto px-4 py-8">

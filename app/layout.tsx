@@ -1,7 +1,9 @@
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import type { Metadata, Viewport } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
 import { AuthDialogWrapper } from "@/components/auth-dialog-wrapper";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { DynamicFontLoader } from "@/components/dynamic-font-loader";
 import { GetProDialogWrapper } from "@/components/get-pro-dialog-wrapper";
 import { PostHogInit } from "@/components/posthog-init";
@@ -99,21 +101,25 @@ export default function RootLayout({
         <meta name="darkreader-lock" />
       </head>
       <body>
-        <NuqsAdapter>
-          <Suspense>
-            <QueryProvider>
-              <ThemeProvider defaultTheme="light">
-                <TooltipProvider>
-                  <AuthDialogWrapper />
-                  <GetProDialogWrapper />
-                  <Toaster />
-                  <ChatProvider>{children}</ChatProvider>
-                </TooltipProvider>
-              </ThemeProvider>
-            </QueryProvider>
-          </Suspense>
-        </NuqsAdapter>
-        <PostHogInit />
+        <ConvexAuthNextjsServerProvider>
+          <NuqsAdapter>
+            <Suspense>
+              <ConvexClientProvider>
+                <QueryProvider>
+                  <ThemeProvider defaultTheme="light">
+                    <TooltipProvider>
+                      <AuthDialogWrapper />
+                      <GetProDialogWrapper />
+                      <Toaster />
+                      <ChatProvider>{children}</ChatProvider>
+                    </TooltipProvider>
+                  </ThemeProvider>
+                </QueryProvider>
+              </ConvexClientProvider>
+            </Suspense>
+          </NuqsAdapter>
+          <PostHogInit />
+        </ConvexAuthNextjsServerProvider>
       </body>
     </html>
   );

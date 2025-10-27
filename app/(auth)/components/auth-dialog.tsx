@@ -13,7 +13,7 @@ import {
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
 } from "@/components/ui/revola";
-import { authClient } from "@/lib/auth-client";
+import { useAuthActions } from "@/lib/auth-client";
 
 interface AuthDialogProps {
   open: boolean;
@@ -30,6 +30,7 @@ export function AuthDialog({
 }: AuthDialogProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { signIn } = useAuthActions();
   const [isSignIn, setIsSignIn] = useState(initialMode === "signin");
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isGithubLoading, setIsGithubLoading] = useState(false);
@@ -49,12 +50,12 @@ export function AuthDialog({
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: getCallbackUrl(),
+      await signIn("google", {
+        redirectTo: getCallbackUrl(),
       });
     } catch (error) {
       console.error("Google Sign In Error:", error);
+      setIsGoogleLoading(false);
       // Handle error appropriately (e.g., show a toast notification)
     }
   };
@@ -62,12 +63,12 @@ export function AuthDialog({
   const handleGithubSignIn = async () => {
     setIsGithubLoading(true);
     try {
-      await authClient.signIn.social({
-        provider: "github",
-        callbackURL: getCallbackUrl(),
+      await signIn("github", {
+        redirectTo: getCallbackUrl(),
       });
     } catch (error) {
       console.error("GitHub Sign In Error:", error);
+      setIsGithubLoading(false);
       // Handle error appropriately
     }
   };

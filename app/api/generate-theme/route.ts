@@ -77,8 +77,8 @@ export async function POST(req: NextRequest) {
             try {
               await recordAIUsage({
                 modelId: model.modelId,
-                promptTokens: totalUsage.inputTokens,
-                completionTokens: totalUsage.outputTokens,
+                promptTokens: totalUsage.inputTokens || 0,
+                completionTokens: totalUsage.outputTokens || 0,
               });
             } catch (error) {
               logError(error as Error, { action: "recordAIUsage", totalUsage });

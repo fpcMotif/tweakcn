@@ -66,7 +66,7 @@ const ThemeEditActions: React.FC<ThemeEditActionsProps> = ({
       if (result) {
         setIsNameDialogOpen(false);
         router.push(mainEditorUrl);
-        applyThemePreset(result?.id || themeState?.preset || "default");
+        applyThemePreset(String(result.id) || themeState?.preset || "default");
       }
     } catch (error) {
       console.error("Failed to update theme:", error);

@@ -1,6 +1,5 @@
-import { InferSelectModel } from "drizzle-orm";
-import { z } from "zod";
-import { theme } from "@/db/schema";
+import * as z from "zod";
+import type { Id } from "@/convex/_generated/dataModel";
 
 export const themeStylePropsSchema = z.object({
   background: z
@@ -144,4 +143,11 @@ export type ThemePreset = {
   };
 };
 
-export type Theme = InferSelectModel<typeof theme>;
+export type Theme = {
+  id: Id<"themes">;
+  name: string;
+  styles: ThemeStyles;
+  _creationTime: number;
+  createdAt: Date;
+  updatedAt?: Date;
+};

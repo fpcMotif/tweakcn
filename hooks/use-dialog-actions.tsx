@@ -112,13 +112,13 @@ function useDialogActionsStore(): DialogActionsContextType {
     try {
       const theme = await createThemeMutation.mutateAsync(themeData);
       posthog.capture("CREATE_THEME", {
-        theme_id: theme?.id,
-        theme_name: theme?.name,
+        theme_id: String(theme.id),
+        theme_name: theme.name,
       });
       if (!theme) return;
-      applyThemePreset(theme?.id || themeState.preset || "default");
+      applyThemePreset(String(theme.id) || themeState.preset || "default");
       if (shareAfterSave) {
-        handleShareClick(theme?.id);
+        handleShareClick(String(theme.id));
         setShareAfterSave(false);
       }
       setTimeout(() => {

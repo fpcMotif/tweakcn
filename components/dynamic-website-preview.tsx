@@ -216,7 +216,6 @@ export function DynamicWebsitePreview({
           "group/block-view-wrapper bg-background @container isolate flex size-full min-w-0 flex-col overflow-clip",
           className
         )}
-        name={name}
         {...props}
       >
         <BlockViewerToolbar
