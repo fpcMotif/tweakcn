@@ -49,12 +49,9 @@ function BlockViewerProvider({ children }: { children: React.ReactNode }) {
 
 export function BlockViewer({
   className,
-  name,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
-  name: string;
-}) {
+}: React.ComponentProps<"div">) {
   return (
     <BlockViewerProvider>
       <div
@@ -89,7 +86,7 @@ export function BlockViewerToolbar({
     >
       <div className="flex size-full items-center justify-between gap-4">
         <div className="flex-1">
-          {!!toolbarControls ? (
+          {toolbarControls ? (
             toolbarControls
           ) : (
             <span className="text-sm font-medium capitalize">{name}</span>

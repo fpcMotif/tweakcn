@@ -102,7 +102,7 @@ export function useImageUpload({
             }
 
             finalUrl = `data:image/svg+xml,${encodedSvg}`;
-          } catch (error) {
+          } catch (_error) {
             handleError();
             return;
           }
