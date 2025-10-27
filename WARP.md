@@ -32,10 +32,16 @@ bun run generate-theme-registry # Generate registry JSON files in public/r/theme
 ```
 
 ### Code Quality
-
 ```bash
-bun run lint                   # Run ESLint (also runs in pre-commit hook)
-bunx prettier --write .         # Format all files with Prettier
+npm run lint                   # Run ESLint (also runs in pre-commit hook)
+npx prettier --write .         # Format all files with Prettier
+```
+
+### Testing
+```bash
+npm test                       # Run all tests once
+npm run test:watch             # Run tests in watch mode
+npm run test:ui                # Run tests with interactive UI
 ```
 
 ### Database

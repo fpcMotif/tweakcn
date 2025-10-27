@@ -1,0 +1,43 @@
+{
+	"/": [
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/ai": [
+		"src/routes/+layout.server.ts"
+	],
+	"/api/enhance-prompt": [
+		"src/routes/api/enhance-prompt/+server.ts"
+	],
+	"/api/generate-theme": [
+		"src/routes/api/generate-theme/+server.ts"
+	],
+	"/api/google-fonts": [
+		"src/routes/api/google-fonts/+server.ts"
+	],
+	"/api/subscription": [
+		"src/routes/api/subscription/+server.ts"
+	],
+	"/dashboard": [
+		"src/routes/dashboard/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/docs": [
+		"src/routes/+layout.server.ts"
+	],
+	"/editor": [
+		"src/routes/+layout.server.ts"
+	],
+	"/pricing": [
+		"src/routes/+layout.server.ts"
+	],
+	"/privacy-policy": [
+		"src/routes/+layout.server.ts"
+	],
+	"/robots.txt": [
+		"src/routes/robots.txt/+server.ts"
+	],
+	"/sitemap.xml": [
+		"src/routes/sitemap.xml/+server.ts"
+	]
+}

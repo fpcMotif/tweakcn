@@ -28,5 +28,8 @@
   "oxc.lint.enable": true,
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "biomejs.biome"
   }
 }
