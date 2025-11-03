@@ -12,9 +12,9 @@
     "typecheck": "tsc --noEmit",
     "check": "bun run lint && bun run lint:biome && bun run typecheck",
     "generate-theme-registry": "tsx scripts/generate-theme-registry.ts && tsx scripts/generate-registry.ts",
-    "minify-live-preview": "pnpm dlx terser public/live-preview.js -o public/live-preview.min.js -c -m",
-    "prebuild": "pnpm generate-theme-registry",
-    "postbuild": "pnpm minify-live-preview",
+    "minify-live-preview": "bunx terser public/live-preview.js -o public/live-preview.min.js -c -m",
+    "prebuild": "bun run generate-theme-registry",
+    "postbuild": "bun run minify-live-preview",
     "prepare": "husky"
   },
   "dependencies": {

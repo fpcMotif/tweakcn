@@ -1,11 +1,12 @@
 import {
   defaultDarkThemeStyles,
   defaultLightThemeStyles,
+  defaultThemeState,
 } from "@/config/theme";
 import { ThemeStyleProps, ThemeStyles } from "@/types/theme";
 import { colorFormatter } from "@/utils/color-converter";
 import { getShadowMap } from "@/utils/shadows";
-import { getPresetThemeStyles } from "@/utils/theme-preset-helper";
+import { defaultPresets } from "@/utils/theme-presets";
 
 // Convert HSL color to the format expected by shadcn registry
 const convertToRegistryColor = (color: string): string => {
@@ -81,9 +82,36 @@ const convertThemeStyles = (styles: ThemeStyles) => {
   };
 };
 
+// Get preset theme styles directly from defaultPresets without using store
+// This avoids server-only dependencies when running in Node.js scripts
+const getPresetThemeStylesFromPresets = (name: string): ThemeStyles => {
+  const defaultTheme = defaultThemeState.styles;
+
+  if (name === "default") {
+    return defaultTheme;
+  }
+
+  const preset = defaultPresets[name];
+  if (!preset) {
+    return defaultTheme;
+  }
+
+  return {
+    light: {
+      ...defaultTheme.light,
+      ...preset.styles.light,
+    },
+    dark: {
+      ...defaultTheme.dark,
+      ...preset.styles.light,
+      ...preset.styles.dark,
+    },
+  };
+};
+
 // This method will do the same as "generateThemeRegistry" from `scripts/generate-theme-registry.ts`
 export const generateThemeRegistryFromPreset = (name: string) => {
-  const styles = getPresetThemeStyles(name);
+  const styles = getPresetThemeStylesFromPresets(name);
   const registryItem = generateThemeRegistryItemFromStyles(name, styles);
   return registryItem;
 };
