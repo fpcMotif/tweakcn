@@ -9,7 +9,7 @@
     "lint": "oxlint .",
     "lint:biome": "bun x ultracite check",
     "format": "bun x ultracite fix",
-    "typecheck": "tsc --noEmit --project ./tsconfig.json",
+    "typecheck": "tsc --noEmit",
     "check": "bun run lint && bun run lint:biome && bun run typecheck",
     "generate-theme-registry": "tsx scripts/generate-theme-registry.ts && tsx scripts/generate-registry.ts",
     "minify-live-preview": "pnpm dlx terser public/live-preview.js -o public/live-preview.min.js -c -m",
