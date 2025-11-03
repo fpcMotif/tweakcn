@@ -94,6 +94,19 @@ body {
 }
 
 /* View Transition Wave Effect */
+:root {
+  --vt-duration: 400ms;
+  --vt-ease: ease-in-out;
+  --vt-opacity-start: 0.7;
+  view-transition-name: root;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --vt-duration: 0ms;
+  }
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -112,20 +125,18 @@ body {
 
 @keyframes reveal {
   from {
-    /* Use CSS variables for the origin, defaulting to center if not set */
-    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
-    opacity: 0.7;
+    clip-path: circle(0 at var(--x, 50%) var(--y, 50%));
+    opacity: var(--vt-opacity-start);
   }
   to {
-    /* Use CSS variables for the origin, defaulting to center if not set */
-    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+    clip-path: circle(150vmax at var(--x, 50%) var(--y, 50%));
     opacity: 1;
   }
 }
 
 ::view-transition-new(root) {
   /* Apply the reveal animation */
-  animation: reveal 0.4s ease-in-out forwards;
+  animation: reveal var(--vt-duration) var(--vt-ease) forwards;
 }
 
 /* Mention styles */

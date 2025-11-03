@@ -1,3 +1,4 @@
+import { flushSync } from "react-dom";
 import { useEditorStore } from "@/store/editor-store";
 import { ThemeStyles } from "@/types/theme";
 import { mergeThemeStylesWithDefaults } from "@/utils/theme-styles";
@@ -16,9 +17,11 @@ export function applyGeneratedTheme(themeStyles: ThemeStyles) {
     });
   } else {
     document.startViewTransition(() => {
-      setThemeState({
-        ...themeState,
-        styles: mergedStyles,
+      flushSync(() => {
+        setThemeState({
+          ...themeState,
+          styles: mergedStyles,
+        });
       });
     });
   }

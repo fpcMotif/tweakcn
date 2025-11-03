@@ -8,6 +8,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEditorStore } from "@/store/editor-store";
 import { Theme, ThemeStyles } from "@/types/theme";
@@ -32,7 +33,9 @@ const isThemeStyles = (styles: unknown): styles is ThemeStyles => {
 const Editor: React.FC<EditorProps> = ({ themePromise }) => {
   const themeState = useEditorStore((state) => state.themeState);
   const setThemeState = useEditorStore((state) => state.setThemeState);
+  const hydrated = useHydrated();
   const isMobile = useIsMobile();
+  const renderMobile = hydrated && isMobile;
 
   const initialTheme = themePromise ? use(themePromise) : null;
 
@@ -66,7 +69,7 @@ const Editor: React.FC<EditorProps> = ({ themePromise }) => {
   const styles = themeState.styles;
 
   // Mobile layout
-  if (isMobile) {
+  if (renderMobile) {
     return (
       <div className="relative isolate flex flex-1 overflow-hidden">
         <div className="size-full flex-1 overflow-hidden">
