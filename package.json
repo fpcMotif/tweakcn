@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "oxlint .",
+    "lint:css": "stylelint \"**/*.{css,scss}\"",
     "lint:biome": "bun x ultracite check",
     "format": "bun x ultracite fix",
     "typecheck": "tsc --noEmit",
-    "check": "bun run lint && bun run lint:biome && bun run typecheck",
+    "check": "bun run lint && bun run lint:css && bun run lint:biome && bun run typecheck",
     "generate-theme-registry": "tsx scripts/generate-theme-registry.ts && tsx scripts/generate-registry.ts",
     "minify-live-preview": "bunx terser public/live-preview.js -o public/live-preview.min.js -c -m",
     "prebuild": "bun run generate-theme-registry",
@@ -133,7 +134,11 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
     "oxlint": "^1.24.0",
+    "postcss-html": "^1.8.0",
     "raw-loader": "^4.0.2",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-config-tailwindcss": "^1.0.0",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
     "tw-animate-css": "^1.2.5",
@@ -147,6 +152,9 @@
     ],
     "*.{json,jsonc,css,scss,md,mdx}": [
       "bun x ultracite fix"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix"
     ]
   },
   "postcss": {

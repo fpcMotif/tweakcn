@@ -177,3 +177,104 @@ body {
 @utility scrollbar-gutter-both {
   scrollbar-gutter: stable both-edges;
 }
+
+/* Reusable grid background utility */
+@utility bg-grid {
+  --grid-size: 48px;
+  --grid-color: var(--foreground);
+  --grid-opacity: 0.075;
+
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(
+          in srgb,
+          var(--grid-color) calc(var(--grid-opacity) * 100%),
+          transparent
+        )
+        1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(
+          in srgb,
+          var(--grid-color) calc(var(--grid-opacity) * 100%),
+          transparent
+        )
+        1px,
+      transparent 1px
+    );
+  background-size: var(--grid-size) var(--grid-size);
+  background-repeat: repeat;
+  pointer-events: none;
+}
+
+/* Zed demo blueprint utilities */
+@utility square-gradient-bg {
+  --square-size: 44px;
+  --square-color: color-mix(in srgb, var(--primary) 12%, transparent);
+
+  background-image:
+    linear-gradient(to right, var(--square-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--square-color) 1px, transparent 1px);
+  background-size: var(--square-size) var(--square-size);
+  background-repeat: repeat;
+  background-position: -1px -1px;
+}
+
+@utility square-gradient-bg-sh-alt {
+  --square-color: color-mix(in srgb, var(--secondary) 10%, transparent);
+}
+
+@utility blueprint-grid {
+  --blueprint-size: 48px;
+  --blueprint-color: color-mix(
+    in srgb,
+    var(--muted-foreground) 8%,
+    transparent
+  );
+
+  background-image:
+    linear-gradient(to right, var(--blueprint-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--blueprint-color) 1px, transparent 1px);
+  background-size: var(--blueprint-size) var(--blueprint-size);
+  background-repeat: repeat;
+  background-position: -1px -1px;
+}
+
+@utility blueprint-corner {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+    pointer-events: none;
+  }
+
+  &::before {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  &::after {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+}
+
+@utility top-stripe-bg {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--primary) 12%, transparent) 0%,
+    transparent 100%
+  );
+}

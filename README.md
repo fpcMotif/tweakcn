@@ -35,6 +35,12 @@ You can find the full feature list here: https://tweakcn.com/#features
 
 You can find the updated roadmap here: https://tweakcn.com/#roadmap
 
+## Demos
+
+Demo pages showcasing recreations of popular landing pages:
+
+- **[Zed Demo](/demos/zed)** - A pixel-accurate recreation of the Zed code editor landing page
+
 ## Run Locally
 
 **IMPORTANT: For contributions, please see [CONTRIBUTING.md](CONTRIBUTING.md).**

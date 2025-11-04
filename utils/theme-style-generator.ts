@@ -137,40 +137,47 @@ const generateThemeVariables = (
   );
 };
 
-const generateTailwindV4ThemeInline = (themeStyles: ThemeStyles): string => {
+const generateTailwindV4ThemeInline = (
+  themeStyles: ThemeStyles,
+  colorFormat: ColorFormat = "hsl"
+): string => {
+  // Wrap color vars with oklch() if using OKLCH format
+  const colorWrapper = (varName: string) =>
+    colorFormat === "oklch" ? `oklch(var(--${varName}))` : `var(--${varName})`;
+
   return `@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-background: ${colorWrapper("background")};
+  --color-foreground: ${colorWrapper("foreground")};
+  --color-card: ${colorWrapper("card")};
+  --color-card-foreground: ${colorWrapper("card-foreground")};
+  --color-popover: ${colorWrapper("popover")};
+  --color-popover-foreground: ${colorWrapper("popover-foreground")};
+  --color-primary: ${colorWrapper("primary")};
+  --color-primary-foreground: ${colorWrapper("primary-foreground")};
+  --color-secondary: ${colorWrapper("secondary")};
+  --color-secondary-foreground: ${colorWrapper("secondary-foreground")};
+  --color-muted: ${colorWrapper("muted")};
+  --color-muted-foreground: ${colorWrapper("muted-foreground")};
+  --color-accent: ${colorWrapper("accent")};
+  --color-accent-foreground: ${colorWrapper("accent-foreground")};
+  --color-destructive: ${colorWrapper("destructive")};
+  --color-destructive-foreground: ${colorWrapper("destructive-foreground")};
+  --color-border: ${colorWrapper("border")};
+  --color-input: ${colorWrapper("input")};
+  --color-ring: ${colorWrapper("ring")};
+  --color-chart-1: ${colorWrapper("chart-1")};
+  --color-chart-2: ${colorWrapper("chart-2")};
+  --color-chart-3: ${colorWrapper("chart-3")};
+  --color-chart-4: ${colorWrapper("chart-4")};
+  --color-chart-5: ${colorWrapper("chart-5")};
+  --color-sidebar: ${colorWrapper("sidebar")};
+  --color-sidebar-foreground: ${colorWrapper("sidebar-foreground")};
+  --color-sidebar-primary: ${colorWrapper("sidebar-primary")};
+  --color-sidebar-primary-foreground: ${colorWrapper("sidebar-primary-foreground")};
+  --color-sidebar-accent: ${colorWrapper("sidebar-accent")};
+  --color-sidebar-accent-foreground: ${colorWrapper("sidebar-accent-foreground")};
+  --color-sidebar-border: ${colorWrapper("sidebar-border")};
+  --color-sidebar-ring: ${colorWrapper("sidebar-ring")};
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -294,7 +301,7 @@ export const generateThemeCode = (
   const darkTheme = generateThemeVariables(themeStyles, "dark", formatColor);
   const tailwindV4Theme =
     tailwindVersion === "4"
-      ? `\n\n${generateTailwindV4ThemeInline(themeStyles)}`
+      ? `\n\n${generateTailwindV4ThemeInline(themeStyles, colorFormat)}`
       : "";
 
   const bodyLetterSpacing =

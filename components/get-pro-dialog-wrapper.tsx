@@ -92,7 +92,7 @@ export function GetProDialog({ isOpen, onClose }: GetProDialogProps) {
             {/* ----Background effects---- */}
             <div
               className={cn(
-                "absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--primary)_r_g_b_/_0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--primary)_r_g_b_/_0.25)_1px,transparent_1px)] bg-[size:2rem_2rem]",
+                "absolute inset-0 -z-10 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--primary)_25%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--primary)_25%,transparent)_1px,transparent_1px)] bg-[size:2rem_2rem]",
                 "mask-r-from-80% mask-b-from-80% mask-radial-from-70% mask-radial-to-85%"
               )}
             />
@@ -100,7 +100,7 @@ export function GetProDialog({ isOpen, onClose }: GetProDialogProps) {
             <NoiseEffect />
             <div
               className={cn(
-                "absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.025)_1px,transparent_1px)] bg-[size:2rem_2rem]"
+                "absolute inset-0 -z-10 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--muted-foreground)_2.5%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--muted-foreground)_2.5%,transparent)_1px,transparent_1px)] bg-[size:2rem_2rem]"
               )}
             />
             <div className="bg-foreground/10 absolute top-0 left-0 -z-10 size-35 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full blur-3xl" />

@@ -106,7 +106,7 @@ export function AIGenerationCTA() {
         <div
           className={cn(
             "-skew-12 mask-b-from-60% mask-l-from-40% mask-l-to-75%",
-            "absolute inset-0 -z-20 bg-[linear-gradient(to_right,rgba(from_var(--primary)_r_g_b_/_0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--primary)_r_g_b_/_0.25)_1px,transparent_1px)] bg-[size:2.5rem_2.5rem]"
+            "absolute inset-0 -z-20 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--primary)_25%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--primary)_25%,transparent)_1px,transparent_1px)] bg-[size:2.5rem_2.5rem]"
           )}
         />
 
@@ -114,7 +114,7 @@ export function AIGenerationCTA() {
         <div
           className={cn(
             "-skew-12 animate-pulse [mask-composite:intersect]",
-            "absolute inset-0 -z-20 bg-[linear-gradient(to_right,rgba(from_var(--primary)_r_g_b_/_0.20)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--primary)_r_g_b_/_0.20)_1px,transparent_1px)] bg-[size:2.5rem_2.5rem]",
+            "absolute inset-0 -z-20 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--primary)_20%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--primary)_20%,transparent)_1px,transparent_1px)] bg-[size:2.5rem_2.5rem]",
             "[mask-image:linear-gradient(to_bottom,transparent_0%,transparent_25%,#000_25%,#000_50%,transparent_50%),linear-gradient(to_right,transparent_0%,transparent_50%,#000_50%,#000_100%)]"
           )}
         />
@@ -123,7 +123,7 @@ export function AIGenerationCTA() {
         <div
           className={cn(
             "-skew-12",
-            "absolute inset-0 -z-20 bg-[linear-gradient(to_right,rgba(from_var(--muted)_r_g_b_/_0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted)_r_g_b_/_0.25)_1px,transparent_1px)] bg-[size:2.5rem_2.5rem]",
+            "absolute inset-0 -z-20 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--muted)_25%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--muted)_25%,transparent)_1px,transparent_1px)] bg-[size:2.5rem_2.5rem]",
             "[mask-image:linear-gradient(to_bottom,transparent_0%,transparent_50%,#000_50%,#000_75%,transparent_75%),linear-gradient(to_right,#000_0%,#000_50%,transparent_50%)]",
             "[mask-composite:intersect]"
           )}

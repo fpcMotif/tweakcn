@@ -32,6 +32,10 @@ export const colorFormatter = (
         return culori.formatRgb(color); // e.g., "rgb(64, 128, 192)"
       case "oklch": {
         const oklch = culori.converter("oklch")(color);
+        // For Tailwind v4, return triple only (stored in CSS var), not full function
+        if (tailwindVersion === "4") {
+          return `${formatNumber(oklch.l)} ${formatNumber(oklch.c)} ${formatNumber(oklch.h)}`;
+        }
         return `oklch(${formatNumber(oklch.l)} ${formatNumber(oklch.c)} ${formatNumber(oklch.h)})`;
       }
       case "hex":

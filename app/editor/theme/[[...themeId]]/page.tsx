@@ -11,11 +11,13 @@ export const metadata: Metadata = {
 export default async function EditorPage({
   params,
 }: {
-    params: { themeId?: string[] };
+  params: { themeId?: string[] };
 }) {
   const { themeId } = params;
   const themePromise =
-    themeId !== undefined && themeId.length > 0 ? getTheme(themeId[0]) : Promise.resolve(null);
+    themeId !== undefined && themeId.length > 0
+      ? getTheme(themeId[0])
+      : Promise.resolve(null);
 
   return <Editor themePromise={themePromise} />;
 }

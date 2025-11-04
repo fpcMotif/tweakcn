@@ -1,0 +1,255 @@
+# Windsurf Development Rules
+
+## Accessibility Rules
+- Avoid `accessKey` attr and distracting elements
+- No `aria-hidden="true"` on focusable elements
+- No ARIA roles, states, props on unsupported elements
+- Use `scope` prop only on `<th>` elements
+- No non-interactive ARIA roles on interactive elements
+- Label elements need text and associated input
+- No event handlers on non-interactive elements
+- No interactive ARIA roles on non-interactive elements
+- No `tabIndex` on non-interactive elements
+- No positive integers on `tabIndex` prop
+- No `image`, `picture`, or `photo` in img alt props
+- No explicit role matching implicit role
+- Valid role attrs on static, visible elements with click handlers
+- Use `title` element for `svg` elements
+- Provide meaningful alt text for all elements requiring it
+- Anchors need accessible content
+- Assign `tabIndex` to non-interactive elements with `aria-activedescendant`
+- Include all required ARIA attrs for elements with ARIA roles
+- Use valid ARIA props for the element's role
+- Use `type` attr on `button` elements
+- Make elements with interactive roles and handlers focusable
+- Heading elements need accessible content
+- Add `lang` attr to `html` element
+- Use `title` attr on `iframe` elements
+- Pair `onClick` with `onKeyUp`, `onKeyDown`, or `onKeyPress`
+- Pair `onMouseOver`/`onMouseOut` with `onFocus`/`onBlur`
+- Add caption tracks to audio and video elements
+- Use semantic elements vs role attrs
+- All anchors must be valid and navigable
+- Use valid, non-abstract ARIA props, roles, states, and values
+- Use valid values for `autocomplete` attr
+- Use correct ISO language codes in `lang` attr
+- Include generic font family in font families
+
+## JavaScript/TypeScript Rules
+- No consecutive spaces in regex literals
+- Avoid `arguments`, comma op, and primitive type aliases
+- No empty type params in type aliases and interfaces
+- Keep functions under Cognitive Complexity limit
+- No unnecessary boolean casts or callbacks on `flatMap`
+- Use `for...of` vs `Array.forEach`
+- No classes with only static members
+- No `this` and `super` in static contexts
+- No unnecessary catch clauses, constructors, `continue`, escape sequences in regex literals, fragments, labels, or nested blocks
+- No empty exports
+- No renaming imports, exports, or destructured assignments to same name
+- No unnecessary string/template literal concatenation or useless cases in switch statements, `this` aliasing, or `String.raw` without escape sequences
+- Use simpler alternatives to ternary ops if possible
+- No `any` or `unknown` as type constraints or initializing vars to `undefined`
+- Avoid `void` op
+- Use arrow functions vs function expressions
+- Use `Date.now()` for milliseconds since Unix Epoch
+- Use `.flatMap()` vs `map().flat()`
+- Use `indexOf`/`lastIndexOf` vs `findIndex`/`findLastIndex` for simple lookups
+- Use literal property access vs computed property access
+- Use binary, octal, or hex literals vs `parseInt()`
+- Use concise optional chains vs chained logical expressions
+- Use regex literals vs `RegExp` constructor
+- Use base 10 or underscore separators for number literal object member names
+- Remove redundant terms from logical expressions
+- Use `while` loops vs `for` loops if initializer and update aren't needed
+- No reassigning `const` vars or constant expressions in conditions
+- No `Math.min`/`Math.max` to clamp values where result is constant
+- No return values from constructors or setters
+- No empty character classes in regex literals or destructuring patterns
+- No `__dirname` and `__filename` in global scope
+- No calling global object props as functions or declaring functions and `var` accessible outside their block
+- Instantiate builtins correctly
+- Use `super()` correctly in classes
+- No reassigning `const` vars or constant expressions in conditions
+- No optional chaining where `undefined` is not allowed
+- No unused function params, imports, labels, private class members, or vars
+- No return values from functions with return type `void`
+- Use `isNaN()` when checking for NaN
+- Use `{ type: "json" }` for JSON module imports
+- Use radix arg with `parseInt()`
+- Start JSDoc comment lines with single asterisk
+- Move `for` loop counters in right direction
+- Compare `typeof` expressions to valid values
+- Include `yield` in generator functions
+- No importing deprecated exports, duplicate dependencies, or Promises where they're likely a mistake
+- No non-null assertions after optional chaining or shadowing vars from outer scope
+- No expression statements that aren't function calls or assignments or useless `undefined`
+- Use consistent arrow function bodies and either `interface` or `type` consistently
+- Specify deletion date with `@deprecated` directive
+- Make switch-case statements exhaustive and limit number of function params
+- No spread syntax on accumulators, barrel files, `delete` op, dynamic namespace import access, namespace imports, or duplicate polyfills from Polyfill.io
+- Declare regex literals at top level
+- No callbacks in async tests and hooks, TS enums, exporting imported vars, type annotations for vars initialized with literals, magic numbers without named constants, or TS namespaces
+- No negating `if` conditions when there's an `else` clause, nested ternary expressions, non-null assertions (`!`), reassigning function params, parameter props in class constructors, specified global var names, importing specified modules, or specified user-defined types
+- No constants where value is upper-case version of name, template literals without interpolation or special chars, `else` blocks when `if` block breaks early, yoda expressions, or `Array` constructors
+- Use `String.slice()` vs `String.substr()` and `String.substring()`
+- Use `as const` vs literal type annotations and `at()` vs integer index access
+- Follow curly brace conventions
+- Use `else if` vs nested `if` in `else` clauses and single `if` vs nested `if` clauses
+- Use `T[]` vs `Array<T>`
+- Use `new` for all builtins except `String`, `Number`, and `Boolean`
+- Use consistent accessibility modifiers on class props and methods
+- Declare object literals consistently
+- Use `const` for vars only assigned once
+- Put default and optional function params last
+- Include `default` clause in switch statements
+- Specify reason arg with `@deprecated` directive
+- Explicitly initialize each enum member value
+- Use `**` op vs `Math.pow`
+- Use `export type` and `import type` for types
+- Use kebab-case, ASCII filenames
+- Use `for...of` vs `for` loops with array index access
+- Use `<>...</>` vs `<Fragment>...</Fragment>`
+- Capitalize all enum values
+- Place getters and setters for same prop adjacent
+- Use literal values for all enum members
+- Use `node:assert/strict` vs `node:assert`
+- Use `node:` protocol for Node.js builtin modules
+- Use `Number` props vs global ones
+- Use numeric separators in numeric literals
+- Use object spread vs `Object.assign()` for new objects
+- Mark members `readonly` if never modified outside constructor
+- Use assignment op shorthand
+- Use function types vs object types with call signatures
+- Add description param to `Symbol()`
+- Use template literals vs string concatenation
+- Use `new` when throwing an error
+- No throwing non-`Error` values
+- Use `String.trimStart()`/`String.trimEnd()` vs `String.trimLeft()`/`String.trimRight()`
+- No overload signatures that can be unified
+- No `!` pattern in first position of `files.includes`
+- No bitwise ops
+- No reassigning exceptions in catch clauses
+- No reassigning class members
+- No inserting comments as text nodes
+- No comparing against `-0`
+- No labeled statements that aren't loops
+- No `void` type outside generic or return types
+- No `console`
+- No TS const enums
+- No expressions where op doesn't affect value
+- No control chars in regex literals
+- No `debugger`
+- No assigning directly to `document.cookie`
+- Use `===` and `!==`
+- No letting vars evolve into `any` type through reassignments
+- No `any` type
+- No misusing non-null assertion op (`!`)
+- No fallthrough in switch clauses
+- No reassigning function declarations
+- No assigning to native objects and read-only global vars
+- Use `Number.isFinite` and `Number.isNaN` vs global `isFinite` and `isNaN`
+- No implicit `any` type on var declarations
+- No assigning to imported bindings
+- No labels that share name with var
+- No chars made with multiple code points in char classes
+- Use `new` and `constructor` properly
+- No shorthand assign when var appears on both sides
+- No octal escape sequences in strings
+- No `Object.prototype` builtins directly
+- No redeclaring vars, functions, classes, and types in same scope
+- No redundant `use strict`
+- No comparing where both sides are same
+- No shadowing restricted names
+- No shorthand props that override related longhand props
+- No sparse arrays
+- No template literal placeholder syntax in regular strings
+- No `then` prop
+- No `@ts-ignore` directive
+- No `let` or `var` vars that are read but never assigned
+- No merging interface and class declarations unsafely
+- No unsafe negation (`!`)
+- No unnecessary escapes in strings or useless backreferences in regex literals
+- No `var`
+- No `with` statements
+- No separating overload signatures
+- Use `await` in async functions
+- Use correct syntax for ignoring folders in config
+- Put default clauses in switch statements last
+- Pass message value when creating built-in errors
+- Return value from get methods
+- Use `namespace` keyword vs `module` keyword
+- Use digits arg with `Number#toFixed()`
+- Use static `Response` methods vs `new Response()`
+- Use `use strict` directive in script files
+
+## CSS Rules
+- Use standard direction values for linear gradient functions
+- Use valid named grid areas in CSS Grid Layouts
+- Use `@import` at-rules in valid positions
+- No vars and params before their declaration
+- Include `var` function for CSS vars
+- No `\8` and `\9` escape sequences in strings
+- No unknown CSS value functions, media feature names, props, pseudo-class/pseudo-element selectors, type selectors, or units
+- No unmatchable An+B selectors or unreachable code
+- No lower specificity selectors after higher specificity selectors
+- No `@value` rule in CSS modules
+- No `!important` within keyframe declarations
+- No irregular whitespace chars
+- No duplicate `@import` rules, case labels, class members, custom props, conditions in if-else-if chains, GraphQL fields, font family names, object keys, function param names, decl block props, keyframe selectors, or describe hooks
+- No empty CSS blocks, block statements, static blocks, or interfaces
+- Sort CSS utility classes
+
+## React/Next.js Rules
+- Add `href` attr to `<a>` elements and `width`/`height` attrs to `<img>` elements
+- Specify all dependencies correctly in React hooks and names for GraphQL operations
+- Call React hooks from top level of component functions
+- No dangerous JSX props
+- No both `children` and `dangerouslySetInnerHTML` props
+- No global `eval()`
+- No passing children as props. Nest children between opening and closing tags
+- No defining components inside other components
+- No reassigning props in React components
+- No using return value from `ReactDOM.render()`
+- No adding children to void elements like `<img>` and `<br>`
+- Call React hooks from top level of component functions only
+- Add `key` prop to elements in iterables
+- No legacy `React.forwardRef`. Use ref as prop instead (React 19+)
+- Use function components vs class components
+- No array indices as keys
+- No duplicate props in JSX
+- No semicolons that change JSX element semantics
+- No async client components. Use server components for async operations
+- Use Next.js `<Image>` component vs `<img>` element
+- Use Next.js `next/head` or App Router metadata API vs `<head>` element
+- No importing `next/document` in page files
+- No importing `next/head` in `_document.tsx`. Use `<Head>` from `next/document` instead
+
+## Testing Rules
+- Limit nesting depth of `describe()` in tests
+- No focused or disabled tests
+- Place assertion functions inside `it()` function calls
+
+## Security & Performance Rules
+- Use `preconnect` attr with Google Fonts
+- Add `rel="noopener"` when using `target="_blank"`
+- No `alert`, `confirm`, and `prompt`
+- Use standard constants vs approximated literals
+- No assigning in expressions
+- No async functions as Promise executors
+- Use recommended display strategy with Google Fonts
+- Include `if` statement in for-in loops
+- Use `Array.isArray()` vs `instanceof Array`
+- Return consistent values in iterable callbacks
+
+## Editor/Tool Rules
+- No `quickfix.biome` in editor settings
+- No unknown at-rules
+
+## General Best Practices
+- Use `use strict` directive in script files
+- Follow established project structure
+- Write maintainable, reusable, and concise code
+- Implement proper error handling
+- Use descriptive naming conventions
+- Document complex logic appropriately
